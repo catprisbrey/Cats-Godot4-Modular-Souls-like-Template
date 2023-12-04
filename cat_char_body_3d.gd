@@ -5,8 +5,27 @@ extends CharacterBody3D
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var input_dir : Vector2
 
+var strafing :bool = false
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+
+func _input(_event:InputEvent):
+	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	calc_direction()
+	
+	if _event.is_action_pressed("ui_accept"):
+		jump()
+		
+	# strafe toggle on/off
+	if _event.is_action_pressed("ui_focus_next"):
+		strafing = !strafing
+	
+	# when direction input stops, get the latest camera
+	if _event.is_action_released("ui_left") \
+	or _event.is_action_released("ui_right") \
+	or _event.is_action_released("ui_up") \
+	or _event.is_action_released("ui_down"):
+		current_camera = get_viewport().get_camera_3d()
 
 
 func _physics_process(_delta):
@@ -34,7 +53,6 @@ func move_player():
 	move_and_slide()
 	
 func rotate_player():
-	var strafing = false
 	var dodging = false
 	var target_rotation
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
@@ -62,20 +80,7 @@ func calc_direction():
 	var direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
 	return direction
 
-func _input(_event:InputEvent):
-	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	calc_direction()
-	
-	if _event.is_action_pressed("ui_accept"):
-		jump()
-		
-	if _event.is_action_released("ui_left") \
-	or _event.is_action_released("ui_right") \
-	or _event.is_action_released("ui_up") \
-	or _event.is_action_released("ui_down"):
-		current_camera = get_viewport().get_camera_3d()
 
 func jump():
 	if is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
