@@ -122,7 +122,7 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 		speed = dodge_speed
 		if _new_direction != Vector3.ZERO: # If a direction is passed to the dodge command
 			direction = (global_position - to_global(_new_direction)).normalized()
-			dodge_duration = .25
+			dodge_duration = .1
 		elif input_dir: # Dodge toward direction of input_dir 
 			direction = calc_direction()
 			dodge_duration = .25
