@@ -11,6 +11,7 @@ var current_cam_buffer = true
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_setup_spring_arm()
+	camera_3d.current = true
 	
 func _input(event):
 	if targeting == true:
@@ -20,6 +21,7 @@ func _input(event):
 
 func _physics_process(delta):
 	_follow_target(follow_target.global_position)
+	_detect_camera_change()
 
 ## Function for sensing direction of target to select
 func select_target(_event): 
@@ -55,6 +57,8 @@ func _setup_spring_arm():
 func _follow_target(target_position: Vector3):
 	var lerp_to_position = lerp(global_position, target_position,.07)
 	global_position = lerp_to_position
+	
+func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
 	&& current_cam_buffer:
 		current_cam_buffer = false
