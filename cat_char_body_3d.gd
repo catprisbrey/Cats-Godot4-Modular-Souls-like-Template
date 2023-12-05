@@ -3,21 +3,38 @@ extends CharacterBody3D
 @onready var current_camera = get_viewport().get_camera_3d()
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var input_dir : Vector2
+var jump_velocity = 4.5
 
+# Dodge Mechanics
+@export var dodge_speed = 10.0
+var dodging : bool = false
+@onready var dodge_buffer :float = .5
+var dodge_buffer_timer :Timer = Timer.new()
+
+# Movement Mechanics
+var input_dir : Vector2
 var strafing :bool = false
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+@export var default_speed = 5.0
+@onready var speed = default_speed
+var direction = Vector3.ZERO
+
+func _ready():
+	dodge_buffer_timer.one_shot = true
+	dodge_buffer_timer.wait_time = dodge_buffer
+	add_child(dodge_buffer_timer)
 
 func _input(_event:InputEvent):
 	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	calc_direction()
+	direction = calc_direction()
 	
 	if _event.is_action_pressed("ui_accept"):
 		jump()
 		
-	# strafe toggle on/off
 	if _event.is_action_pressed("ui_focus_next"):
+		dodge()
+		
+	# strafe toggle on/off
+	if _event.is_action_pressed("ui_text_backspace"):
 		strafing = !strafing
 	
 	# when direction input stops, get the latest camera
@@ -29,31 +46,38 @@ func _input(_event:InputEvent):
 
 
 func _physics_process(_delta):
-	if !is_on_floor():
-		velocity.y -= gravity * _delta
-	move_player()
+	apply_gravity(_delta)
 	rotate_player()
 	
-func move_player():
+	if dodging:
+		dodge_player()
+		
+	else:
+		move_player(direction)
+		
+	
+func apply_gravity(_delta):
+	if !is_on_floor():
+		velocity.y -= gravity * _delta
+		
+func move_player(new_direction):
 	# Get the movement orientation from the angles of the player to the camera.
 	# Using only camera's basis rotation created weird speed inconsistencies at downward angles
-	var new_direction = calc_direction()
+	#dodge_movement()
 	if new_direction:
 		var rate : float # imiates directional change acceleration rate
 		if is_on_floor():
 			rate = .5
 		else:
 			rate = .1 # Makes it hard to change directions once in midair
-		velocity.x = move_toward(velocity.x, new_direction.x * SPEED, rate)
-		velocity.z = move_toward(velocity.z, new_direction.z * SPEED, rate)
+		velocity.x = move_toward(velocity.x, new_direction.x * speed, rate)
+		velocity.z = move_toward(velocity.z, new_direction.z * speed, rate)
 	else: # Smoothly come to a stop
 		velocity.x = move_toward(velocity.x, 0, .5)
 		velocity.z = move_toward(velocity.z, 0, .5)
-
 	move_and_slide()
 	
 func rotate_player():
-	var dodging = false
 	var target_rotation
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
 	
@@ -77,10 +101,32 @@ func calc_direction():
 	# calculate and return the direction of movement oriented to the current camera
 	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)
 	var horizontal_vector = Vector3(1, 0, 0).rotated(Vector3.UP, current_camera.global_rotation.y)
-	var direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
+	direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
 	return direction
-
 
 func jump():
 	if is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_velocity
+
+func dodge():
+	if is_on_floor() \
+	&& dodge_buffer_timer.is_stopped() \
+	&& dodging == false:
+		dodging = true
+		dodge_buffer_timer.start()
+		
+func dodge_player():
+		var dodge_duration : float
+		speed = dodge_speed
+		if input_dir: # Dodge toward direction of input_dir 
+			direction = calc_direction()
+			dodge_duration = .25
+		else: # Dodge toward the 'BACK' of your global position
+			direction = (global_position - to_global(Vector3.BACK)).normalized()
+			dodge_duration = .15
+		velocity = direction * dodge_speed
+		move_and_slide()
+		await get_tree().create_timer(dodge_duration).timeout
+		dodging = false
+		speed = default_speed
+		direction = Vector3.ZERO
