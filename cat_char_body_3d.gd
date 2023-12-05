@@ -8,7 +8,7 @@ var jump_velocity = 4.5
 # Dodge Mechanics
 @export var dodge_speed = 10.0
 var dodging : bool = false
-@onready var dodge_buffer :float = .5
+var dodge_buffer :float = .5
 var dodge_buffer_timer :Timer = Timer.new()
 
 # Movement Mechanics
@@ -18,7 +18,7 @@ var strafing :bool = false
 @onready var speed = default_speed
 var direction = Vector3.ZERO
 
-func _ready():
+func _init():
 	dodge_buffer_timer.one_shot = true
 	dodge_buffer_timer.wait_time = dodge_buffer
 	add_child(dodge_buffer_timer)
