@@ -10,6 +10,8 @@ var jump_velocity = 4.5
 var dodging : bool = false
 var dodge_buffer :float = .5
 var dodge_buffer_timer :Timer = Timer.new()
+signal dodge_started
+signal dodge_ended
 
 # Movement Mechanics
 var input_dir : Vector2
@@ -25,7 +27,7 @@ func _init():
 
 func _input(_event:InputEvent):
 	
-	if _event.is_action_pressed("ui_accept"):
+	if _event.is_action_pressed("ui_select"):
 		jump()
 		
 	if _event.is_action_pressed("ui_focus_next"):
@@ -124,14 +126,17 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 			direction = (global_position - to_global(_new_direction)).normalized()
 			dodge_duration = .1
 		elif input_dir: # Dodge toward direction of input_dir 
+			dodge_started.emit()
 			direction = calc_direction()
 			dodge_duration = .25
 		else: # Dodge toward the 'BACK' of your global position
+			dodge_started.emit()
 			direction = (global_position - to_global(Vector3.BACK)).normalized()
 			dodge_duration = .15
 		velocity = direction * dodge_speed
 		move_and_slide()
 		await get_tree().create_timer(dodge_duration).timeout
+		dodge_ended.emit()
 		dodging = false
 		speed = default_speed
 		direction = Vector3.ZERO

@@ -1,0 +1,77 @@
+[gd_scene load_steps=15 format=3 uid="uid://ccuwa5g83o4ev"]
+
+[ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player.tscn" id="1_n8m1a"]
+[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_wve53"]
+[ext_resource type="PackedScene" uid="uid://de0tm4vkub3q1" path="res://targeting_system.tscn" id="3_8x33c"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_8b3gf"]
+sky_material = SubResource("ProceduralSkyMaterial_iyfyb")
+
+[sub_resource type="Environment" id="Environment_jiblg"]
+background_mode = 2
+sky = SubResource("Sky_8b3gf")
+tonemap_mode = 2
+
+[sub_resource type="Gradient" id="Gradient_ubt8b"]
+offsets = PackedFloat32Array(0.246032, 1)
+colors = PackedColorArray(0.139357, 0.143696, 0.0604866, 1, 0.357547, 0.229057, 0.141964, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k1xxj"]
+frequency = 0.0243
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_67xd7"]
+color_ramp = SubResource("Gradient_ubt8b")
+noise = SubResource("FastNoiseLite_k1xxj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_db3g7"]
+albedo_texture = SubResource("NoiseTexture2D_67xd7")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ng31s"]
+material = SubResource("StandardMaterial3D_db3g7")
+size = Vector2(50, 50)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7h28q"]
+data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+
+[sub_resource type="PrismMesh" id="PrismMesh_5772f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2ney"]
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jiblg")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ng31s")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_7h28q")
+
+[node name="Player" parent="." instance=ExtResource("1_n8m1a")]
+
+[node name="FollowCam" parent="." instance=ExtResource("2_wve53")]
+
+[node name="TargetingSystem" parent="FollowCam" instance=ExtResource("3_8x33c")]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.2304)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
+mesh = SubResource("PrismMesh_5772f")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_u2ney")
