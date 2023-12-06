@@ -1,17 +1,21 @@
 extends Node3D
+class_name FollowCam
 
 @export_range(1,50,1) var mouse_sensitivity = 15.0
+@export_range(1,50,1) var joystick_sensitivity = 15.0
 var targeting = false
 @export var spring_arm_3d : SpringArm3D 
 @export var camera_3d : Camera3D 
 @export var follow_target : Node3D
+## if no target is set, this node will attempt to find a CharacterBody3D to follow
 @onready var look_target = follow_target
+@onready var targeting_system
 
 var current_cam_buffer = true
 	
 func _ready():
 	_find_a_player()
-
+	_find_targeting_system()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_setup_spring_arm()
 	camera_3d.current = true
@@ -19,12 +23,13 @@ func _ready():
 func _input(event):
 	mouse_control(event)
 	
+	
 func _physics_process(_delta):
+	#joystick_control()
 	_follow_target(follow_target)
 	_lookat_target()
 	
 	_detect_camera_change()
-
 
 
 ## Normal free camera control
@@ -36,6 +41,16 @@ func mouse_control(_event):
 		var clamped_rotation = clamp(new_rotation, -.8, 0.6) #rotation clamp
 		rotation.x = clamped_rotation
 		return
+
+func joystick_control(): # For controlling freecam rotation on gamepad
+		#if Input.get_vector("look_left","look_right","look_up","look_down"):
+	# Calculate the target rotation
+		var joy_input = Input.get_vector("look_left","look_right","look_up","look_down")
+		var temporary_rotation = rotation.x + joy_input.y / 400 * joystick_sensitivity
+		rotation.y -= joy_input.x / 400 * joystick_sensitivity
+		#rotation clamp
+		temporary_rotation = clamp(temporary_rotation, -.8, .6)
+		rotation.x = temporary_rotation
 
 ## This allows you to ignore the spring arm entirely, 
 ## only worry about placing the camera's z and y position.
@@ -50,7 +65,6 @@ func _follow_target(new_target):
 		var target_position = new_target.global_position
 		var lerp_to_position = lerp(global_position, target_position,.07)
 		global_position = lerp_to_position
-
 		
 func _lookat_target():
 	if look_target == null:
@@ -58,7 +72,9 @@ func _lookat_target():
 	
 	var look_pos = look_target.global_position + Vector3(0,.5,0)
 	#if look_pos.dot(global_position) > .1:
-	camera_3d.look_at(look_pos)
+	if targeting:
+		look_at(look_pos)
+	
 	
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
@@ -77,30 +93,27 @@ func _find_a_player():
 			if each is CharacterBody3D:
 				follow_target = each
 				look_target = each
+				if each.has_signal("strafe_toggled"):
+					each.strafe_toggled.connect(_toggle_targeting)
 				break
-#func Change_CameraMode():
-	##Changes camera location, height and spring length dependingg on whether
-	## in free, or targeting camera mode.
-	#
-	## Make camera follow the character's global position
-	#var LerpToPlayer = lerp(global_position, player_body.global_position + Vector3(0,camera_height_final,0),.07)
-	#global_position = LerpToPlayer
-	#
-	## Stafing and lockon logic
-	#if Targeting == true:
-		## If locked on to a target, boost the camera taller, and extend spring length
-		#camera_height_final = lerp(camera_height_final, camera_height + target_cam_height_boost, .08)
-		#spring_arm_3d.spring_length = lerp(spring_arm_3d.spring_length,target_cam_spring_length, .05)
-		#if closest_body != null:
-			#look_at(closest_body.global_position + Vector3(0,(camera_height),0))
-			##Dead cancel logic
-			#if closest_body.health < 0:
-				#await get_tree().create_timer(.1).timeout
-				##ChangeTarget(0,.2)
-	#else:
-		## if not locked on, smoothly bring the camera back down
-		#camera_height_final = lerp(camera_height_final, camera_height, .05)
-		#spring_arm_3d.spring_length = lerp(spring_arm_3d.spring_length, free_cam_spring_length, .1)
-		#spring_arm_3d.position = get_parent().global_position
-		## Set closest body as target when entered, if no target already exists
-		#closest_body = null
+				
+func _find_targeting_system():
+	var the_kids = get_children()
+	for each in the_kids:
+		if each is TargetingSystem:
+			targeting_system = each
+			targeting_system.targeted.connect(_update_look_at_target)
+			
+			
+func _update_look_at_target(new_target):
+	if targeting:
+		if new_target != null:
+			look_target = new_target
+		else:
+			look_target = follow_target
+			targeting = false
+			
+func _toggle_targeting(new_toggle):
+	targeting = new_toggle
+	if targeting && targeting_system:
+		look_target = targeting_system._update_targets()

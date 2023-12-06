@@ -16,6 +16,8 @@ signal dodge_ended
 # Movement Mechanics
 var input_dir : Vector2
 var strafing :bool = false
+signal strafe_toggled
+
 @export var default_speed = 5.0
 @onready var speed = default_speed
 var direction = Vector3.ZERO
@@ -36,6 +38,7 @@ func _input(_event:InputEvent):
 	# strafe toggle on/off
 	if _event.is_action_pressed("ui_text_backspace"):
 		strafing = !strafing
+		strafe_toggled.emit(strafing)
 	
 	# when direction input stops, get the latest camera
 	if _event.is_action_released("ui_left") \

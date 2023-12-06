@@ -33,7 +33,6 @@ var targeting = false :
 func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_text_backspace"):
 		targeting = !targeting
-		print("Targetting is "+ str(targeting))
 		
 	if targeting == true \
 	&& _event is InputEventMouseMotion \
@@ -46,6 +45,7 @@ func _update_targets():
 		LeftClosest = findClosestBody($LeftEye)
 		RightClosest = findClosestBody($RightEye)
 		FinalClosest = findFinalClosest()
+		return FinalClosest
 		
 func findClosestBody(area: Area3D): # Loops through bodies in an area, maths out if it's the closest one
 	var closest_body
