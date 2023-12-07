@@ -72,7 +72,6 @@ func _find_a_player():
 	if follow_target == null:
 		var the_kids = get_tree().get_root().get_child(0).get_children()
 		for each in the_kids:
-			print(each)
 			if each is CharacterBody3D:
 				if each.has_signal("strafe_toggled"):
 					follow_target = each
@@ -83,14 +82,11 @@ func _find_a_player():
 func _find_targeting_system():
 	if optional_targeting_system:
 		optional_targeting_system.target_found.connect(_update_target)
-		
 
 func _update_target(new_target):
-	print("new look target = " + str(look_target))
 	if new_target:
 		look_target = new_target
 
-			
 func _follow_target(new_target):
 	if new_target:
 		var target_position = new_target.global_position
@@ -115,7 +111,6 @@ func _detect_camera_change():
 	
 func _toggle_targeting(new_toggle):
 	targeting = new_toggle
-	print("Targeting is : " + str(targeting))
 	if optional_targeting_system:
 		if targeting:
 			optional_targeting_system._get_closest()
