@@ -9,7 +9,7 @@ var targeting = false
 @export var camera_3d : Camera3D 
 @export var follow_target : Node3D
 ## if no target is set, this node will attempt to find a CharacterBody3D to follow
-@onready var look_target = follow_target
+var look_target
 @export var optional_targeting_system : TargetingSystem
 
 var current_cam_buffer = true
@@ -76,7 +76,6 @@ func _find_a_player():
 			if each is CharacterBody3D:
 				if each.has_signal("strafe_toggled"):
 					follow_target = each
-					look_target = each
 					follow_target.strafe_toggled.connect(_toggle_targeting)
 	elif follow_target.has_signal("strafe_toggled"):
 		follow_target.strafe_toggled.connect(_toggle_targeting)
@@ -84,10 +83,12 @@ func _find_a_player():
 func _find_targeting_system():
 	if optional_targeting_system:
 		optional_targeting_system.target_found.connect(_update_target)
+		
 
 func _update_target(new_target):
 	print("new look target = " + str(look_target))
-	look_target = new_target
+	if new_target:
+		look_target = new_target
 
 			
 func _follow_target(new_target):
@@ -98,8 +99,11 @@ func _follow_target(new_target):
 		
 func _lookat_target():
 	if targeting:
-		look_at(look_target.global_position + Vector3(0,.5,0),Vector3.UP)
-	
+		if look_target:
+			look_at(look_target.global_position + Vector3(0,.5,0),Vector3.UP)
+			#var dot_of_them = global_position.dot(look_target.global_position)
+			#rotate_toward(global_rotation.y, global_rotation.y + dot_of_them,.5)
+
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
 	&& current_cam_buffer:
@@ -113,5 +117,9 @@ func _toggle_targeting(new_toggle):
 	targeting = new_toggle
 	print("Targeting is : " + str(targeting))
 	if optional_targeting_system:
-		optional_targeting_system._get_closest()
+		if targeting:
+			optional_targeting_system._get_closest()
+		else:
+			optional_targeting_system._clear_lists()
+			look_target = null
 
