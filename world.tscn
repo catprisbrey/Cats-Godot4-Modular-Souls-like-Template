@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player.tscn" id="1_n8m1a"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_njely"]
-[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting_system_v3.tscn" id="3_5ga4g"]
+[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting_system.tscn" id="3_5ga4g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
