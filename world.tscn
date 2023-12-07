@@ -1,8 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=19 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player.tscn" id="1_n8m1a"]
-[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_wve53"]
-[ext_resource type="PackedScene" uid="uid://de0tm4vkub3q1" path="res://targeting_system.tscn" id="3_8x33c"]
+[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_njely"]
+[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting_system.tscn" id="3_5ga4g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -41,6 +41,14 @@ data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0,
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2ney"]
 
+[sub_resource type="PrismMesh" id="PrismMesh_pf3ai"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_my86n"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_e8mbl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbidk"]
+
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -59,19 +67,49 @@ mesh = SubResource("PlaneMesh_ng31s")
 shape = SubResource("ConcavePolygonShape3D_7h28q")
 
 [node name="Player" parent="." instance=ExtResource("1_n8m1a")]
+collision_layer = 2
 
-[node name="FollowCam" parent="." instance=ExtResource("2_wve53")]
+[node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
+follow_target = NodePath("../Player")
+optional_targeting_system = NodePath("TargetingSystem")
 
-[node name="TargetingSystem" parent="FollowCam" instance=ExtResource("3_8x33c")]
+[node name="TargetingSystem" parent="FollowCam" instance=ExtResource("3_5ga4g")]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Targets"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.2304)
+[node name="Baddy" type="CharacterBody3D" parent="." groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57432, 0, 9.66363)
+collision_layer = 4
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" groups=["Targets"]]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy" groups=["Targets"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
 mesh = SubResource("PrismMesh_5772f")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_u2ney")
+
+[node name="Baddy2" type="CharacterBody3D" parent="." groups=["Targets"]]
+transform = Transform3D(0.696652, 0, 0.717409, 0, 1, 0, -0.717409, 0, 0.696652, -0.333106, 0, 11.8602)
+collision_layer = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy2" groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
+mesh = SubResource("PrismMesh_pf3ai")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_my86n")
+
+[node name="Baddy3" type="CharacterBody3D" parent="." groups=["Targets"]]
+transform = Transform3D(0.795558, 0, -0.605877, 0, 1, 0, 0.605877, 0, 0.795558, -5.35772, 0, 9.52317)
+collision_layer = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy3" groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
+mesh = SubResource("PrismMesh_e8mbl")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_xbidk")
