@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5nk1tsswudcm"]
+
+[ext_resource type="Script" path="res://targeting_system_v3.gd" id="1_uh1f3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ini2b"]
+size = Vector3(4, 8, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lwxqk"]
+size = Vector3(8, 8, 1)
+
+[node name="TargetingSystem" type="Node3D"]
+script = ExtResource("1_uh1f3")
+
+[node name="LeftEye" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftEye"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+shape = SubResource("BoxShape3D_ini2b")
+
+[node name="RightEye" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightEye"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+shape = SubResource("BoxShape3D_ini2b")
+
+[node name="ClosestCast" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_lwxqk")
+target_position = Vector3(0, 0, -10)

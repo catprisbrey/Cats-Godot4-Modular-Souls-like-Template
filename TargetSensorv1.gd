@@ -1,5 +1,5 @@
 extends Node3D
-class_name TargetingSystem
+class_name TargetingSystem_v1
 
 @onready var center_eye = $CenterEye
 @onready var left_eye = $LeftEye
@@ -22,18 +22,9 @@ signal targeted
 		left_eye.set_collision_mask_value(new_layers)
 		right_eye.set_collision_mask_value(new_layers)
 
-var targeting = false : 
-	set(toggle_targeting):
-		targeting = toggle_targeting
-		if toggle_targeting == true:
-			# when first enabling targetting, emit the closest target node
-			_update_targets()
-			targeted.emit(FinalClosest)
+var targeting = false
 
 func _input(_event:InputEvent):
-	if _event.is_action_pressed("ui_text_backspace"):
-		targeting = !targeting
-		
 	if targeting == true \
 	&& _event is InputEventMouseMotion \
 	or _event is InputEventJoypadMotion:
@@ -54,7 +45,6 @@ func findClosestBody(area: Area3D): # Loops through bodies in an area, maths out
 
 	for body in overlapping_bodies:
 		if body.is_in_group(target_group_name): # how far away are each body?
-			print(body)
 			var body_global_position = body.global_position
 			var distance_to_parent = body_global_position.distance_to(global_position)
 
@@ -95,20 +85,17 @@ func ChangeTarget(new_direction,_delay):
 	# looks for targets from the left eye
 	if new_direction == -1 && LeftClosest:
 		targeted.emit(LeftClosest)
-		print(LeftClosest)
 	# looks for closet target from the right eye
 	elif new_direction == 1 && RightClosest:
 		targeted.emit(RightClosest)
-		print(RightClosest)
 	else:
 		targeted.emit(CenterClosest)
-		print(CenterClosest)
-		if LeftClosest == null \
-		&& RightClosest == null \
-		&& CenterClosest == null: # if all baddies are dead or not in view, disable targeting mode
-			await get_tree().create_timer(.3).timeout
-			targeting = false
-			targeted.emit(null)
+	if LeftClosest == null \
+	&& RightClosest == null \
+	&& CenterClosest == null: # if all baddies are dead or not in view, disable targeting mode
+		await get_tree().create_timer(.3).timeout
+		targeting = false
+		targeted.emit(null)
 	await get_tree().create_timer(_delay).timeout
 	# This final await controls how soon you can switch between targets after locking on.
 	# this helps avoid cycling through all the targets in a milisecond

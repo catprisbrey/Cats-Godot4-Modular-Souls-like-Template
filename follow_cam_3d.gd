@@ -1,3 +1,4 @@
+
 extends Node3D
 class_name FollowCam
 
@@ -9,17 +10,16 @@ var targeting = false
 @export var follow_target : Node3D
 ## if no target is set, this node will attempt to find a CharacterBody3D to follow
 @onready var look_target = follow_target
-@onready var targeting_system
+@export var optional_targeting_system : TargetingSystem
 
 var current_cam_buffer = true
-	
+
 func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_find_a_player()
 	_find_targeting_system()
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	_setup_spring_arm()
-	camera_3d.current = true
-	
+	_setup_cam_and_arm()
+
 func _input(event):
 	mouse_control(event)
 	
@@ -54,12 +54,42 @@ func joystick_control(): # For controlling freecam rotation on gamepad
 
 ## This allows you to ignore the spring arm entirely, 
 ## only worry about placing the camera's z and y position.
-func _setup_spring_arm():
-	var node_to_cam_dist = global_position.distance_to(camera_3d.global_position)
-	spring_arm_3d.set_length(node_to_cam_dist)
-	spring_arm_3d.global_position.y = camera_3d.global_position.y
-	camera_3d.transform = Transform3D.IDENTITY
+func _setup_cam_and_arm():
+	if camera_3d == null:
+		printerr("WARNING: FollowCam needs a Camera3D set")
+	else:
+		camera_3d.current = true
+		
+	if spring_arm_3d == null:
+		printerr("WARNING: FollowCam needs a SpringArm3D set")
+	else:
+		var node_to_cam_dist = global_position.distance_to(camera_3d.global_position)
+		spring_arm_3d.set_length(node_to_cam_dist)
+		spring_arm_3d.global_position.y = camera_3d.global_position.y
+		camera_3d.transform = Transform3D.IDENTITY
 
+func _find_a_player():
+	if follow_target == null:
+		var the_kids = get_tree().get_root().get_child(0).get_children()
+		for each in the_kids:
+			print(each)
+			if each is CharacterBody3D:
+				if each.has_signal("strafe_toggled"):
+					follow_target = each
+					look_target = each
+					follow_target.strafe_toggled.connect(_toggle_targeting)
+	elif follow_target.has_signal("strafe_toggled"):
+		follow_target.strafe_toggled.connect(_toggle_targeting)
+				
+func _find_targeting_system():
+	if optional_targeting_system:
+		optional_targeting_system.target_found.connect(_update_target)
+
+func _update_target(new_target):
+	print("new look target = " + str(look_target))
+	look_target = new_target
+
+			
 func _follow_target(new_target):
 	if new_target:
 		var target_position = new_target.global_position
@@ -67,14 +97,8 @@ func _follow_target(new_target):
 		global_position = lerp_to_position
 		
 func _lookat_target():
-	if look_target == null:
-		look_target = follow_target
-	
-	var look_pos = look_target.global_position + Vector3(0,.5,0)
-	#if look_pos.dot(global_position) > .1:
 	if targeting:
-		look_at(look_pos)
-	
+		look_at(look_target.global_position + Vector3(0,.5,0),Vector3.UP)
 	
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
@@ -85,35 +109,9 @@ func _detect_camera_change():
 		global_rotation.y = follow_target.global_rotation.y + PI
 		current_cam_buffer = true
 	
-func _find_a_player():
-	if follow_target == null:
-		var the_kids = get_tree().get_root().get_child(0).get_children()
-		for each in the_kids:
-			print(each)
-			if each is CharacterBody3D:
-				follow_target = each
-				look_target = each
-				if each.has_signal("strafe_toggled"):
-					each.strafe_toggled.connect(_toggle_targeting)
-				break
-				
-func _find_targeting_system():
-	var the_kids = get_children()
-	for each in the_kids:
-		if each is TargetingSystem:
-			targeting_system = each
-			targeting_system.targeted.connect(_update_look_at_target)
-			
-			
-func _update_look_at_target(new_target):
-	if targeting:
-		if new_target != null:
-			look_target = new_target
-		else:
-			look_target = follow_target
-			targeting = false
-			
 func _toggle_targeting(new_toggle):
 	targeting = new_toggle
-	if targeting && targeting_system:
-		look_target = targeting_system._update_targets()
+	print("Targeting is : " + str(targeting))
+	if optional_targeting_system:
+		optional_targeting_system._get_closest()
+
