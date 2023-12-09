@@ -9,7 +9,7 @@ signal interact_lost
 func _input(_event : InputEvent):
 	if _event.is_action_pressed("interact"):
 		if interactable:
-			interactable.activate()
+			interactable.activate(self)
 
 func _ready():
 	body_entered.connect(_interact_detected)
@@ -17,11 +17,13 @@ func _ready():
 
 func _interact_detected(_interact_body):
 	if _interact_body.is_in_group("Interactable"):
+		print("interactable sensed: " + str(_interact_body))
 		interactable = _interact_body
 		interact_found.emit(_interact_body)
 	
 func _interact_lost(_interact_body):
 	if _interact_body.is_in_group("Interactable"):
+		print("interactable sensed: " + str(_interact_body))
 		if interactable == _interact_body:
 			interactable = null
 			interact_lost.emit(_interact_body)
