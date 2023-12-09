@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=21 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player.tscn" id="1_n8m1a"]
+[ext_resource type="Script" path="res://interact_sensor.gd" id="2_hl560"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_njely"]
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting_system.tscn" id="3_5ga4g"]
 
@@ -37,6 +38,9 @@ size = Vector2(50, 50)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7h28q"]
 data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_it48o"]
+size = Vector3(1, 2, 1)
+
 [sub_resource type="PrismMesh" id="PrismMesh_5772f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2ney"]
@@ -68,6 +72,14 @@ shape = SubResource("ConcavePolygonShape3D_7h28q")
 
 [node name="Player" parent="." instance=ExtResource("1_n8m1a")]
 collision_layer = 2
+
+[node name="InteractSensor" type="Area3D" parent="Player"]
+collision_mask = 8
+script = ExtResource("2_hl560")
+
+[node name="SensorShape" type="CollisionShape3D" parent="Player/InteractSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
+shape = SubResource("BoxShape3D_it48o")
 
 [node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
 follow_target = NodePath("../Player")
