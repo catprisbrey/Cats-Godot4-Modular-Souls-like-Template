@@ -50,7 +50,7 @@ func joystick_control(): # For controlling freecam rotation on gamepad
 	# Calculate the target rotation
 		var joy_input = Input.get_vector("look_left","look_right","look_up","look_down")
 		var temporary_rotation = rotation.x + joy_input.y / 400 * joystick_sensitivity
-		rotation.y -= joy_input.x / 400 * joystick_sensitivity
+		rotation.y -= joy_input.x / 300 * joystick_sensitivity
 		#rotation clamp
 		temporary_rotation = clamp(temporary_rotation, -.8, .6)
 		rotation.x = temporary_rotation
