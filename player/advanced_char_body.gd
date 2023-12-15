@@ -99,7 +99,9 @@ func rotate_player():
 	if strafing == true && dodging == false: # Strafing looks at enemy
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
-	
+		#print(transform.basis * Vector3(input_dir.x,0,input_dir.y))
+
+		print(rotation.angle_to(position + Vector3(input_dir.x,0,input_dir.y)))
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and dodging == false) or (strafing == true && dodging == true): # .... else:
 		
@@ -151,15 +153,3 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 		dodging = false
 		speed = default_speed
 		direction = Vector3.ZERO
-
-### used with the targeting cam and target sensor to 
-#func _find_targeting_system():
-	#if optional_follow_cam == FollowCam :
-		#optional_follow_cam.look_target_updated.connect(_update_target)
-		#
-#func _update_target(new_target):
-	#print("target_updated")
-	#if new_target != null:
-		#orientation_target = new_target
-	#else: 
-		#orientation_target = current_camera
