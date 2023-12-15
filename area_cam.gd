@@ -1,6 +1,6 @@
 extends Area3D
 
-@onready var camera_3d : Camera3D = $Camera3D
+@onready var camera_3d : Camera3D = $Pivot/Camera3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

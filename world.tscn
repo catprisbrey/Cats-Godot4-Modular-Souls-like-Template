@@ -73,15 +73,15 @@ mesh = SubResource("PlaneMesh_ng31s")
 shape = SubResource("ConcavePolygonShape3D_7h28q")
 
 [node name="Player" parent="." instance=ExtResource("1_n8m1a")]
-collision_layer = 2
 
 [node name="InteractSensor" parent="Player" instance=ExtResource("2_2odah")]
 
+[node name="TargetingSystem" parent="Player" instance=ExtResource("3_5ga4g")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -2.38419e-07, 0)
+
 [node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
 follow_target = NodePath("../Player")
-optional_targeting_system = NodePath("TargetingSystem")
-
-[node name="TargetingSystem" parent="FollowCam" instance=ExtResource("3_5ga4g")]
+optional_targeting_system = NodePath("../Player/TargetingSystem")
 
 [node name="Baddy" type="CharacterBody3D" parent="." groups=["Targets"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57432, 0, 9.66363)
@@ -130,9 +130,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0231323, 0, 8.71509)
 collision_mask = 2
 script = ExtResource("6_46gsf")
 
-[node name="Camera3D" type="Camera3D" parent="AreaCam"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 3, 7.5)
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCam"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("BoxShape3D_64agr")
+
+[node name="Pivot" type="Marker3D" parent="AreaCam"]
+
+[node name="Camera3D" type="Camera3D" parent="AreaCam/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 3, 7.5)

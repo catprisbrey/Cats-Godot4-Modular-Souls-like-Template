@@ -6,8 +6,10 @@ extends CharacterBody3D
 
 
 @onready var current_camera = get_viewport().get_camera_3d()
-@export var optional_follow_cam : FollowCam = null
-var orientation_target
+# This target aids strafe rotation when alternating between cameras, but the 
+# default/1st camera is a follow cam.
+@onready var orientation_target = current_camera
+
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var jump_velocity = 4.5
@@ -95,7 +97,7 @@ func rotate_player():
 	
 	# StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
 	if strafing == true && dodging == false: # Strafing looks at enemy
-		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, current_camera.global_rotation.y + PI), 0.4)
+		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
 	
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
@@ -150,13 +152,14 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 		speed = default_speed
 		direction = Vector3.ZERO
 
-## used with the targeting cam and target sensor to 
-func _find_targeting_system():
-	if optional_follow_cam == FollowCam :
-		optional_follow_cam.look_target_updated.connect(_update_target)
-		
-func _update_target(new_target):
-	if new_target:
-		orientation_target = new_target
-	else: 
-		orientation_target = current_camera
+### used with the targeting cam and target sensor to 
+#func _find_targeting_system():
+	#if optional_follow_cam == FollowCam :
+		#optional_follow_cam.look_target_updated.connect(_update_target)
+		#
+#func _update_target(new_target):
+	#print("target_updated")
+	#if new_target != null:
+		#orientation_target = new_target
+	#else: 
+		#orientation_target = current_camera

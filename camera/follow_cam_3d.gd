@@ -27,11 +27,12 @@ func _input(event):
 	
 	
 func _physics_process(_delta):
-	#joystick_control()
+	joystick_control()
 	_follow_target(follow_target)
 	_lookat_target()
 	
 	_detect_camera_change()
+	
 
 
 ## Normal free camera control

@@ -6,6 +6,7 @@ class_name TargetingSystem
 ## Each eye keeps an updating array lists of all targets one either side.
 ## Motioning right or left signals nodes from either eye list.
 ## Both groups and mask layers determine if targets will be found.
+## This works best when added as a child to the player, and not the camera.
 
 @onready var left_eye : Area3D= $LeftEye
 @onready var right_eye : Area3D = $RightEye
