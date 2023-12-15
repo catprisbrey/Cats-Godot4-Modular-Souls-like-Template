@@ -11,8 +11,10 @@ var targeting = false
 ## if no target is set, this node will attempt to find a CharacterBody3D to follow
 var look_target
 @export var optional_targeting_system : TargetingSystem
+signal look_target_updated
 
 var current_cam_buffer = true
+
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -86,6 +88,7 @@ func _find_targeting_system():
 func _update_target(new_target):
 	if new_target:
 		look_target = new_target
+		look_target_updated.emit(look_target)
 
 func _follow_target(new_target):
 	if new_target:
@@ -97,6 +100,7 @@ func _lookat_target():
 	if targeting:
 		if look_target:
 			look_at(look_target.global_position + Vector3(0,.5,0),Vector3.UP)
+			
 			#var dot_of_them = global_position.dot(look_target.global_position)
 			#rotate_toward(global_rotation.y, global_rotation.y + dot_of_them,.5)
 
@@ -117,4 +121,5 @@ func _toggle_targeting(new_toggle):
 		else:
 			optional_targeting_system._clear_lists()
 			look_target = null
+			look_target_updated.emit(look_target)
 

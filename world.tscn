@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=23 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player/player_character.tscn" id="1_n8m1a"]
 [ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interactable sensor/interact_sensor.tscn" id="2_2odah"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://camera/follow_cam.tscn" id="2_njely"]
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting system/targeting_system.tscn" id="3_5ga4g"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
+[ext_resource type="Script" path="res://area_cam.gd" id="6_46gsf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -50,6 +51,9 @@ data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0,
 [sub_resource type="PrismMesh" id="PrismMesh_e8mbl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbidk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_64agr"]
+size = Vector3(15, 3, 15)
 
 [node name="World" type="Node3D"]
 
@@ -120,3 +124,15 @@ shape = SubResource("CapsuleShape3D_xbidk")
 
 [node name="DoorObject" parent="." instance=ExtResource("5_w3y0b")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -5.17874)
+
+[node name="AreaCam" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0231323, 0, 8.71509)
+collision_mask = 2
+script = ExtResource("6_46gsf")
+
+[node name="Camera3D" type="Camera3D" parent="AreaCam"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 3, 7.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaCam"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_64agr")

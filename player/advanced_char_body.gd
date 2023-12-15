@@ -1,6 +1,13 @@
 extends CharacterBody3D
 
+## A semi-smart character controller. Will detect the current camera in use
+## and update control orientation to match it. Strafing will lock rotation to
+## to face camera perspective, except for dodging actions.
+
+
 @onready var current_camera = get_viewport().get_camera_3d()
+@export var optional_follow_cam : FollowCam = null
+var orientation_target
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var jump_velocity = 4.5
@@ -56,7 +63,6 @@ func _physics_process(_delta):
 		dodge_player()
 
 	else:
-
 		move_player()
 
 
@@ -143,3 +149,14 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 		dodging = false
 		speed = default_speed
 		direction = Vector3.ZERO
+
+## used with the targeting cam and target sensor to 
+func _find_targeting_system():
+	if optional_follow_cam == FollowCam :
+		optional_follow_cam.look_target_updated.connect(_update_target)
+		
+func _update_target(new_target):
+	if new_target:
+		orientation_target = new_target
+	else: 
+		orientation_target = current_camera
