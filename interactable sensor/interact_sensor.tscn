@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cahmxal2tdyit"]
+
+[ext_resource type="Script" path="res://interactable sensor/interact_sensor.gd" id="1_os5cy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_it48o"]
+size = Vector3(1, 2, 1)
+
+[node name="InteractSensor" type="Area3D"]
+collision_mask = 8
+script = ExtResource("1_os5cy")
+
+[node name="SensorShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
+shape = SubResource("BoxShape3D_it48o")

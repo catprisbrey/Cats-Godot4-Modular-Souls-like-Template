@@ -1,10 +1,10 @@
 [gd_scene load_steps=21 format=3 uid="uid://ccuwa5g83o4ev"]
 
-[ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player.tscn" id="1_n8m1a"]
-[ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interact_sensor.tscn" id="2_2odah"]
-[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://follow_cam.tscn" id="2_njely"]
-[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting_system.tscn" id="3_5ga4g"]
-[ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://door_object.tscn" id="5_w3y0b"]
+[ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player/player_character.tscn" id="1_n8m1a"]
+[ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interactable sensor/interact_sensor.tscn" id="2_2odah"]
+[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://camera/follow_cam.tscn" id="2_njely"]
+[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting system/targeting_system.tscn" id="3_5ga4g"]
+[ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
