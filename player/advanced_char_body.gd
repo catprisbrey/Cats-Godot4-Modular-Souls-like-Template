@@ -100,8 +100,10 @@ func rotate_player():
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
 		#print(transform.basis * Vector3(input_dir.x,0,input_dir.y))
-
-		print(rotation.angle_to(position + Vector3(input_dir.x,0,input_dir.y)))
+				# Assuming forwardVector and newMovementDirection are your vectors
+		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
+		var strafe_cross_product = forward_vector.cross(calc_direction().normalized())
+		print(strafe_cross_product)
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and dodging == false) or (strafing == true && dodging == true): # .... else:
 		

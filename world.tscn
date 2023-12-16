@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://ccuwa5g83o4ev"]
 
-[ext_resource type="PackedScene" uid="uid://buki8ivel4n8h" path="res://player/basic_character.tscn" id="1_n8m1a"]
+[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interactable sensor/interact_sensor.tscn" id="2_2odah"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://camera/follow_cam.tscn" id="2_njely"]
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting system/targeting_system.tscn" id="3_5ga4g"]
@@ -72,7 +72,7 @@ mesh = SubResource("PlaneMesh_ng31s")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_7h28q")
 
-[node name="Player" parent="." instance=ExtResource("1_n8m1a")]
+[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
 
 [node name="InteractSensor" parent="Player" instance=ExtResource("2_2odah")]
 
