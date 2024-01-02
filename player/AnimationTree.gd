@@ -6,7 +6,7 @@ extends AnimationTree
 var weapon_type = "LIGHT"
 
 func _input(event):
-	if event.is_action_pressed("ui_select"):
+	if event.is_action_pressed("interact"):
 		weaponchange()
 
 func weaponchange():
