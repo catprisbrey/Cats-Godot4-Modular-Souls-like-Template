@@ -5,6 +5,9 @@ extends AnimationTree
 
 var weapon_type = "LIGHT"
 
+func _ready():
+	player_node.dodge_started.connect(set_dodge)
+	
 func _input(event):
 	if event.is_action_pressed("interact"):
 		weaponchange()
@@ -17,11 +20,17 @@ func weaponchange():
 			weapon_type = "LIGHT"
 	print(weapon_type)
 
+func set_dodge(dodge_dir):
+	print('dodging')
+	if dodge_dir == "FORWARD":
+		state_machine.travel("DodgeRoll")
+	elif dodge_dir == "BACK":
+		pass
+	else:
+		pass
+		
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	#self["parameters/playback"].travel("Light_tree")
-	#state_machine.travel("MoveStrafe")
-	pass
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if player_node.strafing:
@@ -37,3 +46,4 @@ func set_strafe():
 func set_free_move():
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
 	set("parameters/" + weapon_type + "_tree/MoveStrafe/blend_position",new_blend)
+

@@ -142,11 +142,11 @@ func dodge_player(_new_direction : Vector3 = Vector3.ZERO):
 			direction = (global_position - to_global(_new_direction)).normalized()
 			dodge_duration = .1
 		elif input_dir: # Dodge toward direction of input_dir 
-			dodge_started.emit()
+			dodge_started.emit("FORWARD")
 			direction = calc_direction()
-			dodge_duration = .25
+			dodge_duration = .5
 		else: # Dodge toward the 'BACK' of your global position
-			dodge_started.emit()
+			dodge_started.emit("BACK")
 			direction = (global_position - to_global(Vector3.BACK)).normalized()
 			dodge_duration = .15
 		velocity = direction * dodge_speed
