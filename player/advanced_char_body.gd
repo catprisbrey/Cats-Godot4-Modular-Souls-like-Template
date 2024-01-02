@@ -104,7 +104,7 @@ func rotate_player():
 				# Assuming forwardVector and newMovementDirection are your vectors
 		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized())
-		print(strafe_cross_product.y)
+		#print(strafe_cross_product.y)
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and dodging == false) or (strafing == true && dodging == true): # .... else:
 		
