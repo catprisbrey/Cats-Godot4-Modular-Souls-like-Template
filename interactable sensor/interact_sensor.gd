@@ -6,6 +6,8 @@ class_name InteractSensor
 ## interactable body it currently sees. This allows all other logic to happen
 ## on the interactable object node's script instead of here.
 
+@export var player_node : CharacterBody3D
+
 signal interact_found
 signal interact_lost
 
@@ -14,7 +16,7 @@ signal interact_lost
 func _input(_event : InputEvent):
 	if _event.is_action_pressed("interact"):
 		if interactable:
-			interactable.activate(self)
+			interactable.activate(player_node)
 
 func _ready():
 	body_entered.connect(_interact_detected)

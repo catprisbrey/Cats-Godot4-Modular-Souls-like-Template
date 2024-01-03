@@ -30,6 +30,9 @@ signal strafe_toggled
 @onready var speed = default_speed
 var direction = Vector3.ZERO
 
+var climbing = false
+
+
 @onready var current_state
 enum state {FREE,DODGE,LADDER}
 
@@ -157,6 +160,8 @@ func dodge_movement():
 	velocity = direction * dodge_speed
 	move_and_slide()
 
+func start_ladder():
+	print("start ladder!")
 	
 
 
