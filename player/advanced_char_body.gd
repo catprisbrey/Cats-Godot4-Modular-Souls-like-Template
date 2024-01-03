@@ -31,6 +31,7 @@ signal strafe_toggled
 var direction = Vector3.ZERO
 
 var climbing = false
+var climb_speed = 1.0
 signal ladder_started
 
 @onready var current_state
@@ -65,14 +66,16 @@ func _input(_event:InputEvent):
 
 func _physics_process(_delta):
 	#apply_gravity(_delta)
-	rotate_player()
-
-	if dodging:
-		dodge_movement()
-	elif climbing:
-		climb_movement()
-	else:
-		free_movement()
+	match current_state:
+		state.FREE:
+			apply_gravity(_delta)
+			rotate_player()
+			free_movement()
+		state.DODGE:
+			apply_gravity(_delta)
+			dodge_movement()
+		state.LADDER:
+			ladder_movement()
 
 
 func apply_gravity(_delta):
@@ -98,7 +101,7 @@ func free_movement():
 		velocity.z = move_toward(velocity.z, 0, .5)
 	move_and_slide()
 	
-func climb_movement():
+func ladder_movement():
 	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
 	move_and_slide()
@@ -143,6 +146,7 @@ func dash(_new_direction : Vector3 = Vector3.ZERO):
 	if is_on_floor() \
 	&& dodging == false:
 		dodging = true
+		current_state = state.DODGE
 		var dodge_duration : float
 		speed = dodge_speed
 		if _new_direction != Vector3.ZERO: # If a direction is passed to the dodge command
@@ -160,6 +164,7 @@ func dash(_new_direction : Vector3 = Vector3.ZERO):
 		await get_tree().create_timer(dodge_duration).timeout
 		dodge_ended.emit()
 		dodging = false
+		current_state = state.FREE
 		speed = default_speed
 		direction = Vector3.ZERO
 		
@@ -169,9 +174,13 @@ func dodge_movement():
 
 func ladder_mount():
 	if climbing == true:
+		current_state = state.FREE
 		climbing = false
+		speed = default_speed
 	else:
+		current_state = state.LADDER
 		climbing = true
+		speed = climb_speed
 		ladder_started.emit()
 	
 
