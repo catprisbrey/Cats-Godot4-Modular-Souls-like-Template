@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=24 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interactable sensor/interact_sensor.tscn" id="2_2odah"]
@@ -40,6 +40,9 @@ size = Vector2(50, 50)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7h28q"]
 data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_von5e"]
+size = Vector3(0.543213, 0.881226, 0.453735)
+
 [sub_resource type="PrismMesh" id="PrismMesh_5772f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2ney"]
@@ -78,6 +81,17 @@ shape = SubResource("ConcavePolygonShape3D_7h28q")
 
 [node name="TargetingSystem" parent="Player" instance=ExtResource("3_5ga4g")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -2.38419e-07, 0)
+
+[node name="LadderSensor" type="Area3D" parent="Player"]
+collision_mask = 16
+
+[node name="AreaCheck" type="CollisionShape3D" parent="Player/LadderSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00134277, 0.356875, 0.193673)
+shape = SubResource("BoxShape3D_von5e")
+
+[node name="Raycheck" type="RayCast3D" parent="Player/LadderSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3384, 0)
+target_position = Vector3(0, 0, 1)
 
 [node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
 follow_target = NodePath("../Player")
