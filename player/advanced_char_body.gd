@@ -31,7 +31,7 @@ signal strafe_toggled
 var direction = Vector3.ZERO
 
 var climbing = false
-
+signal ladder_started
 
 @onready var current_state
 enum state {FREE,DODGE,LADDER}
@@ -64,11 +64,13 @@ func _input(_event:InputEvent):
 			current_camera = get_viewport().get_camera_3d()
 
 func _physics_process(_delta):
-	apply_gravity(_delta)
+	#apply_gravity(_delta)
 	rotate_player()
 
 	if dodging:
 		dodge_movement()
+	elif climbing:
+		climb_movement()
 	else:
 		free_movement()
 
@@ -94,6 +96,11 @@ func free_movement():
 	else: # Smoothly come to a stop
 		velocity.x = move_toward(velocity.x, 0, .5)
 		velocity.z = move_toward(velocity.z, 0, .5)
+	move_and_slide()
+	
+func climb_movement():
+	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	velocity = (Vector3.DOWN * input_dir.y) * speed
 	move_and_slide()
 	
 func rotate_player():
@@ -160,8 +167,12 @@ func dodge_movement():
 	velocity = direction * dodge_speed
 	move_and_slide()
 
-func start_ladder():
-	print("start ladder!")
+func ladder_mount():
+	if climbing == true:
+		climbing = false
+	else:
+		climbing = true
+		ladder_started.emit()
 	
 
 
