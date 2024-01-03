@@ -36,10 +36,10 @@ func start_ladder():
 func set_ladder():
 	set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",player_node.input_dir.y)
 
-func _process(delta):
+func _process(_delta):
 	if player_node.strafing:
 		set_strafe()
-	elif player_node.climbing:
+	elif player_node.current_state == player_node.state.LADDER:
 		set_ladder()
 	else:
 		set_free_move()

@@ -37,11 +37,11 @@ signal ladder_started
 
 @onready var current_state
 enum state {FREE,DODGE,LADDER}
-
+signal changed_state
 
 func _ready():
 	current_state = state.FREE
-	
+
 
 func _input(_event:InputEvent):
 	if current_state == state.FREE:
@@ -178,11 +178,14 @@ func ladder_mount():
 		current_state = state.FREE
 		climbing = false
 		speed = default_speed
-	else:
+		ladder_started.emit()
+	elif climbing == false:
 		current_state = state.LADDER
 		climbing = true
 		speed = climb_speed
 		ladder_started.emit()
 	
-
+func change_state(new_state):
+	current_state = new_state
+	changed_state.emit(current_state)
 

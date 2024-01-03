@@ -19,30 +19,26 @@ func _ready():
 
 func activate(_requestor):
 	if _requestor.climbing == false:
-		_requestor.ladder_position = player_location
 		var tween = create_tween()
 		tween.tween_property(_requestor,"global_transform", mount_transform,.3)
 		_requestor.ladder_mount()
-		print(player_location)
 	elif _requestor.climbing == true:
-		_requestor.ladder_position = player_location
 		var tween = create_tween()
 		tween.tween_property(_requestor,"global_position", dismount_position,.3)
 		_requestor.ladder_mount()
-		print(player_location)
+	
 	
 func update_bottom(_body):
-	player_location = "BOTTOM"
+	_body.ladder_position = "BOTTOM"
 	mount_transform = bottom_mount.global_transform
 	dismount_position = bottom_area.global_position
 	
 func update_top(_body):
-	player_location = "TOP"
+	_body.ladder_position = "TOP"
 	mount_transform = top_mount.global_transform
 	dismount_position = top_area.global_position
 
 	
 func exit_area(_body):
-	player_location = null
 	mount_transform = null
 	dismount_position = null
