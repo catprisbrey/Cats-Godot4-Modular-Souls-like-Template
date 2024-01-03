@@ -31,7 +31,7 @@ func set_dodge(dodge_dir):
 		#pass
 
 func start_ladder():
-	base_state_machine.start("Start")
+	base_state_machine.start("LADDER_tree")
 
 func set_ladder():
 	set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",player_node.input_dir.y)

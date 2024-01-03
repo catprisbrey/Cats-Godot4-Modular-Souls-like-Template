@@ -32,6 +32,7 @@ var direction = Vector3.ZERO
 
 var climbing = false
 var climb_speed = 1.0
+var ladder_position
 signal ladder_started
 
 @onready var current_state

@@ -56,6 +56,8 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.0
 
 [node name="BottomArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010211, 0.43907)
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BottomArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.214429, 0)
@@ -63,6 +65,7 @@ shape = SubResource("BoxShape3D_tegc6")
 
 [node name="TopArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28725, -0.275695)
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TopArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275695, 0.285906)
