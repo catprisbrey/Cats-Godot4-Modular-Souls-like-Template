@@ -35,13 +35,10 @@ var climb_speed = 1.0
 var ladder_position
 signal ladder_started
 
-@onready var current_state
+
 enum state {FREE,DODGE,LADDER}
+@onready var current_state = state.FREE : set = change_state
 signal changed_state
-
-func _ready():
-	current_state = state.FREE
-
 
 func _input(_event:InputEvent):
 	if current_state == state.FREE:
@@ -66,21 +63,21 @@ func _input(_event:InputEvent):
 			current_camera = get_viewport().get_camera_3d()
 
 func _physics_process(_delta):
-	#apply_gravity(_delta)
+	apply_gravity(_delta)
 	match current_state:
 		state.FREE:
-			apply_gravity(_delta)
 			rotate_player()
 			free_movement()
+			
 		state.DODGE:
-			apply_gravity(_delta)
 			dodge_movement()
+			
 		state.LADDER:
 			ladder_movement()
 
-
 func apply_gravity(_delta):
-	if !is_on_floor():
+	if !is_on_floor() && \
+	current_state != state.LADDER:
 		velocity.y -= gravity * _delta
 		
 func free_movement():
@@ -173,19 +170,27 @@ func dodge_movement():
 	velocity = direction * dodge_speed
 	move_and_slide()
 
-func ladder_mount():
-	if climbing == true:
-		current_state = state.FREE
-		climbing = false
-		speed = default_speed
-		ladder_started.emit()
-	elif climbing == false:
-		current_state = state.LADDER
-		climbing = true
-		speed = climb_speed
-		ladder_started.emit()
+#func ladder_mount():
+	#if climbing == true:
+		#current_state = state.FREE
+		#climbing = false
+		#speed = default_speed
+		#ladder_started.emit()
+	#elif climbing == false:
+		#current_state = state.LADDER
+		#climbing = true
+		#speed = climb_speed
+		#ladder_started.emit()
 	
 func change_state(new_state):
 	current_state = new_state
+	print("current state is " + str(current_state))
 	changed_state.emit(current_state)
+	match current_state:
+		state.FREE:
+			speed = default_speed
+		state.LADDER:
+			speed = climb_speed
+		state.DODGE:
+			speed = dodge_speed
 

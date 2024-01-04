@@ -13,19 +13,19 @@ var dismount_position
 
 func _ready():
 	bottom_area.connect("body_entered",update_bottom)
-	bottom_area.connect("body_exited",exit_area)
+	#bottom_area.connect("body_exited",exit_area)
 	top_area.connect("body_entered",update_top)
-	top_area.connect("body_exited",exit_area)
+	#top_area.connect("body_exited",exit_area)
 
-func activate(_requestor):
-	if _requestor.climbing == false:
+func activate(_player_node):
+	if _player_node.current_state == _player_node.state.FREE:
 		var tween = create_tween()
-		tween.tween_property(_requestor,"global_transform", mount_transform,.3)
-		_requestor.ladder_mount()
-	elif _requestor.climbing == true:
+		tween.tween_property(_player_node,"global_transform", mount_transform,.3)
+		_player_node.current_state = _player_node.state.LADDER
+	elif _player_node.current_state == _player_node.state.LADDER:
 		var tween = create_tween()
-		tween.tween_property(_requestor,"global_position", dismount_position,.3)
-		_requestor.ladder_mount()
+		tween.tween_property(_player_node,"global_position", dismount_position,.3)
+		_player_node.change_state(_player_node.state.FREE)
 	
 	
 func update_bottom(_body):
@@ -38,7 +38,6 @@ func update_top(_body):
 	mount_transform = top_mount.global_transform
 	dismount_position = top_area.global_position
 
-	
-func exit_area(_body):
-	mount_transform = null
-	dismount_position = null
+#func exit_area(_body):
+	#mount_transform = null
+	#dismount_position = null
