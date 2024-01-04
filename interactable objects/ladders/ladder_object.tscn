@@ -1,12 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bla8exdph4na1"]
+[gd_scene load_steps=6 format=3 uid="uid://bla8exdph4na1"]
 
 [ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="1_br3ed"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwy3a"]
+albedo_color = Color(0.756863, 0.176471, 1, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_58n7i"]
+material = SubResource("StandardMaterial3D_fwy3a")
 size = Vector3(0.7, 0.05, 0.05)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l48tn"]
-size = Vector3(1, 2.35322, 0.1)
+size = Vector3(1, 5.12242, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tegc6"]
 size = Vector3(2, 0.569336, 1)
@@ -44,15 +48,43 @@ mesh = SubResource("BoxMesh_58n7i")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 mesh = SubResource("BoxMesh_58n7i")
 
+[node name="Rung8" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.68479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung9" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.08479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung10" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.48479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung11" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.88479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung12" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.28479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung13" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.68479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
+[node name="Rung14" type="MeshInstance3D" parent="LadderStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.98479, 0)
+mesh = SubResource("BoxMesh_58n7i")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LadderStaticBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.12661, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51121, 0)
 shape = SubResource("BoxShape3D_l48tn")
 
 [node name="BottomMount" type="Marker3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0662148, 0.4)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.400786, 0.4)
 
 [node name="TopMount" type="Marker3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.01011, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 4.63918, 0)
 
 [node name="BottomArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010211, 0.43907)
@@ -64,7 +96,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.214429, 0)
 shape = SubResource("BoxShape3D_tegc6")
 
 [node name="TopArea" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.28725, -0.275695)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.91632, -0.275695)
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TopArea"]

@@ -1,11 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnv210lnfdoan"]
+[gd_scene load_steps=12 format=3 uid="uid://cnv210lnfdoan"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/door_object.gd" id="1_6re5x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yoln"]
 size = Vector3(1.25, 2.25, 0.2)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sumh4"]
+albedo_color = Color(0, 0.490196, 0.678431, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_fchc1"]
+material = SubResource("StandardMaterial3D_sumh4")
 size = Vector3(1.25, 2.25, 0.2)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_dmkrk"]
