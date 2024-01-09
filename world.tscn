@@ -1,12 +1,12 @@
 [gd_scene load_steps=24 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
-[ext_resource type="PackedScene" uid="uid://cahmxal2tdyit" path="res://interactable sensor/interact_sensor.tscn" id="2_2odah"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://camera/follow_cam.tscn" id="2_njely"]
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting system/targeting_system.tscn" id="3_5ga4g"]
+[ext_resource type="PackedScene" uid="uid://c622p3bhgteim" path="res://interactable sensor/interact_sensors.tscn" id="3_jqdyv"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
 [ext_resource type="Script" path="res://area_cam.gd" id="6_46gsf"]
-[ext_resource type="PackedScene" uid="uid://bla8exdph4na1" path="res://interactable objects/ladders/ladder_object.tscn" id="8_dm763"]
+[ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -73,13 +73,13 @@ mesh = SubResource("PlaneMesh_ng31s")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_7h28q")
 
-[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
-
-[node name="InteractSensor" parent="Player" node_paths=PackedStringArray("player_node") instance=ExtResource("2_2odah")]
-player_node = NodePath("..")
+[node name="Player" parent="." node_paths=PackedStringArray("interact_sensor") instance=ExtResource("1_k2mnc")]
+interact_sensor = NodePath("InteractSensors")
 
 [node name="TargetingSystem" parent="Player" instance=ExtResource("3_5ga4g")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -2.38419e-07, 0)
+
+[node name="InteractSensors" parent="Player" instance=ExtResource("3_jqdyv")]
 
 [node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
 follow_target = NodePath("../Player")
@@ -141,22 +141,25 @@ shape = SubResource("BoxShape3D_64agr")
 [node name="Camera3D" type="Camera3D" parent="AreaCam/Pivot"]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 3, 7.5)
 
-[node name="LadderObject" parent="." instance=ExtResource("8_dm763")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.15504, 0, -5.46242)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
+[node name="Building" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5276)
 use_collision = true
 size = Vector3(10, 10, 10)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
+[node name="interior" type="CSGBox3D" parent="Building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11462)
 operation = 2
 use_collision = true
 size = Vector3(9, 9, 9)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D"]
+[node name="doorways" type="CSGBox3D" parent="Building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02226, 0.0776777)
 operation = 2
 use_collision = true
 size = Vector3(1, 2, 11)
+
+[node name="Ladderv2" parent="." instance=ExtResource("8_30vqq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.20462, 0, -5.12606)
+
+[node name="Ladderv3" parent="." instance=ExtResource("8_30vqq")]
+transform = Transform3D(-0.00816803, 0, 0.999967, 0, 1, 0, -0.999967, 0, -0.00816803, 5.06217, 0, -6.64977)

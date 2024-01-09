@@ -76,13 +76,14 @@ func _process(_delta):
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
 	# Forward and back are acording to input, since direction changes by fixed camera orientation
-	var new_dir = player_node.input_dir.y - player_node.input_dir.x
-	var new_blend = Vector2(player_node.strafe_cross_product.y,new_dir)
+	#var new_dir = player_node.input_dir.y - player_node.input_dir.x
+	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", new_blend)
 
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
+	#var new_blend = Vector2(0,abs(player_node.strafe_cross_product) + abs(player_node.move_dot_product))
 	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",new_blend)
 
 func request_oneshot(oneshot:String):

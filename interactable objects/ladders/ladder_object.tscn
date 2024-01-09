@@ -1,104 +1,90 @@
-[gd_scene load_steps=6 format=3 uid="uid://bla8exdph4na1"]
+[gd_scene load_steps=5 format=3 uid="uid://cda0r3gahfvhp"]
 
-[ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="1_br3ed"]
+[ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="1_4e1ny"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwy3a"]
 albedo_color = Color(0.756863, 0.176471, 1, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_58n7i"]
+[sub_resource type="BoxMesh" id="BoxMesh_t6jw6"]
 material = SubResource("StandardMaterial3D_fwy3a")
 size = Vector3(0.7, 0.05, 0.05)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_l48tn"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_gdpnd"]
 size = Vector3(1, 5.12242, 0.1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_tegc6"]
-size = Vector3(2, 0.569336, 1)
-
-[node name="LadderObject" type="Node3D"]
-
-[node name="LadderStaticBody" type="StaticBody3D" parent="." groups=["Interactable"]]
+[node name="Ladder" type="StaticBody3D" groups=["Interactable"]]
 collision_layer = 9
-script = ExtResource("1_br3ed")
+script = ExtResource("1_4e1ny")
 
-[node name="Rung1" type="MeshInstance3D" parent="LadderStaticBody"]
-mesh = SubResource("BoxMesh_58n7i")
+[node name="Rung1" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung2" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung3" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung4" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung5" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung5" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung6" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung6" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung7" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung7" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung8" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung8" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.68479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung9" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung9" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.08479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung10" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung10" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.48479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung11" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung11" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.88479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung12" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung12" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.28479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung13" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung13" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.68479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="Rung14" type="MeshInstance3D" parent="LadderStaticBody"]
+[node name="Rung14" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.98479, 0)
-mesh = SubResource("BoxMesh_58n7i")
+mesh = SubResource("BoxMesh_t6jw6")
+skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LadderStaticBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51121, 0)
-shape = SubResource("BoxShape3D_l48tn")
-
-[node name="BottomMount" type="Marker3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.400786, 0.4)
-
-[node name="TopMount" type="Marker3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 4.63918, 0)
-
-[node name="BottomArea" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010211, 0.43907)
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.214429, 0)
-shape = SubResource("BoxShape3D_tegc6")
-
-[node name="TopArea" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.91632, -0.275695)
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TopArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275695, 0.285906)
-shape = SubResource("BoxShape3D_tegc6")
+shape = SubResource("BoxShape3D_gdpnd")

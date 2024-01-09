@@ -6,6 +6,10 @@ extends CharacterBody3D
 @export var anim_state_tree : AnimationTree
 @onready var anim_length = .5
 
+@export var interact_sensor : Node3D
+@onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
+@onready var interactable
+
 @onready var current_camera = get_viewport().get_camera_3d()
 # This target aids strafe rotation when alternating between cameras, but the 
 # default/1st camera is a follow cam.
@@ -15,11 +19,11 @@ extends CharacterBody3D
 signal jump_triggered
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var jump_velocity = 4.5
+@export var jump_velocity = 4.5
 signal jump_started
 
 # Dodge Mechanics
-@export var dodge_speed = 10.0
+@export var dodge_speed = 9.0
 
 signal dodge_started
 signal dodge_ended
@@ -27,7 +31,8 @@ signal dodge_ended
 # Movement Mechanics
 var input_dir : Vector2
 var strafing :bool = false
-var strafe_cross_product : Vector3
+var strafe_cross_product #: Vector3
+var move_dot_product
 signal strafe_toggled
 
 @export var default_speed = 5.0
@@ -41,6 +46,7 @@ var climb_speed = 1.0
 signal ladder_started
 signal ladder_finished
 
+
 enum state {FREE,ACTION,DODGE,LADDER}
 @onready var current_state = state.FREE : set = change_state
 signal changed_state
@@ -48,7 +54,9 @@ signal changed_state
 func _ready():
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(update_animation_length)
-
+	if interact_sensor:
+		interact_sensor.interact_updated.connect(update_interact)
+		
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -67,6 +75,9 @@ func _input(_event:InputEvent):
 		
 	if current_state == state.FREE \
 	&& is_on_floor():
+		if _event.is_action_pressed("interact"):
+			interact()
+			
 		if _event.is_action_pressed("ui_select"):
 			jump()
 		
@@ -91,6 +102,7 @@ func _physics_process(_delta):
 			free_movement()
 			
 		state.DODGE:
+			rotate_player()
 			dodge_movement()
 			
 		state.LADDER:
@@ -133,8 +145,11 @@ func rotate_player():
 		#print(transform.basis * Vector3(input_dir.x,0,input_dir.y))
 				# Assuming forwardVector and newMovementDirection are your vectors
 		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
-		strafe_cross_product = -forward_vector.cross(calc_direction().normalized())
-
+		
+		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
+		move_dot_product = forward_vector.dot(calc_direction().normalized())
+		print(strafe_cross_product)
+		print(move_dot_product)
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
 		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
@@ -155,7 +170,10 @@ func calc_direction():
 func jump():
 	if anim_state_tree:
 		jump_started.emit()
-		await get_tree().create_timer(.3).timeout
+		await anim_state_tree.animation_measured
+		var jump_duration = anim_length
+	# After timer finishes, return to pre-dodge state
+		await get_tree().create_timer(jump_duration *.7).timeout
 	velocity.y = jump_velocity
 
 func dash(_new_direction : Vector3 = Vector3.FORWARD): # burst of speed forward
@@ -195,33 +213,67 @@ func dodge_movement():
 func ladder_movement():
 	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
+	if is_on_floor():
+		exit_ladder("BOTTOM")
 	move_and_slide()
 
-func update_ladder(top_or_bottom:String = "BOTTOM", mount_transform: Transform3D = Transform3D.IDENTITY, dismount_position : Vector3 = to_global(Vector3.FORWARD)):
-	ladder_top_or_bottom = top_or_bottom
-	ladder_mount_trans = mount_transform
-	ladder_dismount_pos = dismount_position
-
-func interact_ladder():
-	if current_state == state.FREE:
-		start_ladder()
-	elif current_state == state.LADDER:
-		exit_ladder()
-		
-func start_ladder():
-	ladder_started.emit(ladder_top_or_bottom)
+func start_ladder(top_or_bottom,mount_transform):
+	ladder_started.emit(top_or_bottom)
+	var wait_time = .3
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+		wait_time = anim_length
+	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
-	tween.tween_property(self,"global_transform", ladder_mount_trans,.3)
+	tween.tween_property(self,"global_transform", mount_transform, wait_time)
 	await tween.finished
 	current_state = state.LADDER
-		
-func exit_ladder():
-	ladder_finished.emit(ladder_top_or_bottom)
+
+func exit_ladder(exit_loc):
+	current_state = state.ACTION
+	ladder_finished.emit(exit_loc)
+	var dismount_pos
+	var dismount_time = .3
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+		dismount_time = anim_length *.6
+	match exit_loc:
+		"TOP":
+			dismount_pos = to_global(Vector3(0,1.5,.5))
+		"BOTTOM":
+			dismount_pos = global_position
 	var tween = create_tween()
-	tween.tween_property(self,"global_position", ladder_dismount_pos,.3)
+	tween.tween_property(self,"global_position", dismount_pos,dismount_time)
 	await tween.finished
 	current_state = state.FREE
 
 func update_animation_length(new_length):
 	anim_length = new_length - .05
-	print(anim_length)
+	print("Anim Length: " + str(anim_length))
+
+func update_interact(int_bottom, int_top):
+	## This updates the interactable objects and
+	## which sensor spotted it if you have an 
+	## if an interact sensor added to the export.
+	if int_bottom && int_top:
+		interactable = int_bottom
+		interact_loc = "BOTH"
+	elif int_bottom && int_top == null:
+		interactable = int_bottom
+		interact_loc = "BOTTOM"
+		if current_state == state.LADDER:
+			exit_ladder("TOP")
+	elif int_bottom == null && int_top:
+		interactable = int_top
+		interact_loc = "TOP"
+	else:
+		interactable = null
+		interact_loc = ""
+	print(str(interactable) + " at " + interact_loc)
+	
+func interact():
+	## The only command passed to interactable objects:
+	## the command passes the player node, and which sensor,
+	## TOP/BOTTOM/BOTH sees the interactable
+	if interactable:
+		interactable.activate(self,interact_loc)

@@ -1,19 +1,24 @@
-extends Node3D
+extends StaticBody3D
 class_name DoorObject
 
 @onready var opened = false
 @onready var door_anim_player = $DoorAnimPlayer
 
+@export var locked : bool = false
 
-func activate(_requestor):
-	var dist_to_front = to_global(Vector3.FORWARD).distance_to(_requestor.global_position)
-	var dist_to_back = to_global(Vector3.BACK).distance_to(_requestor.global_position)
-	
-	if opened == false:
-		open_door(dist_to_front, dist_to_back)
+func activate(_requestor,_sensor_loc):
+	if locked:
+		door_anim_player.play("Locked")
 		
-	if opened == true:
-		close_door(dist_to_front, dist_to_back)
+	else:
+		var dist_to_front = to_global(Vector3.FORWARD).distance_to(_requestor.global_position)
+		var dist_to_back = to_global(Vector3.BACK).distance_to(_requestor.global_position)
+		
+		if opened == false:
+			open_door(dist_to_front, dist_to_back)
+			
+		if opened == true:
+			close_door(dist_to_front, dist_to_back)
 
 func open_door(dist_to_front, dist_to_back):
 	if !door_anim_player.is_playing():
