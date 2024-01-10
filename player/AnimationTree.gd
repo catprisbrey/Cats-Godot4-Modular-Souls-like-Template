@@ -19,11 +19,11 @@ func _ready():
 	player_node.door_started.connect(set_door)
 	
 func update_state(new_state):
-	match new_state:
-		player_node.state.FREE:
-			if !player_node.is_on_floor():
-				set_fall()
-
+	#match new_state:
+		#player_node.state.FREE:
+			#if !player_node.is_on_floor():
+				#set_fall()
+	pass
 			
 #func _input(event):
 	#if event.is_action_pressed("interact"):
@@ -50,10 +50,7 @@ func set_door():
 	request_oneshot("OpenDoor")
 
 func set_jump():
-	base_state_machine.travel("Jump")
-
-func set_fall():
-	base_state_machine.travel("Fall")
+	request_oneshot("Jump")
 
 func set_ladder_start(top_or_bottom):
 	base_state_machine.start("LADDER_tree")
