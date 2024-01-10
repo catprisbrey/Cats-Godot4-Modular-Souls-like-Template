@@ -47,13 +47,14 @@ signal ladder_started
 signal ladder_finished
 
 
-enum state {FREE,ACTION,DODGE,LADDER}
+enum state {FREE,ACTION,DODGE,LADDER,ATTACK}
 @onready var current_state = state.FREE : set = change_state
 signal changed_state
 
 func _ready():
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(update_animation_length)
+		#anim_state_tree.animation_finished.connect(reset_attack_state)
 	if interact_sensor:
 		interact_sensor.interact_updated.connect(update_interact)
 		
@@ -69,6 +70,10 @@ func change_state(new_state):
 		state.DODGE:
 			speed = dodge_speed
 
+#func reset_attack_state(_anim):
+	#if current_state == state.ATTACK:
+		#current_state = state.FREE
+
 func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
@@ -78,9 +83,11 @@ func _input(_event:InputEvent):
 		if _event.is_action_pressed("interact"):
 			interact()
 			
-		if _event.is_action_pressed("ui_select"):
+		elif _event.is_action_pressed("ui_select"):
 			jump()
 		
+		elif _event.is_action_pressed("attack"):
+			attack()
 		# dodge
 		elif _event.is_action_pressed("ui_focus_next"):
 			dodge()
@@ -103,11 +110,14 @@ func _physics_process(_delta):
 			
 		state.DODGE:
 			rotate_player()
-			dodge_movement()
+			dash_movement()
 			
 		state.LADDER:
 			ladder_movement()
-
+			
+		state.ATTACK:
+			dash_movement()
+			
 func apply_gravity(_delta):
 	if !is_on_floor() && \
 	current_state != state.LADDER:
@@ -167,6 +177,21 @@ func calc_direction():
 	var new_direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
 	return new_direction
 
+func attack():
+	current_state = state.ATTACK
+	speed = 0.0
+	if anim_state_tree:
+		await anim_state_tree.animation_started
+		var attack_duration = anim_length
+		await get_tree().create_timer(attack_duration *.45).timeout
+		dash()
+		await get_tree().create_timer(attack_duration *.3).timeout
+	else:
+		await get_tree().create_timer(.3).timeout
+		dash()
+	if current_state == state.ATTACK:
+		current_state = state.FREE
+		
 func jump():
 	if anim_state_tree:
 		jump_started.emit()
@@ -176,16 +201,19 @@ func jump():
 		await get_tree().create_timer(jump_duration *.7).timeout
 	velocity.y = jump_velocity
 
-func dash(_new_direction : Vector3 = Vector3.FORWARD): # burst of speed forward
-		speed = dodge_speed
-		direction = (global_position - to_global(_new_direction)).normalized()
-		var dash_duration = .1
-		await get_tree().create_timer(dash_duration).timeout
-		speed = default_speed
-		direction = Vector3.ZERO
+func dash(_new_direction : Vector3 = Vector3.FORWARD): 
+	# burst of speed toward indicated direction, or forward by default
+	speed = dodge_speed
+	direction = (global_position - to_global(_new_direction)).normalized()
+	var dash_duration = .1
+	await get_tree().create_timer(dash_duration).timeout
+	speed = default_speed
+	direction = Vector3.ZERO
+	velocity = direction * speed
+	move_and_slide()
 		
 func dodge(): 
-	# Burst of speed toward a direction, or backwards
+	# Burst of speed toward an input direction, or backwards
 	current_state = state.DODGE
 	var dodge_duration : float = .5
 	speed = dodge_speed
@@ -206,11 +234,13 @@ func dodge():
 	speed = default_speed
 	direction = Vector3.ZERO
 		
-func dodge_movement():
+func dash_movement():
+	# required in the process function states for dodges/dashes
 	velocity = direction * speed
 	move_and_slide()
 	
 func ladder_movement():
+	# move up and down ladders per the indicated direction
 	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
 	if is_on_floor():
@@ -248,7 +278,7 @@ func exit_ladder(exit_loc):
 	current_state = state.FREE
 
 func update_animation_length(new_length):
-	anim_length = new_length - .05
+	anim_length = new_length - .05 # offset slightly for the process frame
 	print("Anim Length: " + str(anim_length))
 
 func update_interact(int_bottom, int_top):
