@@ -9,6 +9,7 @@ extends CharacterBody3D
 @export var interact_sensor : Node3D
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 @onready var interactable
+signal door_started
 
 @onready var current_camera = get_viewport().get_camera_3d()
 # This target aids strafe rotation when alternating between cameras, but the 
@@ -317,3 +318,13 @@ func interact():
 	## TOP/BOTTOM/BOTH sees the interactable
 	if interactable:
 		interactable.activate(self,interact_loc)
+
+func start_door(door_transform, move_time):
+	current_state = state.ACTION
+	# After timer finishes, return to pre-dodge state
+	var tween = create_tween()
+	tween.tween_property(self,"global_transform", door_transform, move_time)
+	await tween.finished
+	door_started.emit()
+	await get_tree().create_timer(1.5).timeout
+	current_state = state.FREE

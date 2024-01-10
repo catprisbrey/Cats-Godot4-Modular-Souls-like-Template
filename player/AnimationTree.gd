@@ -16,6 +16,7 @@ func _ready():
 	player_node.ladder_started.connect(set_ladder_start)
 	player_node.ladder_finished.connect(set_ladder_finished)
 	player_node.changed_state.connect(update_state)
+	player_node.door_started.connect(set_door)
 	
 func update_state(new_state):
 	match new_state:
@@ -45,6 +46,8 @@ func set_dodge(dodge_dir):
 		"BACK":
 			request_oneshot("DodgeBack")
 
+func set_door():
+	request_oneshot("OpenDoor")
 
 func set_jump():
 	base_state_machine.travel("Jump")

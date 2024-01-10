@@ -1,6 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://cnv210lnfdoan"]
+[gd_scene load_steps=14 format=3 uid="uid://cnv210lnfdoan"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/door_object.gd" id="1_6re5x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fjf6v"]
+size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5yoln"]
 size = Vector3(1.25, 2.25, 0.2)
@@ -70,7 +73,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_ghitu"]
 resource_name = "OpenLeft"
-length = 0.4
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -78,7 +81,7 @@ tracks/0/path = NodePath("Pivot:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.6),
 "transitions": PackedFloat32Array(2, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0), Vector3(0, 1.74533, 0), Vector3(0, 1.5708, 0)]
@@ -86,7 +89,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_82n4r"]
 resource_name = "OpenRight"
-length = 0.4
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -94,7 +97,7 @@ tracks/0/path = NodePath("Pivot:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.6),
 "transitions": PackedFloat32Array(2, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, -1.5708, 0), Vector3(0, -1.74533, 0), Vector3(0, -1.5708, 0)]
@@ -125,15 +128,20 @@ _data = {
 "RESET": SubResource("Animation_ntsht")
 }
 
-[node name="DoorObject" type="Node3D"]
+[node name="DoorObject" type="StaticBody3D" groups=["Interactable"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_6re5x")
+
+[node name="DetectorBody" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04274, 0)
+shape = SubResource("BoxShape3D_fjf6v")
 
 [node name="Pivot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
 
-[node name="DoorInteract" type="StaticBody3D" parent="Pivot" groups=["Interactable"]]
+[node name="DoorInteract" type="StaticBody3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.638236, 0, 0)
-collision_layer = 9
-script = ExtResource("1_6re5x")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/DoorInteract"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 0)
@@ -148,8 +156,7 @@ skeleton = NodePath("../../..")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.38319, 0, 0)
 mesh = SubResource("CylinderMesh_dmkrk")
 
-[node name="DoorAnimPlayer" type="AnimationPlayer" parent="Pivot/DoorInteract"]
-root_node = NodePath("../../..")
+[node name="DoorAnimPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_bq3vk")
 }
