@@ -83,17 +83,17 @@ func _input(_event:InputEvent):
 		if _event.is_action_pressed("interact"):
 			interact()
 			
-		elif _event.is_action_pressed("ui_select"):
+		elif _event.is_action_pressed("jump"):
 			jump()
 		
-		elif _event.is_action_pressed("attack"):
+		elif _event.is_action_pressed("use_weapon"):
 			attack()
 		# dodge
-		elif _event.is_action_pressed("ui_focus_next"):
+		elif _event.is_action_pressed("dodge_dash"):
 			dodge()
 			
 			# strafe toggle on/off
-		elif _event.is_action_pressed("ui_text_backspace"):
+		elif _event.is_action_pressed("strafe_target"):
 			strafing = !strafing
 			strafe_toggled.emit(strafing)
 			
@@ -127,7 +127,7 @@ func free_movement():
 	# Get the movement orientation from the angles of the player to the camera.
 	# Using only camera's basis rotation created weird speed inconsistencies at downward angles
 	#dodge_movement()
-	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var new_direction = calc_direction()
 	if new_direction:
 		var rate : float # imiates directional change acceleration rate
@@ -241,7 +241,7 @@ func dash_movement():
 	
 func ladder_movement():
 	# move up and down ladders per the indicated direction
-	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
 	if is_on_floor():
 		exit_ladder("BOTTOM")
