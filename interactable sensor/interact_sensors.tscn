@@ -12,7 +12,7 @@ script = ExtResource("1_hc4gm")
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TopSensor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.305207)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0.305)
 shape = SubResource("BoxShape3D_sjf5m")
 
 [node name="BottomSensor" type="Area3D" parent="."]

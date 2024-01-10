@@ -9,7 +9,7 @@ func activate(_player_node:CharacterBody3D,sensor_location):
 	var newTranslation = global_transform.rotated_local(Vector3.UP,PI)
 	if sensor_location == "BOTTOM":
 		top_or_bottom = "TOP"
-		mount_transform = newTranslation.translated_local(Vector3(0,-1
+		mount_transform = newTranslation.translated_local(Vector3(0,-1.4
 		 + _player_node.global_position.y,-.4))
 	else:
 		top_or_bottom = "BOTTOM"

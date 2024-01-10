@@ -53,7 +53,7 @@ func set_fall():
 	base_state_machine.travel("Fall")
 
 func set_ladder_start(top_or_bottom):
-	base_state_machine.travel("LADDER_tree")
+	base_state_machine.start("LADDER_tree")
 	ladder_state_machine.travel("LadderStart_" + top_or_bottom)
 	
 func set_ladder_finished(top_or_bottom):

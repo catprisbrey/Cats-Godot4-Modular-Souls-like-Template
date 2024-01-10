@@ -249,10 +249,10 @@ func ladder_movement():
 
 func start_ladder(top_or_bottom,mount_transform):
 	ladder_started.emit(top_or_bottom)
-	var wait_time = .3
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
-		wait_time = anim_length
+	var wait_time = .4
+	#if anim_state_tree:
+		#await anim_state_tree.animation_measured
+		#wait_time = anim_length
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
 	tween.tween_property(self,"global_transform", mount_transform, wait_time)
