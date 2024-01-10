@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=25 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://camera/follow_cam.tscn" id="2_njely"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
 [ext_resource type="Script" path="res://area_cam.gd" id="6_46gsf"]
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
+[ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="8_q06xa"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -155,11 +156,20 @@ operation = 2
 use_collision = true
 size = Vector3(1, 2, 11)
 
+[node name="doorways2" type="CSGBox3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33602, 1.02226, 0.0776777)
+operation = 2
+use_collision = true
+size = Vector3(1, 2, 11)
+
 [node name="Ladderv2" parent="." instance=ExtResource("8_30vqq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.20462, 0, -5.52359)
 
 [node name="Ladderv3" parent="." instance=ExtResource("8_30vqq")]
 transform = Transform3D(-0.00816803, 0, 0.999967, 0, 1, 0, -0.999967, 0, -0.00816803, 5.04175, 0, -6.64977)
 
-[node name="DoorObject" parent="." instance=ExtResource("5_w3y0b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.171881, 0.0222602, -5.70065)
+[node name="GateObject" parent="." instance=ExtResource("8_q06xa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33429, 0.0222168, -5.55055)
+
+[node name="DoorObject2" parent="." instance=ExtResource("5_w3y0b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0532727, 7.15256e-07, -5.72118)

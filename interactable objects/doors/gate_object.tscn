@@ -1,0 +1,151 @@
+[gd_scene load_steps=10 format=3 uid="uid://bp5aql2ip2qwi"]
+
+[ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jmheh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1xq5w"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ytu87"]
+size = Vector3(1.25, 2.25, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sumh4"]
+albedo_color = Color(0.435294, 0.270588, 0.137255, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tunpv"]
+material = SubResource("StandardMaterial3D_sumh4")
+size = Vector3(0.1, 2.25, 0.2)
+
+[sub_resource type="Animation" id="Animation_atpco"]
+resource_name = "Locked"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.00174533, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4eqcm"]
+resource_name = "Open"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 2.1, 0), Vector3(0, 2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4xpfs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b5b81"]
+_data = {
+"Locked": SubResource("Animation_atpco"),
+"Open": SubResource("Animation_4eqcm"),
+"RESET": SubResource("Animation_4xpfs")
+}
+
+[node name="GateObject" type="StaticBody3D" groups=["Interactable"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_jmheh")
+
+[node name="DetectorBody" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04274, 0)
+shape = SubResource("BoxShape3D_1xq5w")
+
+[node name="Pivot" type="Marker3D" parent="."]
+
+[node name="GateInteract" type="StaticBody3D" parent="Pivot"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/GateInteract"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 0)
+shape = SubResource("BoxShape3D_ytu87")
+
+[node name="Gate" type="MeshInstance3D" parent="Pivot/GateInteract"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.630215, 1.1264, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../..")
+
+[node name="Gate2" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.404148, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="Gate3" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17829, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="Gate4" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.844142, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="Gate5" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618284, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="Gate6" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.29622, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="Gate7" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.07036, 0, 0)
+mesh = SubResource("BoxMesh_tunpv")
+skeleton = NodePath("../../../..")
+
+[node name="GateAnimPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b5b81")
+}
