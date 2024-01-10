@@ -47,7 +47,7 @@ signal ladder_started
 signal ladder_finished
 
 
-enum state {FREE,ACTION,DODGE,LADDER,ATTACK}
+enum state {FREE,ACTION,DODGE,LADDER,ATTACK,AIRATTACK}
 @onready var current_state = state.FREE : set = change_state
 signal changed_state
 
@@ -78,25 +78,30 @@ func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
-	if current_state == state.FREE \
-	&& is_on_floor():
-		if _event.is_action_pressed("interact"):
-			interact()
+	if current_state == state.FREE:
+
 			
-		elif _event.is_action_pressed("jump"):
-			jump()
-		
-		elif _event.is_action_pressed("use_weapon"):
-			attack()
-		# dodge
-		elif _event.is_action_pressed("dodge_dash"):
-			dodge()
+		if is_on_floor():
+			if _event.is_action_pressed("interact"):
+				interact()
+				
+			elif _event.is_action_pressed("jump"):
+				jump()
 			
-			# strafe toggle on/off
-		elif _event.is_action_pressed("strafe_target"):
-			strafing = !strafing
-			strafe_toggled.emit(strafing)
+			elif _event.is_action_pressed("use_weapon"):
+				attack()
+			# dodge
+			elif _event.is_action_pressed("dodge_dash"):
+				dodge()
+				
+				# strafe toggle on/off
+			elif _event.is_action_pressed("strafe_target"):
+				strafing = !strafing
+				strafe_toggled.emit(strafing)
 			
+		else: # if not on floor
+			if _event.is_action_pressed("use_weapon"):
+				air_attack()
 			# Update current orientation to camera when nothing pressed
 		if !Input.is_anything_pressed():
 			current_camera = get_viewport().get_camera_3d()
@@ -117,6 +122,11 @@ func _physics_process(_delta):
 			
 		state.ATTACK:
 			dash_movement()
+			
+		state.AIRATTACK:
+			move_and_slide()
+			if is_on_floor():
+				current_state = state.FREE
 			
 func apply_gravity(_delta):
 	if !is_on_floor() && \
@@ -142,7 +152,6 @@ func free_movement():
 		velocity.z = move_toward(velocity.z, 0, .5)
 	move_and_slide()
 	
-
 	
 func rotate_player():
 	var target_rotation
@@ -191,6 +200,9 @@ func attack():
 		dash()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
+
+func air_attack():
+	current_state = state.AIRATTACK
 		
 func jump():
 	if anim_state_tree:
@@ -243,6 +255,9 @@ func ladder_movement():
 	# move up and down ladders per the indicated direction
 	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
+	# exiting ladder state triggers:
+	if interact_loc == "BOTTOM":
+		exit_ladder("TOP") 
 	if is_on_floor():
 		exit_ladder("BOTTOM")
 	move_and_slide()
@@ -250,9 +265,6 @@ func ladder_movement():
 func start_ladder(top_or_bottom,mount_transform):
 	ladder_started.emit(top_or_bottom)
 	var wait_time = .4
-	#if anim_state_tree:
-		#await anim_state_tree.animation_measured
-		#wait_time = anim_length
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
 	tween.tween_property(self,"global_transform", mount_transform, wait_time)
@@ -291,8 +303,6 @@ func update_interact(int_bottom, int_top):
 	elif int_bottom && int_top == null:
 		interactable = int_bottom
 		interact_loc = "BOTTOM"
-		if current_state == state.LADDER:
-			exit_ladder("TOP")
 	elif int_bottom == null && int_top:
 		interactable = int_top
 		interact_loc = "TOP"
