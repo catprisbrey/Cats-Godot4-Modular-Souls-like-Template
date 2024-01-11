@@ -6,19 +6,19 @@ extends CharacterBody3D
 @export var anim_state_tree : AnimationTree
 @onready var anim_length = .5
 
+@onready var current_camera = get_viewport().get_camera_3d()
+# This target aids strafe rotation when alternating between cameras, but the 
+# default/1st camera is a follow cam.
+@onready var orientation_target = current_camera
+#
 @export var interact_sensor : Node3D
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 @onready var interactable
 signal door_started
 signal gate_started
 
-@onready var current_camera = get_viewport().get_camera_3d()
-# This target aids strafe rotation when alternating between cameras, but the 
-# default/1st camera is a follow cam.
-@onready var orientation_target = current_camera
-
-###SIGNAL TESTS ####
-signal jump_triggered
+@export var weapon_system : Node3D
+signal weapon_changed
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
@@ -26,30 +26,31 @@ signal jump_started
 
 # Dodge Mechanics
 @export var dodge_speed = 9.0
-
 signal dodge_started
 signal dodge_ended
 
 # Movement Mechanics
 var input_dir : Vector2
+
 var strafing :bool = false
-var strafe_cross_product #: Vector3
+var strafe_cross_product
 var move_dot_product
 signal strafe_toggled
 
 @export var default_speed = 5.0
+@export var walk_speed = 2.0
 @onready var speed = default_speed
 var direction = Vector3.ZERO
 
-var ladder_top_or_bottom
-var ladder_mount_trans
-var ladder_dismount_pos
-var climb_speed = 1.0
+# Climbing
+@export var climb_speed = 1.0
 signal ladder_started
 signal ladder_finished
 
 
-enum state {FREE,ACTION,DODGE,LADDER,ATTACK,AIRATTACK}
+
+# State management
+enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,LADDER,ATTACK,AIRATTACK}
 @onready var current_state = state.FREE : set = change_state
 signal changed_state
 
@@ -59,7 +60,7 @@ func _ready():
 		#anim_state_tree.animation_finished.connect(reset_attack_state)
 	if interact_sensor:
 		interact_sensor.interact_updated.connect(update_interact)
-		
+	
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -71,22 +72,19 @@ func change_state(new_state):
 			speed = climb_speed
 		state.DODGE:
 			speed = dodge_speed
-
-#func reset_attack_state(_anim):
-	#if current_state == state.ATTACK:
-		#current_state = state.FREE
+		state.DYNAMIC_ACTION:
+			speed = walk_speed
 
 func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
 	if current_state == state.FREE:
-
-			
 		if is_on_floor():
+			# if interactable exists, activate its action
 			if _event.is_action_pressed("interact"):
 				interact()
-				
+			
 			elif _event.is_action_pressed("jump"):
 				jump()
 			
@@ -96,14 +94,17 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge()
 				
-				# strafe toggle on/off
+			# strafe toggle on/off
 			elif _event.is_action_pressed("strafe_target"):
-				strafing = !strafing
-				strafe_toggled.emit(strafing)
+				strafe_targeting()
 			
+			elif _event.is_action_pressed("change_primary"):
+				weapon_change()
+				
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
+			
 			# Update current orientation to camera when nothing pressed
 		if !Input.is_anything_pressed():
 			current_camera = get_viewport().get_camera_3d()
@@ -126,9 +127,11 @@ func _physics_process(_delta):
 			dash_movement()
 			
 		state.AIRATTACK:
-			move_and_slide()
-			if is_on_floor():
-				current_state = state.FREE
+			air_movement()
+		
+		state.DYNAMIC_ACTION:
+			free_movement()
+			rotate_player()
 			
 func apply_gravity(_delta):
 	if !is_on_floor() && \
@@ -181,6 +184,10 @@ func rotate_player():
 			global_transform.basis = Basis(target_rotation)
 	# move_and_slide() unused. (controlled by States).
 
+func strafe_targeting():
+	strafing = !strafing
+	strafe_toggled.emit(strafing)
+
 func calc_direction():
 	# calculate and return the direction of movement oriented to the current camera
 	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)
@@ -205,6 +212,11 @@ func attack():
 
 func air_attack():
 	current_state = state.AIRATTACK
+
+func air_movement():
+	move_and_slide()
+	if is_on_floor():
+		current_state = state.FREE
 		
 func jump():
 	if anim_state_tree:
@@ -274,7 +286,7 @@ func start_ladder(top_or_bottom,mount_transform):
 	current_state = state.LADDER
 
 func exit_ladder(exit_loc):
-	current_state = state.ACTION
+	current_state = state.STATIC_ACTION
 	ladder_finished.emit(exit_loc)
 	var dismount_pos
 	var dismount_time = .3
@@ -321,7 +333,7 @@ func interact():
 		interactable.activate(self,interact_loc)
 
 func start_door(door_transform, move_time):
-	current_state = state.ACTION
+	current_state = state.STATIC_ACTION
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
 	tween.tween_property(self,"global_transform", door_transform, move_time)
@@ -331,7 +343,7 @@ func start_door(door_transform, move_time):
 	current_state = state.FREE
 
 func start_gate(gate_transform, move_time):
-	current_state = state.ACTION
+	current_state = state.STATIC_ACTION
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
 	tween.tween_property(self,"global_transform", gate_transform, move_time)
@@ -340,3 +352,12 @@ func start_gate(gate_transform, move_time):
 	await get_tree().create_timer(1.5).timeout
 	current_state = state.FREE
 
+func weapon_change():
+	current_state = state.DYNAMIC_ACTION
+	weapon_changed.emit()
+	var change_duration = .5
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+		change_duration = anim_length
+	await get_tree().create_timer(change_duration).timeout
+	current_state = state.FREE

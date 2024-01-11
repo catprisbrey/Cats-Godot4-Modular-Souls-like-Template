@@ -3,7 +3,7 @@ extends AnimationTree
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 var weapon_type = "LIGHT"
-
+var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
 
 signal animation_measured
@@ -18,6 +18,7 @@ func _ready():
 	player_node.changed_state.connect(update_state)
 	player_node.door_started.connect(set_door)
 	player_node.gate_started.connect(set_gate)
+	player_node.weapon_changed.connect(set_weapon)
 	
 func update_state(new_state):
 	#match new_state:
@@ -56,6 +57,9 @@ func set_gate():
 func set_jump():
 	request_oneshot("Jump")
 
+func set_weapon():
+	request_oneshot("WeaponChange")
+
 func set_ladder_start(top_or_bottom):
 	base_state_machine.start("LADDER_tree")
 	ladder_state_machine.travel("LadderStart_" + top_or_bottom)
@@ -71,7 +75,8 @@ func _process(_delta):
 		set_strafe()
 	elif player_node.current_state == player_node.state.LADDER:
 		set_ladder()
-		#if player_node.is_on_floor():
+
+			#if player_node.is_on_floor():
 #
 			#player_node.current_state = player_node.state.FREE
 	else:
@@ -82,13 +87,21 @@ func set_strafe():
 	# Forward and back are acording to input, since direction changes by fixed camera orientation
 	#var new_dir = player_node.input_dir.y - player_node.input_dir.x
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
-	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", new_blend)
+	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
+		new_blend *= .5 
+	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
+	lerp_movement = lerp(lerp_movement,new_blend,.2)
+	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
 
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
+	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
+		new_blend *= .5 
+	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
+	lerp_movement = lerp(lerp_movement,new_blend,.2)
 	#var new_blend = Vector2(0,abs(player_node.strafe_cross_product) + abs(player_node.move_dot_product))
-	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",new_blend)
+	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)
 
 func request_oneshot(oneshot:String):
 	set("parameters/" + oneshot + "/request",true)
