@@ -19,9 +19,13 @@ signal gate_started
 
 signal weapon_change_started
 signal weapon_changed
+signal attack_started
+signal attack_ended
 
 signal gadget_change_started
 signal gadget_changed
+signal gadget_started
+signal gadget_ended
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
@@ -202,17 +206,22 @@ func attack():
 	if anim_state_tree:
 		await anim_state_tree.animation_started
 		var attack_duration = anim_length
+		attack_started.emit(anim_length)
 		await get_tree().create_timer(attack_duration *.45).timeout
 		dash()
 		await get_tree().create_timer(attack_duration *.3).timeout
+		attack_ended.emit()
 	else:
+		attack_started.emit(.1)
 		await get_tree().create_timer(.3).timeout
 		dash()
+		attack_ended.emit()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
 func air_attack():
 	current_state = state.AIRATTACK
+	
 
 func air_movement():
 	move_and_slide()

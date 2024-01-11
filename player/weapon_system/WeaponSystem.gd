@@ -4,7 +4,9 @@ class_name EquipmentSystem
 ## The node that will emit the weapon change signal
 @export var player_node : CharacterBody3D
 ## The signal name should be connected to trigger the equipment swap
-@export var player_signal_trigger : String = "weapon_changed"
+@export var change_signal : String = "weapon_changed"
+@export var activate_signal : String = "attack_started"
+@export var deactivate_signal : String = "attack_ended"
 ## The primary item location. Recommend to be a child node of a bone attachement
 @export var held_mount_point : Node3D
 ## The secondary item location. Recommend to be a child node of a bone attachement
@@ -13,11 +15,12 @@ class_name EquipmentSystem
 @onready var current_equipment : Node3D
 
 
-
 func _ready():
 	if player_node:
-		player_node.connect(player_signal_trigger,change_equipment)
-	
+		player_node.connect(change_signal,change_equipment)
+		player_node.connect(activate_signal,activate)
+		player_node.connect(deactivate_signal,deactivate)
+		
 	if held_mount_point.get_child(0):
 		current_equipment = held_mount_point.get_child(0)
 	
@@ -36,4 +39,9 @@ func change_equipment():
 		print("New equipment: " + str(current_equipment))
 		
 		
-		
+func activate(_anim_time):
+	print("object activated")
+	current_equipment.activate(_anim_time)	
+
+func deactivate():
+	current_equipment.deactivate()
