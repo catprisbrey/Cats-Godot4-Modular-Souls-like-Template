@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwxpu4en7wpi6"]
+
+[ext_resource type="Script" path="res://cameras/area_cam/area_cam.gd" id="1_5xaaf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m6vf8"]
+size = Vector3(15, 3, 15)
+
+[node name="AreaCam" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_5xaaf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_m6vf8")
+
+[node name="Pivot" type="Marker3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 3, 10)

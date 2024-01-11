@@ -18,7 +18,8 @@ func _ready():
 	player_node.changed_state.connect(update_state)
 	player_node.door_started.connect(set_door)
 	player_node.gate_started.connect(set_gate)
-	player_node.weapon_changed.connect(set_weapon)
+	player_node.weapon_change_started.connect(set_weapon)
+	player_node.gadget_change_started.connect(set_gadget)
 	
 func update_state(new_state):
 	#match new_state:
@@ -60,6 +61,9 @@ func set_jump():
 func set_weapon():
 	request_oneshot("WeaponChange")
 
+func set_gadget():
+	request_oneshot("GadgetChange")
+
 func set_ladder_start(top_or_bottom):
 	base_state_machine.start("LADDER_tree")
 	ladder_state_machine.travel("LadderStart_" + top_or_bottom)
@@ -73,12 +77,10 @@ func set_ladder():
 func _process(_delta):
 	if player_node.strafing:
 		set_strafe()
-	elif player_node.current_state == player_node.state.LADDER:
+	
+	if player_node.current_state == player_node.state.LADDER:
 		set_ladder()
 
-			#if player_node.is_on_floor():
-#
-			#player_node.current_state = player_node.state.FREE
 	else:
 		set_free_move()
 	
@@ -105,7 +107,6 @@ func set_free_move():
 
 func request_oneshot(oneshot:String):
 	set("parameters/" + oneshot + "/request",true)
-
 
 func _on_animation_started(anim_name):
 	var new_anim_length = get_node(anim_player).get_animation(anim_name).length

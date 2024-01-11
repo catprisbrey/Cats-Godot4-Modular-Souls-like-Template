@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://bbwrvilne1py1"]
+
+[ext_resource type="Script" path="res://GadgetObject.gd" id="1_asltl"]
+[ext_resource type="Script" path="res://gadget_resource.gd" id="2_g3xdk"]
+
+[sub_resource type="Resource" id="Resource_2bvp6"]
+script = ExtResource("2_g3xdk")
+name = "Ordinary Torch"
+object_type = 1
+attack_power = 1
+defense_power = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p8ylt"]
+top_radius = 0.02
+bottom_radius = 0.02
+height = 0.7
+radial_segments = 4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vti3j"]
+radius = 0.04
+height = 0.15
+radial_segments = 8
+rings = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7pavc"]
+size = Vector3(0.5, 1, 0.5)
+
+[node name="GadgetObject" type="Area3D"]
+script = ExtResource("1_asltl")
+gadget_info = SubResource("Resource_2bvp6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212494, 0)
+mesh = SubResource("CylinderMesh_p8ylt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.293596, 0)
+mesh = SubResource("CapsuleMesh_vti3j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.470184, 0)
+shape = SubResource("BoxShape3D_7pavc")

@@ -17,8 +17,11 @@ extends CharacterBody3D
 signal door_started
 signal gate_started
 
-@export var weapon_system : Node3D
+signal weapon_change_started
 signal weapon_changed
+
+signal gadget_change_started
+signal gadget_changed
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
@@ -31,23 +34,20 @@ signal dodge_ended
 
 # Movement Mechanics
 var input_dir : Vector2
+@export var default_speed = 5.0
+@export var walk_speed = 2.0
+@onready var speed = default_speed
+var direction = Vector3.ZERO
 
 var strafing :bool = false
 var strafe_cross_product
 var move_dot_product
 signal strafe_toggled
 
-@export var default_speed = 5.0
-@export var walk_speed = 2.0
-@onready var speed = default_speed
-var direction = Vector3.ZERO
-
 # Climbing
 @export var climb_speed = 1.0
 signal ladder_started
 signal ladder_finished
-
-
 
 # State management
 enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,LADDER,ATTACK,AIRATTACK}
@@ -57,10 +57,10 @@ signal changed_state
 func _ready():
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(update_animation_length)
-		#anim_state_tree.animation_finished.connect(reset_attack_state)
+
 	if interact_sensor:
 		interact_sensor.interact_updated.connect(update_interact)
-	
+		
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -100,7 +100,8 @@ func _input(_event:InputEvent):
 			
 			elif _event.is_action_pressed("change_primary"):
 				weapon_change()
-				
+			elif _event.is_action_pressed("change_secondary"):
+				gadget_change()
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
@@ -354,10 +355,24 @@ func start_gate(gate_transform, move_time):
 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
-	weapon_changed.emit()
+	weapon_change_started.emit()
 	var change_duration = .5
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 		change_duration = anim_length
-	await get_tree().create_timer(change_duration).timeout
+	await get_tree().create_timer(change_duration*.5).timeout
+	weapon_changed.emit()
+	await get_tree().create_timer(change_duration*.5).timeout
+	current_state = state.FREE
+
+func gadget_change():
+	current_state = state.DYNAMIC_ACTION
+	gadget_change_started.emit()
+	var change_duration = .5
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+		change_duration = anim_length
+	await get_tree().create_timer(change_duration*.5).timeout
+	gadget_changed.emit()
+	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
