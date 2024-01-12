@@ -1,5 +1,6 @@
 extends AnimationTree
- 
+class_name AnimationTreeSoulsBase
+
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 var lerp_movement
@@ -43,7 +44,6 @@ func request_oneshot(oneshot:String):
 
 
 func set_guarding():
-	print("is guarding? " + str(player_node.guarding))
 	if player_node.guarding:
 		guard_value = 1
 	else:

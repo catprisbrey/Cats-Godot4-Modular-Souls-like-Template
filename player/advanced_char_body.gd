@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name CharacterBodySoulsBase
 
 ## A semi-smart character controller. Will detect the current camera in use
 ## and update control orientation to match it. Strafing will lock rotation to
@@ -6,11 +7,12 @@ extends CharacterBody3D
 @export var anim_state_tree : AnimationTree
 @onready var anim_length = .5
 
-@onready var current_camera = get_viewport().get_camera_3d()
 # This target aids strafe rotation when alternating between cameras, but the 
 # default/1st camera is a follow cam.
 @onready var orientation_target = current_camera
-#
+@onready var current_camera = get_viewport().get_camera_3d()
+
+# Sensing interactable objects
 @export var interact_sensor : Node3D
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 @onready var interactable
@@ -30,8 +32,9 @@ signal gadget_change_started
 signal gadget_changed
 signal gadget_started
 signal gadget_ended
-var guarding
+@onready var guarding = false
 
+# Jump and Gravity
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
 signal jump_started
@@ -48,6 +51,7 @@ var input_dir : Vector2
 @onready var speed = default_speed
 var direction = Vector3.ZERO
 
+# Strafing
 var strafing :bool = false
 var strafe_cross_product
 var move_dot_product

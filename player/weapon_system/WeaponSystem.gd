@@ -13,8 +13,8 @@ signal equipment_changed
 ## The secondary item location. Recommend to be a child node of a bone attachement
 @export var stored_mount_point : Node3D
 ## The item currently in under the held mount point
-@onready var current_equipment : Node3D = get_child(0)
-
+@onready var current_equipment : Node3D
+@onready var stored_equipment : Node3D
 
 func _ready():
 	if player_node:
@@ -24,22 +24,28 @@ func _ready():
 		
 	if held_mount_point.get_child(0):
 		current_equipment = held_mount_point.get_child(0)
+		current_equipment.equipped = true
 	
-	print(current_equipment)
+	if stored_mount_point.get_child(0):
+		stored_equipment = stored_mount_point.get_child(0)
+		stored_equipment.equipped = false
+
 	
 func change_equipment():
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
-		var stored_equipment = stored_mount_point.get_child(0)
+		stored_equipment = stored_mount_point.get_child(0)
 		
 		print("Former equpiment: " + str(current_equipment))
 		held_mount_point.remove_child(current_equipment)
 		stored_mount_point.remove_child(stored_equipment)
 		held_mount_point.add_child(stored_equipment)
 		stored_mount_point.add_child(current_equipment)
+		current_equipment.equipped = false
 		
 		# Update current
 		current_equipment = held_mount_point.get_child(0)
 		equipment_changed.emit(current_equipment)
+		current_equipment.equipped = true
 		print("New equipment: " + str(current_equipment))
 		
 		
