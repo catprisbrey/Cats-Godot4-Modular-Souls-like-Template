@@ -2,9 +2,9 @@ extends AnimationTree
  
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
-var weapon_type = "LIGHT"
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
+var guard_value :float = 0.0
 
 signal animation_measured
 
@@ -20,26 +20,36 @@ func _ready():
 	player_node.gate_started.connect(set_gate)
 	player_node.weapon_change_started.connect(set_weapon)
 	player_node.gadget_change_started.connect(set_gadget)
-	
-func update_state(new_state):
-	#match new_state:
-		#player_node.state.FREE:
-			#if !player_node.is_on_floor():
-				#set_fall()
+
+func update_state(_new_state):
 	pass
-			
-#func _input(event):
-	#if event.is_action_pressed("interact"):
-		#weaponchange()
-#
-#func weaponchange():
-	#match weapon_type:
-		#"LIGHT":
-			#weapon_type = "HEAVY"
-		#"HEAVY":
-			#weapon_type = "LIGHT"
-	#print(weapon_type)
-	#request_oneshot("ChangeWeapon")
+
+
+
+func _process(_delta):
+	
+	if player_node.strafing:
+		set_strafe()
+	else:
+		set_free_move()
+		
+	if player_node.current_state == player_node.state.LADDER:
+		set_ladder()
+	
+	set_guarding()
+
+func request_oneshot(oneshot:String):
+	set("parameters/" + oneshot + "/request",true)
+
+
+func set_guarding():
+	print("is guarding? " + str(player_node.guarding))
+	if player_node.guarding:
+		guard_value = 1
+	else:
+		guard_value = 0
+	var new_blend = lerp(get("parameters/Guarding/blend_amount"),guard_value,.4)
+	set("parameters/Guarding/blend_amount", new_blend)
 
 func set_dodge(dodge_dir):
 	match dodge_dir:
@@ -74,15 +84,6 @@ func set_ladder_finished(top_or_bottom):
 func set_ladder():
 	set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",-player_node.input_dir.y)
 
-func _process(_delta):
-	if player_node.strafing:
-		set_strafe()
-	
-	if player_node.current_state == player_node.state.LADDER:
-		set_ladder()
-
-	else:
-		set_free_move()
 	
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
@@ -91,22 +92,20 @@ func set_strafe():
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
 		new_blend *= .5 
-	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
+	lerp_movement = get("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
-	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
+	set("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
 
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
 		new_blend *= .5 
-	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
+	lerp_movement = get("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
 	#var new_blend = Vector2(0,abs(player_node.strafe_cross_product) + abs(player_node.move_dot_product))
-	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)
+	set("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)
 
-func request_oneshot(oneshot:String):
-	set("parameters/" + oneshot + "/request",true)
 
 func _on_animation_started(anim_name):
 	var new_anim_length = get_node(anim_player).get_animation(anim_name).length

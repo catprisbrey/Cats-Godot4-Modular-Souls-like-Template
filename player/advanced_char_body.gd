@@ -17,15 +17,20 @@ extends CharacterBody3D
 signal door_started
 signal gate_started
 
+# Weapons and attacking
+@export var weapon_system : EquipmentSystem
+var weapon_type :String = "SLASH"
 signal weapon_change_started
 signal weapon_changed
 signal attack_started
 signal attack_ended
 
+# Gadgets and guarding
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
 signal gadget_ended
+var guarding
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
@@ -39,7 +44,7 @@ signal dodge_ended
 # Movement Mechanics
 var input_dir : Vector2
 @export var default_speed = 5.0
-@export var walk_speed = 2.0
+@export var walk_speed = 1.0
 @onready var speed = default_speed
 var direction = Vector3.ZERO
 
@@ -65,6 +70,10 @@ func _ready():
 	if interact_sensor:
 		interact_sensor.interact_updated.connect(update_interact)
 		
+	if weapon_system:
+		weapon_system.equipment_changed.connect(update_weapon)
+		update_weapon(weapon_system.current_equipment)
+		
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -83,6 +92,15 @@ func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
+	# strafe toggle on/off
+	if _event.is_action_pressed("strafe_target"):
+		strafe_targeting()
+		
+	# Update current orientation to camera when nothing pressed
+	if !Input.is_anything_pressed():
+		current_camera = get_viewport().get_camera_3d()
+	
+	
 	if current_state == state.FREE:
 		if is_on_floor():
 			# if interactable exists, activate its action
@@ -98,21 +116,26 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge()
 				
-			# strafe toggle on/off
-			elif _event.is_action_pressed("strafe_target"):
-				strafe_targeting()
+
 			
 			elif _event.is_action_pressed("change_primary"):
 				weapon_change()
 			elif _event.is_action_pressed("change_secondary"):
 				gadget_change()
+			elif Input.is_action_pressed("use_gadget"):
+				start_guard()
+
+		
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
-			
-			# Update current orientation to camera when nothing pressed
-		if !Input.is_anything_pressed():
-			current_camera = get_viewport().get_camera_3d()
+
+
+	if current_state == state.DYNAMIC_ACTION:
+		if _event.is_action_released("use_gadget"):
+			end_guard()
+		
+
 
 func _physics_process(_delta):
 	apply_gravity(_delta)
@@ -177,8 +200,8 @@ func rotate_player():
 		
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
 		move_dot_product = forward_vector.dot(calc_direction().normalized())
-		print(strafe_cross_product)
-		print(move_dot_product)
+		print("cross: "  + str(strafe_cross_product))
+		print("dot: " + str(move_dot_product))
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
 		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
@@ -373,7 +396,11 @@ func weapon_change():
 	weapon_changed.emit()
 	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
-
+	
+func update_weapon(_new_weapon:WeaponObject):
+	weapon_type = _new_weapon.equipment_info.object_type
+	print(weapon_type)
+	
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
 	gadget_change_started.emit()
@@ -384,4 +411,12 @@ func gadget_change():
 	await get_tree().create_timer(change_duration*.5).timeout
 	gadget_changed.emit()
 	await get_tree().create_timer(change_duration*.5).timeout
+	current_state = state.FREE
+
+func start_guard():
+	guarding = true
+	current_state = state.DYNAMIC_ACTION
+	
+func end_guard():
+	guarding = false
 	current_state = state.FREE

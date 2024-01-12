@@ -1,9 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=21 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
-[ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://cameras/follow_cam/follow_cam.tscn" id="2_njely"]
-[ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://targeting system/targeting_system.tscn" id="3_5ga4g"]
-[ext_resource type="PackedScene" uid="uid://c622p3bhgteim" path="res://interactable sensor/interact_sensors.tscn" id="3_jqdyv"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="8_q06xa"]
@@ -70,18 +67,6 @@ mesh = SubResource("PlaneMesh_ng31s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_7h28q")
-
-[node name="Player" parent="." node_paths=PackedStringArray("interact_sensor") instance=ExtResource("1_k2mnc")]
-interact_sensor = NodePath("InteractSensors")
-
-[node name="TargetingSystem" parent="Player" instance=ExtResource("3_5ga4g")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -2.38419e-07, 0)
-
-[node name="InteractSensors" parent="Player" instance=ExtResource("3_jqdyv")]
-
-[node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("2_njely")]
-follow_target = NodePath("../Player")
-optional_targeting_system = NodePath("../Player/TargetingSystem")
 
 [node name="Baddy" type="CharacterBody3D" parent="." groups=["Targets"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57432, 0, 9.66363)
@@ -159,3 +144,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0532727, 7.15256e-07, -5.7
 
 [node name="AreaCam" parent="." instance=ExtResource("8_tgyg3")]
 transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.0787201, 0.908271, 0, 11.4209)
+
+[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6101, 0, -0.316795)

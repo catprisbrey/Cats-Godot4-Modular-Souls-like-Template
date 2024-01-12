@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://cameras/follow_cam/follow_cam_3d.gd" id="1_y42mi"]
 
 [node name="FollowCam" type="Node3D" node_paths=PackedStringArray("spring_arm_3d", "camera_3d")]
+top_level = true
 script = ExtResource("1_y42mi")
 spring_arm_3d = NodePath("SpringArm3D")
 camera_3d = NodePath("SpringArm3D/Camera3D")

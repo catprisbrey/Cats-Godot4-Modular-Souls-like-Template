@@ -10,14 +10,11 @@ func _ready():
 	set_collision_layer_value(1,false)
 	monitoring = false
 
-func activete(anim_time):
-	# wait before becoming lethal
-	await get_tree().create_timer(anim_time*.3).timeout
+func activate():
 	# turn on object col shape to detect collisions
 	monitoring = true
-	# leave on for half the animation length
-	await get_tree().create_timer(anim_time*.5).timeout
-	# turn off the col shape detection
-	monitoring = false
-
+	print("Object active")
 	
+func deactivate():
+	monitoring = false
+	print("Object inactive")

@@ -3,7 +3,7 @@ class_name WeaponObject
 
 ## Uses layer 3 for detecting hitable targets.
 
-@export var weapon_info : WeaponResource
+@export var equipment_info : WeaponResource
 
 func _ready():
 	set_collision_mask_value(3,true)
