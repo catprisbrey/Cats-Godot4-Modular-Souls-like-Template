@@ -119,8 +119,6 @@ func _input(_event:InputEvent):
 			# dodge
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge()
-				
-
 			
 			elif _event.is_action_pressed("change_primary"):
 				weapon_change()
@@ -129,10 +127,10 @@ func _input(_event:InputEvent):
 			elif Input.is_action_pressed("use_gadget"):
 				start_guard()
 
-		
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
+
 
 
 	if current_state == state.DYNAMIC_ACTION:
@@ -204,8 +202,8 @@ func rotate_player():
 		
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
 		move_dot_product = forward_vector.dot(calc_direction().normalized())
-		print("cross: "  + str(strafe_cross_product))
-		print("dot: " + str(move_dot_product))
+		#print("cross: "  + str(strafe_cross_product))
+		#print("dot: " + str(move_dot_product))
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
 		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
