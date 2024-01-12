@@ -4,10 +4,10 @@
 [ext_resource type="Script" path="res://gadget_resource.gd" id="2_g3xdk"]
 [ext_resource type="Script" path="res://weapons/TorchFlame.gd" id="3_itn8w"]
 
-[sub_resource type="Resource" id="Resource_2bvp6"]
+[sub_resource type="Resource" id="Resource_q5mwd"]
 script = ExtResource("2_g3xdk")
-name = "Ordinary Torch"
-object_type = "SHIELD"
+name = "Torchy"
+object_type = "TORCH"
 attack_power = 1
 defense_power = 1
 
@@ -64,7 +64,7 @@ orientation = 2
 
 [node name="Torch" type="Area3D"]
 script = ExtResource("1_asltl")
-gadget_info = SubResource("Resource_2bvp6")
+equipment_info = SubResource("Resource_q5mwd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212494, 0)

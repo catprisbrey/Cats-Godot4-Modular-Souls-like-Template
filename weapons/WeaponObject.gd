@@ -16,8 +16,7 @@ func activate(anim_time):
 	await get_tree().create_timer(anim_time*.3).timeout
 	# turn on object col shape to detect collisions
 	monitoring = true
-	print("Object active")
 	
 func deactivate():
 	monitoring = false
-	print("Object inactive")
+

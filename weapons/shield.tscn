@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://GadgetObject.gd" id="1_tcohl"]
 [ext_resource type="Script" path="res://gadget_resource.gd" id="2_22jau"]
 
-[sub_resource type="Resource" id="Resource_kptlr"]
+[sub_resource type="Resource" id="Resource_lahhq"]
 script = ExtResource("2_22jau")
-name = "Shield of primitivity"
-gadget_type = 0
+name = "Shieldy"
+object_type = "SHIELD"
 attack_power = 1
 defense_power = 1
 
@@ -45,14 +45,14 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_3s2sc")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u3und"]
-size = Vector3(1, 1, 0.360996)
+size = Vector3(0.655, 0.705, 0.256)
 
 [node name="Shield" type="Area3D"]
 script = ExtResource("1_tcohl")
-gadget_info = SubResource("Resource_kptlr")
+equipment_info = SubResource("Resource_lahhq")
 
 [node name="ShieldMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.997675, -0.0681546, -2.97913e-09, 0, -4.37114e-08, 1, -0.0681546, -0.997675, -4.36097e-08, 0, 0, -0.0101727)
+transform = Transform3D(0.848024, -0.0579314, -2.53226e-09, 0, -3.71547e-08, 0.85, -0.0579314, -0.848024, -3.70683e-08, 0, 0, -0.0101727)
 mesh = SubResource("ArrayMesh_p7yby")
 skeleton = NodePath("")
 

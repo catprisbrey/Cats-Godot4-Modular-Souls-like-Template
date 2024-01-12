@@ -19,6 +19,7 @@ class_name CharacterBodySoulsBase
 signal door_started
 signal gate_started
 
+
 # Weapons and attacking
 @export var weapon_system : EquipmentSystem
 var weapon_type :String = "SLASH"
@@ -26,12 +27,16 @@ signal weapon_change_started
 signal weapon_changed
 signal attack_started
 signal attack_ended
+var secondary_action
 
 # Gadgets and guarding
+@export var gadget_system : EquipmentSystem
+var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
-signal gadget_ended
+signal gadget_activated
+signal gadget_deactivated
 @onready var guarding = false
 
 # Jump and Gravity
@@ -78,6 +83,10 @@ func _ready():
 		weapon_system.equipment_changed.connect(update_weapon)
 		update_weapon(weapon_system.current_equipment)
 		
+	if gadget_system:
+		gadget_system.equipment_changed.connect(update_gadget)
+		update_gadget(gadget_system.current_equipment)
+		
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -104,6 +113,10 @@ func _input(_event:InputEvent):
 	if !Input.is_anything_pressed():
 		current_camera = get_viewport().get_camera_3d()
 	
+	if Input.is_action_pressed("secondary_action"):
+		secondary_action = true
+	else:
+		secondary_action = false
 	
 	if current_state == state.FREE:
 		if is_on_floor():
@@ -113,9 +126,11 @@ func _input(_event:InputEvent):
 			
 			elif _event.is_action_pressed("jump"):
 				jump()
-			
 			elif _event.is_action_pressed("use_weapon"):
-				attack()
+				if secondary_action:
+					attack()
+				else:
+					attack()
 			# dodge
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge()
@@ -124,14 +139,16 @@ func _input(_event:InputEvent):
 				weapon_change()
 			elif _event.is_action_pressed("change_secondary"):
 				gadget_change()
-			elif Input.is_action_pressed("use_gadget"):
-				start_guard()
+
+			elif _event.is_action_pressed("use_gadget"): 
+				if secondary_action:
+					use_gadget()
+				else:
+					start_guard()
 
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
-
-
 
 	if current_state == state.DYNAMIC_ACTION:
 		if _event.is_action_released("use_gadget"):
@@ -232,9 +249,9 @@ func attack():
 		await anim_state_tree.animation_started
 		var attack_duration = anim_length
 		attack_started.emit(anim_length)
-		await get_tree().create_timer(attack_duration *.45).timeout
+		await get_tree().create_timer(attack_duration *.4).timeout
 		dash()
-		await get_tree().create_timer(attack_duration *.3).timeout
+		await get_tree().create_timer(attack_duration *.4).timeout
 		attack_ended.emit()
 	else:
 		attack_started.emit(.1)
@@ -340,7 +357,7 @@ func exit_ladder(exit_loc):
 
 func update_animation_length(new_length):
 	anim_length = new_length - .05 # offset slightly for the process frame
-	print("Anim Length: " + str(anim_length))
+	#print("Anim Length: " + str(anim_length))
 
 func update_interact(int_bottom, int_top):
 	## This updates the interactable objects and
@@ -401,8 +418,12 @@ func weapon_change():
 	
 func update_weapon(_new_weapon:WeaponObject):
 	weapon_type = _new_weapon.equipment_info.object_type
-	print(weapon_type)
+
 	
+func update_gadget(_new_gadget:GadgetObject):
+	gadget_type = _new_gadget.equipment_info.object_type
+
+
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
 	gadget_change_started.emit()
@@ -422,3 +443,23 @@ func start_guard():
 func end_guard():
 	guarding = false
 	current_state = state.FREE
+
+func use_gadget():
+	current_state = state.STATIC_ACTION
+	speed = 0.0
+	gadget_started.emit()
+	if anim_state_tree:
+		await anim_state_tree.animation_started
+		var attack_duration = anim_length
+		gadget_activated.emit(anim_length)
+		await get_tree().create_timer(attack_duration *.45).timeout
+		dash()
+		await get_tree().create_timer(attack_duration *.3).timeout
+		gadget_deactivated.emit()
+	else:
+		gadget_activated.emit(.1)
+		await get_tree().create_timer(.3).timeout
+		dash()
+		gadget_deactivated.emit()
+	if current_state == state.STATIC_ACTION:
+		current_state = state.FREE

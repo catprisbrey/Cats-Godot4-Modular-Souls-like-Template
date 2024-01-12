@@ -50,7 +50,6 @@ func change_equipment():
 		
 		
 func activate(_anim_time):
-	print("object activated")
 	current_equipment.activate(_anim_time)
 
 func deactivate():

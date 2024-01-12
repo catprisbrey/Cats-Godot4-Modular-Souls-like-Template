@@ -19,8 +19,9 @@ func _ready():
 	player_node.changed_state.connect(update_state)
 	player_node.door_started.connect(set_door)
 	player_node.gate_started.connect(set_gate)
-	player_node.weapon_change_started.connect(set_weapon)
-	player_node.gadget_change_started.connect(set_gadget)
+	player_node.weapon_change_started.connect(change_weapon)
+	player_node.gadget_change_started.connect(change_gadget)
+	player_node.gadget_started.connect(set_gadget)
 
 func update_state(_new_state):
 	pass
@@ -42,15 +43,21 @@ func _process(_delta):
 func request_oneshot(oneshot:String):
 	set("parameters/" + oneshot + "/request",true)
 
-
 func set_guarding():
 	if player_node.guarding:
 		guard_value = 1
 	else:
 		guard_value = 0
-	var new_blend = lerp(get("parameters/Guarding/blend_amount"),guard_value,.4)
+	var new_blend = lerp(get("parameters/Guarding/blend_amount"),guard_value,.2)
 	set("parameters/Guarding/blend_amount", new_blend)
 
+func set_gadget():
+	match player_node.gadget_type:
+		"SHIELD":
+			request_oneshot("ShieldBash")
+		"TORCH":
+			request_oneshot("SlashL")
+			
 func set_dodge(dodge_dir):
 	match dodge_dir:
 		"FORWARD":
@@ -68,10 +75,10 @@ func set_gate():
 func set_jump():
 	request_oneshot("Jump")
 
-func set_weapon():
+func change_weapon():
 	request_oneshot("WeaponChange")
 
-func set_gadget():
+func change_gadget():
 	request_oneshot("GadgetChange")
 
 func set_ladder_start(top_or_bottom):
