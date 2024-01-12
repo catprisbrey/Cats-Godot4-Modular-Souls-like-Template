@@ -9,8 +9,8 @@ class_name CharacterBodySoulsBase
 
 # This target aids strafe rotation when alternating between cameras, but the 
 # default/1st camera is a follow cam.
-@onready var orientation_target = current_camera
 @onready var current_camera = get_viewport().get_camera_3d()
+@onready var orientation_target = current_camera
 
 # Sensing interactable objects
 @export var interact_sensor : Node3D

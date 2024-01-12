@@ -91,7 +91,7 @@ func set_strafe():
 	#var new_dir = player_node.input_dir.y - player_node.input_dir.x
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
-		new_blend *= .5 
+		new_blend *= .4 
 	lerp_movement = get("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
 	set("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
