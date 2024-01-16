@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=28 format=3 uid="uid://ccuwa5g83o4ev"]
 
+[ext_resource type="Script" path="res://test_attacker.gd" id="1_08kqi"]
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
@@ -47,6 +48,90 @@ data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0,
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_my86n"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_castw"]
+size = Vector3(4, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wksfq"]
+size = Vector3(4, 0.05, 0.4)
+
+[sub_resource type="Animation" id="Animation_7qud4"]
+resource_name = "spin"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("weapon:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n7kig"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("weapon:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("weapon:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_bstj4"]
+resource_name = "parried"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("weapon:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.28319, 0.462512), Vector3(0, 6.19592, 0.462512), Vector3(0, 6.28319, 0.462512), Vector3(0, 6.19592, 0.462512), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("weapon:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_25hqk"]
+_data = {
+"RESET": SubResource("Animation_n7kig"),
+"parried": SubResource("Animation_bstj4"),
+"spin": SubResource("Animation_7qud4")
+}
+
 [sub_resource type="PrismMesh" id="PrismMesh_e8mbl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbidk"]
@@ -93,6 +178,23 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_my86n")
+
+[node name="weapon" type="Area3D" parent="Baddy2"]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0, 0.934518, 0)
+collision_mask = 2
+script = ExtResource("1_08kqi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy2/weapon"]
+shape = SubResource("BoxShape3D_castw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy2/weapon"]
+mesh = SubResource("BoxMesh_wksfq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Baddy2"]
+deterministic = true
+libraries = {
+"": SubResource("AnimationLibrary_25hqk")
+}
 
 [node name="Baddy3" type="CharacterBody3D" parent="." groups=["Targets"]]
 transform = Transform3D(0.795558, 0, -0.605877, 0, 1, 0, 0.605877, 0, 0.795558, -5.35772, 0, 9.52317)
@@ -147,3 +249,5 @@ transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.07872
 
 [node name="Player" parent="." instance=ExtResource("1_k2mnc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6101, 0, -0.316795)
+
+[connection signal="body_entered" from="Baddy2/weapon" to="Baddy2/weapon" method="_on_body_entered"]

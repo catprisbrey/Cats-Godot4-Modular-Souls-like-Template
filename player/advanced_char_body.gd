@@ -1,43 +1,65 @@
 extends CharacterBody3D
 class_name CharacterBodySoulsBase
-
 ## A semi-smart character controller. Will detect the current camera in use
 ## and update control orientation to match it. Strafing will lock rotation to
 ## to face camera perspective, except for dodging actions.
+
+## Manages all animations generally pulling info it needs from states and substates.
 @export var anim_state_tree : AnimationTree
+#### When the anim_state_tree starts a new animatino, this variable updates with it's length
 @onready var anim_length = .5
 
-# This target aids strafe rotation when alternating between cameras, but the 
-# default/1st camera is a follow cam.
+
+## default/1st camera is a follow cam.
 @onready var current_camera = get_viewport().get_camera_3d()
+## Aids strafe rotation when alternating between cameras
 @onready var orientation_target = current_camera
 
-# Sensing interactable objects
+## Sensing interactable objects, like ladders, doors, etc. 
 @export var interact_sensor : Node3D
+## The sensor that spotted the object, TOP sensor, or BOTTOM sensor.
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
+## The newly sensed interactable node.
 @onready var interactable
 signal door_started
 signal gate_started
 
 
-# Weapons and attacking
+## Weapons and attacking equipment system that manages moving nodes from the 
+## attacking hand, to their sheathed location
 @export var weapon_system : EquipmentSystem
+## A helper variable, tracks the current weapon type for easier referencing fro
+## the anim_state_tree
 var weapon_type :String = "SLASH"
 signal weapon_change_started
 signal weapon_changed
 signal attack_started
 signal attack_ended
+## A helper variable for inputs across 2 key inputs "shift+ attack", etc.
 var secondary_action
 
-# Gadgets and guarding
+## Gadgets and guarding equipment system that manages moving nodes from the 
+## off-hand, to their hip location
 @export var gadget_system : EquipmentSystem
+## A helper variable, tracks the current gadget type for easier referencing fro
+## the anim_state_tree
 var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
 signal gadget_activated
 signal gadget_deactivated
+## When guarding this substate is true
 @onready var guarding = false
+## The first moments of guarding, the parry window is active, allowing to parry()
+## attacks and avoid damage
+@onready var can_be_hurt = true
+@onready var parry_active = false
+var parry_window = .3
+signal parry_started
+signal block_started
+signal hurt_started
+
 
 # Jump and Gravity
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -74,18 +96,18 @@ signal changed_state
 
 func _ready():
 	if anim_state_tree:
-		anim_state_tree.animation_measured.connect(update_animation_length)
+		anim_state_tree.animation_measured.connect(_on_animation_measured)
 
 	if interact_sensor:
-		interact_sensor.interact_updated.connect(update_interact)
+		interact_sensor.interact_updated.connect(_on_interact_updated)
 		
 	if weapon_system:
-		weapon_system.equipment_changed.connect(update_weapon)
-		update_weapon(weapon_system.current_equipment)
+		weapon_system.equipment_changed.connect(_on_weapon_equipment_changed)
+		_on_weapon_equipment_changed(weapon_system.current_equipment)
 		
 	if gadget_system:
-		gadget_system.equipment_changed.connect(update_gadget)
-		update_gadget(gadget_system.current_equipment)
+		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
+		_on_gadget_equipment_changed(gadget_system.current_equipment)
 		
 func change_state(new_state):
 	current_state = new_state
@@ -128,7 +150,7 @@ func _input(_event:InputEvent):
 				jump()
 			elif _event.is_action_pressed("use_weapon"):
 				if secondary_action:
-					attack()
+					attack(secondary_action)
 				else:
 					attack()
 			# dodge
@@ -150,12 +172,9 @@ func _input(_event:InputEvent):
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
 
-	if current_state == state.DYNAMIC_ACTION:
-		if _event.is_action_released("use_gadget"):
+	if _event.is_action_released("use_gadget"):
 			end_guard()
 		
-
-
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	match current_state:
@@ -235,36 +254,32 @@ func strafe_targeting():
 	strafing = !strafing
 	strafe_toggled.emit(strafing)
 
+## calculate and return the direction of movement oriented to the current camera
 func calc_direction():
-	# calculate and return the direction of movement oriented to the current camera
 	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)
 	var horizontal_vector = Vector3(1, 0, 0).rotated(Vector3.UP, current_camera.global_rotation.y)
 	var new_direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
 	return new_direction
 
-func attack():
+func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
-	speed = 0.0
-	if anim_state_tree:
+	anim_length = .3
+	if anim_state_tree: 
+		# anim_length will be updated by the animation_started signal
 		await anim_state_tree.animation_started
-		var attack_duration = anim_length
-		attack_started.emit(anim_length)
-		await get_tree().create_timer(attack_duration *.4).timeout
-		dash()
-		await get_tree().create_timer(attack_duration *.4).timeout
-		attack_ended.emit()
-	else:
-		attack_started.emit(.1)
-		await get_tree().create_timer(.3).timeout
-		dash()
-		attack_ended.emit()
+	attack_started.emit(anim_length,_is_special_attack)
+	await get_tree().create_timer(anim_length *.4).timeout
+	dash()
+	await get_tree().create_timer(anim_length *.3).timeout
+	attack_ended.emit()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
+
+
 
 func air_attack():
 	current_state = state.AIRATTACK
 	
-
 func air_movement():
 	move_and_slide()
 	if is_on_floor():
@@ -293,8 +308,8 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 func dodge(): 
 	# Burst of speed toward an input direction, or backwards
 	current_state = state.DODGE
+	can_be_hurt = false
 	var dodge_duration : float = .5
-	speed = dodge_speed
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
 		dodge_started.emit("FORWARD")
@@ -309,6 +324,7 @@ func dodge():
 	await get_tree().create_timer(dodge_duration).timeout
 	dodge_ended.emit()
 	current_state = state.FREE
+	can_be_hurt = true
 	speed = default_speed
 	direction = Vector3.ZERO
 		
@@ -355,22 +371,22 @@ func exit_ladder(exit_loc):
 	await tween.finished
 	current_state = state.FREE
 
-func update_animation_length(new_length):
-	anim_length = new_length - .05 # offset slightly for the process frame
+func _on_animation_measured(_new_length):
+	anim_length = _new_length - .05 # offset slightly for the process frame
 	#print("Anim Length: " + str(anim_length))
 
-func update_interact(int_bottom, int_top):
+func _on_interact_updated(_int_bottom, _int_top):
 	## This updates the interactable objects and
 	## which sensor spotted it if you have an 
 	## if an interact sensor added to the export.
-	if int_bottom && int_top:
-		interactable = int_bottom
+	if _int_bottom && _int_top:
+		interactable = _int_bottom
 		interact_loc = "BOTH"
-	elif int_bottom && int_top == null:
-		interactable = int_bottom
+	elif _int_bottom && _int_top == null:
+		interactable = _int_bottom
 		interact_loc = "BOTTOM"
-	elif int_bottom == null && int_top:
-		interactable = int_top
+	elif _int_bottom == null && _int_top:
+		interactable = _int_top
 		interact_loc = "TOP"
 	else:
 		interactable = null
@@ -416,13 +432,11 @@ func weapon_change():
 	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
 	
-func update_weapon(_new_weapon:WeaponObject):
+func _on_weapon_equipment_changed(_new_weapon:WeaponObject):
 	weapon_type = _new_weapon.equipment_info.object_type
 
-	
-func update_gadget(_new_gadget:GadgetObject):
+func _on_gadget_equipment_changed(_new_gadget:GadgetObject):
 	gadget_type = _new_gadget.equipment_info.object_type
-
 
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
@@ -438,10 +452,16 @@ func gadget_change():
 
 func start_guard():
 	guarding = true
+	parry_active = true
+	print("parry active")
 	current_state = state.DYNAMIC_ACTION
+	await get_tree().create_timer(parry_window).timeout
+	print("parry inactive")
+	parry_active = false
 	
 func end_guard():
 	guarding = false
+	parry_active = false
 	current_state = state.FREE
 
 func use_gadget():
@@ -463,3 +483,46 @@ func use_gadget():
 		gadget_deactivated.emit()
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
+
+func hit(_attacker:Node3D):
+	if can_be_hurt:
+		if parry_active:
+			parry()
+			if _attacker.has_method("parried"):
+				_attacker.parried()
+			return
+		elif guarding:
+			block()
+		else:
+			hurt()
+
+func block():
+	current_state = state.STATIC_ACTION
+	block_started.emit()
+	anim_length = .4
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	current_state = state.FREE
+
+func parry():
+	current_state = state.STATIC_ACTION
+	can_be_hurt = false
+	parry_started.emit()
+	anim_length = .4
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	current_state = state.FREE
+	can_be_hurt = true
+
+func hurt():
+	current_state = state.STATIC_ACTION
+	can_be_hurt = false
+	hurt_started.emit()
+	anim_length = .4
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	current_state = state.FREE
+	can_be_hurt = true

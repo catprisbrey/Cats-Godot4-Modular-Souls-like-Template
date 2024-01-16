@@ -7,7 +7,6 @@ class_name GadgetObject
 @onready var equipped = false : set = update_equipped
 signal equipped_changed
 
-
 func _ready():
 	set_collision_mask_value(3,true)
 	set_collision_layer_value(1,false)
@@ -18,11 +17,9 @@ func activate(_anim_time):
 	await get_tree().create_timer(_anim_time*.3).timeout
 	# turn on object col shape to detect collisions
 	monitoring = true
-	print("Object active")
 	
 func deactivate():
 	monitoring = false
-	print("Object inactive")
 
 func update_equipped(_new_value):
 	equipped = _new_value

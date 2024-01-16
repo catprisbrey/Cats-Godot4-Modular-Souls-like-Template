@@ -18,9 +18,9 @@ signal equipment_changed
 
 func _ready():
 	if player_node:
-		player_node.connect(change_signal,change_equipment)
-		player_node.connect(activate_signal,activate)
-		player_node.connect(deactivate_signal,deactivate)
+		player_node.connect(change_signal,_on_equipment_changed)
+		player_node.connect(activate_signal,_on_action_started)
+		player_node.connect(deactivate_signal,_on_action_ended)
 		
 	if held_mount_point.get_child(0):
 		current_equipment = held_mount_point.get_child(0)
@@ -31,7 +31,7 @@ func _ready():
 		stored_equipment.equipped = false
 
 	
-func change_equipment():
+func _on_equipment_changed():
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
 		stored_equipment = stored_mount_point.get_child(0)
 		
@@ -49,8 +49,8 @@ func change_equipment():
 		print("New equipment: " + str(current_equipment))
 		
 		
-func activate(_anim_time):
-	current_equipment.activate(_anim_time)
+func _on_action_started(_anim_time,_is_special_attack):
+	current_equipment.activate(_anim_time,_is_special_attack)
 
-func deactivate():
+func _on_action_ended():
 	current_equipment.deactivate()
