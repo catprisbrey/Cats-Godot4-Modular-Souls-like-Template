@@ -69,13 +69,15 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 signal jump_started
 
 # Dodge Mechanics
-@export var dodge_speed = 9.0
+@export var dodge_speed = 8.0
+@onready var sprint_timer = Timer.new()
+@export var sprint_speed = 7.0
 signal dodge_started
 signal dodge_ended
-
+signal sprint_started
 # Movement Mechanics
 var input_dir : Vector2
-@export var default_speed = 5.0
+@export var default_speed = 4.0
 @export var walk_speed = 1.0
 @onready var speed = default_speed
 var direction = Vector3.ZERO
@@ -92,7 +94,7 @@ signal ladder_started
 signal ladder_finished
 
 # State management
-enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,LADDER,ATTACK,AIRATTACK}
+enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
 @onready var current_state = state.FREE : set = change_state
 signal changed_state
 
@@ -111,6 +113,9 @@ func _ready():
 		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
 		
+	add_child(sprint_timer)
+	sprint_timer.one_shot = true
+		
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -122,6 +127,8 @@ func change_state(new_state):
 			speed = climb_speed
 		state.DODGE:
 			speed = dodge_speed
+		state.SPRINT:
+			speed = sprint_speed
 		state.DYNAMIC_ACTION:
 			speed = walk_speed
 
@@ -157,6 +164,10 @@ func _input(_event:InputEvent):
 					attack()
 			# dodge
 			elif _event.is_action_pressed("dodge_dash"):
+				dodge_or_sprint()
+				
+			elif _event.is_action_released("dodge_dash") \
+			&& sprint_timer.time_left:
 				dodge()
 			
 			elif _event.is_action_pressed("change_primary"):
@@ -178,11 +189,18 @@ func _input(_event:InputEvent):
 
 	if _event.is_action_released("use_gadget"):
 			end_guard()
+	
+	elif _event.is_action_released("dodge_dash"):
+		end_sprint()
 		
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	match current_state:
 		state.FREE:
+			rotate_player()
+			free_movement()
+
+		state.SPRINT:
 			rotate_player()
 			free_movement()
 			
@@ -305,6 +323,18 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	direction = Vector3.ZERO
 	velocity = direction * speed
 	move_and_slide()
+
+func dodge_or_sprint():
+	if sprint_timer.is_stopped():
+		sprint_timer.start(.3)
+		await sprint_timer.timeout
+		if current_state == state.FREE:
+			current_state = state.SPRINT
+			sprint_started.emit()
+		
+func end_sprint():
+	if current_state == state.SPRINT:
+		current_state = state.FREE
 		
 func dodge(): 
 	# Burst of speed toward an input direction, or backwards

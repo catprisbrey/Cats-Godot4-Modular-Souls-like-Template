@@ -28,6 +28,7 @@ func _ready():
 	player_node.block_started.connect(_on_block_started)
 	player_node.use_item_started.connect(_on_use_item_started)
 	player_node.death_started.connect(_on_death_started)
+	player_node.sprint_started.connect(_on_sprint_started)
 	
 	animation_player_node = get_node(anim_player)
 func _on_changed_state(_new_state):
@@ -42,7 +43,7 @@ func _process(_delta):
 		
 	if player_node.current_state == player_node.state.LADDER:
 		set_ladder()
-	
+		
 	set_guarding()
 
 func request_oneshot(oneshot:String):
@@ -79,6 +80,9 @@ func _on_gadget_started():
 		"TORCH":
 			request_oneshot("SlashL")
 			
+func _on_sprint_started():
+	base_state_machine.travel("Sprint")
+	
 func _on_dodge_started(dodge_dir):
 	match dodge_dir:
 		"FORWARD":
