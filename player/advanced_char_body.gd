@@ -483,7 +483,7 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 
-func hit(_attacker:Node3D, weapon_stats = null):
+func hit(_attacker:Node3D, _weapon_stats = null):
 	if can_be_hurt:
 		if parry_active:
 			parry()
@@ -532,7 +532,7 @@ func hurt():
 func use_item():
 	current_state = state.DYNAMIC_ACTION
 	use_item_started.emit()
-	var anim_length = 1.0
+	anim_length = .5
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout

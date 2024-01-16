@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://bbwrvilne1py1"]
 
-[ext_resource type="Script" path="res://GadgetObject.gd" id="1_asltl"]
+[ext_resource type="Script" path="res://gadget_object.gd" id="1_asltl"]
 [ext_resource type="Script" path="res://gadget_resource.gd" id="2_g3xdk"]
 [ext_resource type="Script" path="res://weapons/TorchFlame.gd" id="3_itn8w"]
 

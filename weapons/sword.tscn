@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dva7owhrl4wew"]
 
-[ext_resource type="Script" path="res://weapons/WeaponObject.gd" id="1_dfitp"]
+[ext_resource type="Script" path="res://weapons/weapon_object.gd" id="1_dfitp"]
 [ext_resource type="Script" path="res://resources/WeaponResource.gd" id="2_camfr"]
 
 [sub_resource type="Resource" id="Resource_a44ms"]
