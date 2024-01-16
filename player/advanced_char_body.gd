@@ -68,13 +68,14 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
 signal jump_started
 
-# Dodge Mechanics
+## Dodge and Sprint Mechanics.
 @export var dodge_speed = 8.0
 @onready var sprint_timer = Timer.new()
 @export var sprint_speed = 7.0
 signal dodge_started
 signal dodge_ended
 signal sprint_started
+
 # Movement Mechanics
 var input_dir : Vector2
 @export var default_speed = 4.0
@@ -94,8 +95,8 @@ signal ladder_started
 signal ladder_finished
 
 # State management
-enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
-@onready var current_state = state.FREE : set = change_state
+enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
+@onready var current_state = state.SPAWN : set = change_state
 signal changed_state
 
 func _ready():
@@ -115,7 +116,10 @@ func _ready():
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
-		
+	
+	await get_tree().create_timer(2).timeout
+	current_state = state.FREE
+	
 func change_state(new_state):
 	current_state = new_state
 	print("current state is " + str(current_state))
@@ -133,6 +137,7 @@ func change_state(new_state):
 			speed = walk_speed
 
 func _input(_event:InputEvent):
+
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
