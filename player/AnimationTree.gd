@@ -26,6 +26,8 @@ func _ready():
 	player_node.parry_started.connect(_on_parry_started)
 	player_node.hurt_started.connect(_on_hurt_started)
 	player_node.block_started.connect(_on_block_started)
+	player_node.use_item_started.connect(_on_use_item_started)
+	player_node.death_started.connect(_on_death_started)
 	
 	animation_player_node = get_node(anim_player)
 func _on_changed_state(_new_state):
@@ -61,9 +63,14 @@ func _on_block_started():
 	request_oneshot("Block")
 
 func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
-	
 	var randi_hurt = randi_range(1,2)
 	request_oneshot("Hurt"+ str(randi_hurt))
+
+func _on_death_started():
+	base_state_machine.travel("Death")
+
+func _on_use_item_started():
+	request_oneshot("UseItem")
 
 func _on_gadget_started():
 	match player_node.gadget_type:

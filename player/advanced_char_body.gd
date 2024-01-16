@@ -59,7 +59,9 @@ var parry_window = .3
 signal parry_started
 signal block_started
 signal hurt_started
+signal death_started
 
+signal use_item_started
 
 # Jump and Gravity
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -167,7 +169,9 @@ func _input(_event:InputEvent):
 					use_gadget()
 				else:
 					start_guard()
-
+			
+			elif _event.is_action_pressed("use_item"): 
+				use_item()
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
@@ -223,7 +227,6 @@ func free_movement():
 		velocity.z = move_toward(velocity.z, 0, .5)
 	move_and_slide()
 	
-	
 func rotate_player():
 	var target_rotation
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
@@ -274,8 +277,6 @@ func attack(_is_special_attack : bool = false):
 	attack_ended.emit()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
-
-
 
 func air_attack():
 	current_state = state.AIRATTACK
@@ -450,13 +451,11 @@ func gadget_change():
 	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
 
-func start_guard():
+func start_guard(): # Guarding, and for a short window, parring is possible
 	guarding = true
 	parry_active = true
-	print("parry active")
 	current_state = state.DYNAMIC_ACTION
 	await get_tree().create_timer(parry_window).timeout
-	print("parry inactive")
 	parry_active = false
 	
 func end_guard():
@@ -464,7 +463,7 @@ func end_guard():
 	parry_active = false
 	current_state = state.FREE
 
-func use_gadget():
+func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
 	current_state = state.STATIC_ACTION
 	speed = 0.0
 	gadget_started.emit()
@@ -484,7 +483,7 @@ func use_gadget():
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 
-func hit(_attacker:Node3D):
+func hit(_attacker:Node3D, weapon_stats = null):
 	if can_be_hurt:
 		if parry_active:
 			parry()
@@ -503,7 +502,8 @@ func block():
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	current_state = state.FREE
+	if current_state == state.STATIC_ACTION:
+		current_state = state.FREE
 
 func parry():
 	current_state = state.STATIC_ACTION
@@ -513,7 +513,8 @@ func parry():
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	current_state = state.FREE
+	if current_state == state.STATIC_ACTION:
+		current_state = state.FREE
 	can_be_hurt = true
 
 func hurt():
@@ -524,5 +525,23 @@ func hurt():
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	current_state = state.FREE
+	if current_state == state.STATIC_ACTION:
+		current_state = state.FREE
 	can_be_hurt = true
+
+func use_item():
+	current_state = state.DYNAMIC_ACTION
+	use_item_started.emit()
+	var anim_length = 1.0
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	if current_state == state.DYNAMIC_ACTION:
+		current_state = state.FREE
+
+func death():
+	current_state = state.STATIC_ACTION
+	can_be_hurt = false
+	death_started.emit()
+	await get_tree().create_timer(3).timeout
+	

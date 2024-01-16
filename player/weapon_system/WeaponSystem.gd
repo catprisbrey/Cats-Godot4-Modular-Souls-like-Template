@@ -12,8 +12,9 @@ signal equipment_changed
 @export var held_mount_point : Node3D
 ## The secondary item location. Recommend to be a child node of a bone attachement
 @export var stored_mount_point : Node3D
-## The item currently in under the held mount point
+## The item currently in under the held mount node
 @onready var current_equipment : Node3D
+## The item currently under the stored/sheathed node
 @onready var stored_equipment : Node3D
 
 func _ready():
