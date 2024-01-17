@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=32 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="Script" path="res://test_attacker.gd" id="1_08kqi"]
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
@@ -20,6 +20,10 @@ sky_material = SubResource("ProceduralSkyMaterial_iyfyb")
 background_mode = 2
 sky = SubResource("Sky_8b3gf")
 tonemap_mode = 2
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_hnb2x"]
+vertices = PackedVector3Array(-5.5, 0.5, -16, -3.75, 0.5, -16.25, -4, 0.5, -24.5, -24.5, 0.5, -24.5, -24.5, 0.5, -7.25, -5.5, 0.5, -7.25, -5.5, 0.5, -16, -24.5, 0.5, -24.5, -3.75, 0.5, -16.25, 4, 0.5, -16.25, 4.25, 0.5, -24.5, -4, 0.5, -24.5, 4.25, 0.5, -24.5, 4, 0.5, -16.25, 5.75, 0.5, -16, 24.5, 0.5, -24.5, 5.75, 0.5, -16, 5.75, 0.5, -6.75, 24.5, 0.5, -6.5, 24.5, 0.5, -24.5, -4.5, 5.5, -15.25, -4.5, 5.5, -6, 4.5, 5.5, -6, 4.5, 5.5, -15.25, -3.75, 0.5, -14.25, -3.75, 0.5, -6.5, 4, 0.5, -6.5, 4, 0.5, -14.25, -3.75, -4, -14.25, -3.75, -4, -6.5, 4, -4, -6.5, 4, -4, -14.25, -5.5, 0.5, -5.25, -5.5, 0.5, -7.25, -24.5, 0.5, -7.25, -5, 0.5, -5, -5.5, 0.5, -5.25, -24.5, 0.5, -7.25, -24.5, 0.5, 24.5, -5, 0.5, 24.5, 24.5, 0.5, -6.5, 5.75, 0.5, -6.75, 5.75, 0.5, -5.25, 24.5, 0.5, -6.5, 5.75, 0.5, -5.25, 5.25, 0.5, -5, 5.25, 0.5, 24.5, 24.5, 0.5, 24.5, -5, 0.5, -5, -5, 0.5, 24.5, 5.25, 0.5, 24.5, 5.25, 0.5, -5)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(8, 11, 9), PackedInt32Array(9, 11, 10), PackedInt32Array(13, 12, 14), PackedInt32Array(14, 12, 15), PackedInt32Array(17, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25), PackedInt32Array(31, 30, 28), PackedInt32Array(28, 30, 29), PackedInt32Array(34, 33, 32), PackedInt32Array(36, 35, 37), PackedInt32Array(37, 35, 39), PackedInt32Array(37, 39, 38), PackedInt32Array(42, 41, 40), PackedInt32Array(44, 43, 45), PackedInt32Array(45, 43, 46), PackedInt32Array(46, 43, 47), PackedInt32Array(51, 50, 48), PackedInt32Array(48, 50, 49)]
 
 [sub_resource type="Gradient" id="Gradient_ubt8b"]
 offsets = PackedFloat32Array(0.246032, 1)
@@ -154,13 +158,45 @@ environment = SubResource("Environment_jiblg")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Floor" type="MeshInstance3D" parent="."]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_hnb2x")
+
+[node name="Floor" type="MeshInstance3D" parent="NavigationRegion3D"]
 mesh = SubResource("PlaneMesh_ng31s")
+skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/Floor"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_7h28q")
+
+[node name="Building" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5276)
+use_collision = true
+size = Vector3(10, 10, 10)
+
+[node name="interior" type="CSGBox3D" parent="NavigationRegion3D/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11462)
+operation = 2
+use_collision = true
+size = Vector3(9, 9, 9)
+
+[node name="doorways" type="CSGBox3D" parent="NavigationRegion3D/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02226, 0.0776777)
+operation = 2
+use_collision = true
+size = Vector3(1, 2, 11)
+
+[node name="doorways2" type="CSGBox3D" parent="NavigationRegion3D/Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33602, 1.02226, 0.0776777)
+operation = 2
+use_collision = true
+size = Vector3(1, 2, 11)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(0.993758, 0.111556, 0, -0.111556, 0.993758, 0, 0, 0, 1, -4.64165, 0, 0)
+use_collision = true
+size = Vector3(10, 1, 5)
 
 [node name="Baddy" type="CharacterBody3D" parent="." groups=["Targets"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57432, 0, 9.66363)
@@ -218,29 +254,6 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_xbidk")
-
-[node name="Building" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.5276)
-use_collision = true
-size = Vector3(10, 10, 10)
-
-[node name="interior" type="CSGBox3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11462)
-operation = 2
-use_collision = true
-size = Vector3(9, 9, 9)
-
-[node name="doorways" type="CSGBox3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02226, 0.0776777)
-operation = 2
-use_collision = true
-size = Vector3(1, 2, 11)
-
-[node name="doorways2" type="CSGBox3D" parent="Building"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33602, 1.02226, 0.0776777)
-operation = 2
-use_collision = true
-size = Vector3(1, 2, 11)
 
 [node name="Ladderv2" parent="." instance=ExtResource("8_30vqq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.20462, 0, -5.52359)

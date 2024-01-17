@@ -31,6 +31,7 @@ func eyeline_check():
 			if potential_target == new_vista:
 				target_spotted.emit(potential_target)
 
+
 ## When a player body is in the field of view, check if they're in
 ## the enemy's eyeline, and if so, mark them as the current target
 func _on_body_entered(_body):
