@@ -85,8 +85,8 @@ var direction = Vector3.ZERO
 
 # Strafing
 var strafing :bool = false
-var strafe_cross_product
-var move_dot_product
+@onready var strafe_cross_product = 0.0
+@onready var move_dot_product = 0.0
 signal strafe_toggled
 
 # Climbing

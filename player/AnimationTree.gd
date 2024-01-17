@@ -2,7 +2,6 @@ extends AnimationTree
 class_name AnimationTreeSoulsBase
 
 @export var player_node : CharacterBody3D
-@onready var animation_player_node : AnimationPlayer
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
@@ -13,6 +12,7 @@ signal animation_measured
 func _ready():
 	if !player_node:
 		push_warning("Player node must be set")
+		
 	player_node.dodge_started.connect(_on_dodge_started)
 	player_node.jump_started.connect(_on_jump_started)
 	player_node.ladder_started.connect(_on_ladder_start)
@@ -30,7 +30,6 @@ func _ready():
 	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
 	
-	animation_player_node = get_node(anim_player)
 func _on_changed_state(_new_state):
 	pass
 

@@ -1,16 +1,19 @@
 extends Node3D
 class_name TargetingSystem
 
-## Detect is on layer 3. A center_eye finds the most center target. That 
+## Detect is on layer 3. A set of eyes detect potential targets. And a raycast 
+## confirms they are in the eyeline (to not target through walls).
+## A center_eye finds the most center target. If the eyeline collides, that 
 ## body is emitted in a signal "target_found". Connect that wherever is useful.
 ## Each eye keeps an updating array lists of all targets one either side.
 ## Motioning right or left signals nodes from either eye list.
 ## Both groups and mask layers determine if targets will be found.
-## This works best when added as a child to the player, and not the camera.
+## This works best when added as a child to the player, or a following camera.
 
 @onready var left_eye : Area3D= $LeftEye
 @onready var right_eye : Area3D = $RightEye
 @onready var center_eye : Area3D = $CenterEye
+@onready var eyeline = $Eyeline
 
 var left_list : Array = []
 var right_list : Array = []
@@ -26,6 +29,7 @@ func _ready():
 	center_eye.set_collision_mask_value(target_detection_layer_mask,true)
 	left_eye.set_collision_mask_value(target_detection_layer_mask, true)
 	right_eye.set_collision_mask_value(target_detection_layer_mask, true)
+	eyeline.set_collision_mask_value(target_detection_layer_mask,true)
 # Called when the node enters the scene tree for the first time.
 
 func _update_targets():
@@ -40,6 +44,15 @@ func _filter_body(body):
 	# returns true of the bodies are in the target group.
 	if body.is_in_group(target_group_name):
 		return true
+		
+func eyeline_check(_new_target):
+	if _new_target:
+		eyeline.look_at(_new_target.global_position + Vector3.UP,Vector3.UP,false)
+		await get_tree().process_frame
+		if eyeline.is_colliding():
+			if eyeline.get_collider() == _new_target:
+				target_found.emit(_new_target)
+				print("target found!: " + str(_new_target))
 
 func _get_closest():
 	## Attempts to find a target close to center screen
@@ -49,7 +62,7 @@ func _get_closest():
 	
 	var first_target = get_target(center_list)
 	if first_target: ## prioritize a target center screen
-		target_found.emit(first_target)
+		eyeline_check(first_target)
 
 	else: ## otherwise, get targets from side eyes and pick one.
 		_update_targets()
@@ -60,7 +73,7 @@ func _get_closest():
 				first_target = new_list[0]
 			else:
 				first_target = new_list[1]
-			target_found.emit(first_target)
+			eyeline_check(first_target)
 
 			
 func change_target(new_direction,_delay):
@@ -75,7 +88,7 @@ func change_target(new_direction,_delay):
 	elif new_direction == 1:
 		new_target = get_target(right_list)
 	if new_target:
-		target_found.emit(new_target)
+		eyeline_check(new_target)
 	await get_tree().create_timer(_delay).timeout
 	
 	
