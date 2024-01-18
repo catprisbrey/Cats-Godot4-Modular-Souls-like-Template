@@ -20,12 +20,13 @@ extends CharacterBody3D
 @export var walk_speed = 1.25
 @export var run_speed = 3.0
 @export var dash_speed = 9.0
-@onready var turn_speed = 1.5
+@onready var turn_speed = .1
 
 @onready var attacking = false
 signal attack_started
 signal attack_ended
 
+@onready var retreating = false
 signal retreat_started
 signal retreat_ended
 
@@ -78,12 +79,14 @@ func _physics_process(_delta):
 			if is_on_floor():
 				navigation()
 				rotate_character()
-				move_and_slide()
+				free_movement()
 		state.ALERT:
 			if is_on_floor():
 				navigation()
 				rotate_character()
-				move_and_slide()
+				free_movement()
+				combat_logic()
+				
 		state.ATTACK:
 			dash_movement()
 			
@@ -107,6 +110,12 @@ func _on_target_lost():
 	chase_timer.start()
 
 func _on_chase_timer_timeout():
+	give_up()
+	
+func give_up():
+	current_state = state.DYNAMIC_ACTION
+	speed = 0.0
+	await get_tree().create_timer(2).timeout
 	target = default_target
 	
 func apply_gravity(_delta):
@@ -120,8 +129,11 @@ func navigation():
 		var new_dir = (navigation_agent_3d.get_next_path_position() - global_position).normalized()
 		new_dir *= Vector3(1,0,1) # strip the y value so enemy stays on floor
 		direction = new_dir
-		velocity = direction * speed
 		
+func free_movement():
+	velocity = direction * speed
+	move_and_slide()
+	
 func rotate_character():
 		var lookdirection = global_position.direction_to(navigation_agent_3d.get_next_path_position())
 		rotation.y = lerp_angle(rotation.y, atan2(lookdirection.x, lookdirection.z), turn_speed)
@@ -134,6 +146,15 @@ func set_default_target(): ## Creates a node to return to after patrolling if
 	if not default_target:
 		default_target = spawn_location
 	target = default_target
+
+func combat_logic():
+	if global_position.distance_to(target.global_position) <= navigation_agent_3d.target_desired_distance :
+		var random_choice = randi_range(1,2)
+		match random_choice:
+			1:
+				attack()
+			2:
+				retreat()
 
 func attack():
 	current_state = state.ATTACK
@@ -149,18 +170,21 @@ func attack():
 	attacking = false
 	if current_state == state.ATTACK:
 		current_state = state.ALERT
+	
 
 func retreat():
 	retreat_started.emit()
+	retreating = true
 	current_state = state.DYNAMIC_ACTION
-	direction = global_position - to_global(Vector3.BACK).normalized()
+	direction = global_position - to_global(Vector3.BACK)
 	speed = walk_speed
 	velocity = direction * speed
 	await get_tree().create_timer(2).timeout
 	retreat_ended.emit()
-	if current_state == state.DYNAMIC_ACTION:
-		current_state = state.ALERT
-		
+	retreating = false
+	current_state = state.ALERT
+
+	
 func dash(_new_direction : Vector3 = Vector3.FORWARD): 
 	# burst of speed toward indicated direction, or forward by default
 	speed = dash_speed
@@ -178,8 +202,10 @@ func dash_movement():
 		
 func _on_navigation_agent_3d_target_reached():
 	if target != default_target:
-		attack()
+		combat_logic()
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 	#print("Anim Length: " + str(anim_length))
+
+

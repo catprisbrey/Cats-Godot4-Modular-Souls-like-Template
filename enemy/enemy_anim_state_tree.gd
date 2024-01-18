@@ -15,7 +15,10 @@ func _ready():
 	animation_started.connect(_on_animation_started)
 	
 func _process(_delta):
-	set_movement()
+	if player_node.retreating:
+		set_retreating()
+	else:
+		set_movement()
 	#match player_node.current_state:
 		#player_node.state.FREE:
 			#set_movement()
@@ -33,7 +36,7 @@ func _on_retreat_ended():
 	pass
 
 func set_movement():
-	if abs(player_node.direction) < Vector3(.1,.1,.1):
+	if abs(player_node.velocity) < Vector3(.1,.1,.1):
 		smooth_walk_blend1(0.0)
 	else:
 		if player_node.speed == player_node.walk_speed:
@@ -41,6 +44,9 @@ func set_movement():
 		elif player_node.speed > player_node.walk_speed:
 			smooth_walk_blend1(1.0)
 
+func set_retreating():
+	smooth_walk_blend1(-.5)
+	
 func smooth_walk_blend1(_new_target: float):
 	var lerp_movement = float(get("parameters/MovementStates/MovementStates/blend_position"))
 	lerp_movement = lerp(lerp_movement,_new_target,.2)
