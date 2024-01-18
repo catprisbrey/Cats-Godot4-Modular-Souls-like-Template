@@ -11,6 +11,8 @@ extends Area3D
 @onready var check_interval = $CheckInterval
 
 signal target_spotted
+signal target_lost
+
 var potential_target
 var target
 var checking_active = false
@@ -45,6 +47,7 @@ func _on_body_exited(_body):
 	if _body.is_in_group(target_group_name):
 		potential_target = null
 		checking_active = false
+		target_lost.emit()
 
 
 func _on_check_interval_timeout():

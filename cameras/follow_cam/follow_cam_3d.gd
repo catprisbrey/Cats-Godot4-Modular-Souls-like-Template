@@ -100,7 +100,7 @@ func _follow_target(new_target):
 func _lookat_target():
 	if targeting:
 		if look_target:
-			look_at(look_target.global_position + Vector3(0,.5,0),Vector3.UP)
+			look_at(look_target.global_position ,Vector3.UP)
 			
 			#var dot_of_them = global_position.dot(look_target.global_position)
 			#rotate_toward(global_rotation.y, global_rotation.y + dot_of_them,.5)
