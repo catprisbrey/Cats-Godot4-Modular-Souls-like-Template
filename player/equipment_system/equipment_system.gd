@@ -55,7 +55,7 @@ func _on_equipment_changed():
 		print("New equipment: " + str(current_equipment))
 		
 		
-func _on_action_started(_anim_time,_is_special_attack):
+func _on_action_started(_anim_time= .5,_is_special_attack = false):
 	current_equipment.activate(_anim_time,_is_special_attack)
 
 func _on_action_ended():

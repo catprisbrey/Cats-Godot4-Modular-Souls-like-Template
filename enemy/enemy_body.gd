@@ -17,7 +17,7 @@ extends CharacterBody3D
 @onready var direction = Vector3.ZERO
 
 @onready var speed
-@export var walk_speed = 1.5
+@export var walk_speed = 1.25
 @export var run_speed = 3.0
 @export var dash_speed = 9.0
 @onready var turn_speed = 1.5
@@ -165,7 +165,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	# burst of speed toward indicated direction, or forward by default
 	speed = dash_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	var dash_duration = .1
+	var dash_duration = .2
 	await get_tree().create_timer(dash_duration).timeout
 	speed = 0.0
 	direction = Vector3.ZERO

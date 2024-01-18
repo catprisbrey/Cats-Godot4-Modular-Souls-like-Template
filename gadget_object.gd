@@ -12,7 +12,7 @@ func _ready():
 	set_collision_layer_value(1,false)
 	monitoring = false
 
-func activate(_anim_time):
+func activate(_anim_time= .5,_is_special_attack = false):
 	# wait before becoming lethal
 	await get_tree().create_timer(_anim_time*.3).timeout
 	# turn on object col shape to detect collisions

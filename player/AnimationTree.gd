@@ -80,7 +80,7 @@ func _on_gadget_started():
 			request_oneshot("SlashL")
 			
 func _on_sprint_started():
-	base_state_machine.travel("Sprint")
+	base_state_machine.travel("SPRINT_tree")
 	
 func _on_dodge_started(dodge_dir):
 	match dodge_dir:

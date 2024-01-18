@@ -191,13 +191,17 @@ func _input(_event:InputEvent):
 		else: # if not on floor
 			if _event.is_action_pressed("use_weapon"):
 				air_attack()
-
-	if _event.is_action_released("use_gadget"):
-			end_guard()
 	
-	elif _event.is_action_released("dodge_dash"):
-		end_sprint()
+	elif current_state == state.SPRINT:
 		
+		if _event.is_action_released("dodge_dash"):
+			end_sprint()
+		elif _event.is_action_pressed("jump"):
+				jump()
+				
+	if _event.is_action_released("use_gadget"):
+		if not secondary_action:
+			end_guard()
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	match current_state:
@@ -322,7 +326,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	var dash_duration = .1
+	var dash_duration = .2
 	await get_tree().create_timer(dash_duration).timeout
 	speed = default_speed
 	direction = Vector3.ZERO
@@ -345,6 +349,7 @@ func dodge():
 	# Burst of speed toward an input direction, or backwards
 	current_state = state.DODGE
 	can_be_hurt = false
+	sprint_timer.stop()
 	var dodge_duration : float = .5
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
