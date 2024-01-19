@@ -81,22 +81,20 @@ func _on_use_item_started():
 	request_oneshot("UseItem")
 
 func _on_gadget_started():
-	match player_node.gadget_type:
-		"SHIELD":
-			request_oneshot("ShieldBash")
-		"TORCH":
-			request_oneshot("SlashL")
+	request_oneshot("Gadget")
+	#match player_node.gadget_type:
+		#"SHIELD":
+			#request_oneshot("ShieldBash")
+		#"TORCH":
+			#request_oneshot("SlashL")
 			
 func _on_sprint_started():
 	base_state_machine.travel("SPRINT_tree")
 	
-func _on_dodge_started(dodge_dir):
-	match dodge_dir:
-		"FORWARD":
-			request_oneshot("DodgeRoll")
-		
-		"BACK":
-			request_oneshot("DodgeBack")
+func _on_dodge_started():
+
+	request_oneshot("Dodge")
+
 
 func _on_door_started():
 	request_oneshot("OpenDoor")

@@ -357,11 +357,11 @@ func dodge():
 	var dodge_duration : float = .5
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
-		dodge_started.emit("FORWARD")
+		dodge_started.emit()
 
 	else: # Dodge toward the 'BACK' of your global position
 		direction = (global_position - to_global(Vector3.BACK)).normalized()
-		dodge_started.emit("BACK")
+		dodge_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 		dodge_duration = anim_length
