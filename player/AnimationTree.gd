@@ -67,9 +67,12 @@ func _on_block_started():
 	request_oneshot("Block")
 
 func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
-	var randi_hurt = randi_range(1,2)
-	request_oneshot("Hurt"+ str(randi_hurt))
-	weapon_state_machine.start("MoveStrafe")
+	if player_node.current_state == player_node.state.LADDER:
+		request_oneshot("HurtLadder")
+	else:
+		var randi_hurt = randi_range(1,2)
+		request_oneshot("Hurt"+ str(randi_hurt))
+		weapon_state_machine.start("MoveStrafe")
 	
 func _on_death_started():
 	base_state_machine.travel("Death")

@@ -320,7 +320,9 @@ func air_movement():
 func jump():
 	if anim_state_tree:
 		jump_started.emit()
-		await anim_state_tree.animation_measured
+		anim_length = .5
+		if anim_state_tree:
+			await anim_state_tree.animation_measured
 		var jump_duration = anim_length
 	# After timer finishes, return to pre-dodge state
 		await get_tree().create_timer(jump_duration *.7).timeout
@@ -333,9 +335,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	var dash_duration = .2
 	await get_tree().create_timer(dash_duration).timeout
 	speed = default_speed
-	direction = Vector3.ZERO
 	velocity = direction * speed
-	move_and_slide()
 
 func dodge_or_sprint():
 	if sprint_timer.is_stopped():
@@ -397,7 +397,7 @@ func start_ladder(top_or_bottom,mount_transform):
 	tween.tween_property(self,"global_transform", mount_transform, wait_time)
 	await tween.finished
 	current_state = state.LADDER
-
+	
 func exit_ladder(exit_loc):
 	current_state = state.STATIC_ACTION
 	ladder_finished.emit(exit_loc)
