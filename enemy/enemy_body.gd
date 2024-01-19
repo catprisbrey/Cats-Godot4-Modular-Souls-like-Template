@@ -1,17 +1,16 @@
 extends CharacterBody3D
 
-
-
 @export var group_name :String = "Targets"
 
 @export var anim_state_tree :AnimationTree 
 @onready var anim_length
 
 @export var target_sensor : Area3D 
-@onready var target : set = update_target
+@onready var target : set = set_target
 @export var default_target : Node3D
 @onready var spawn_location : Marker3D = Marker3D.new()
 @onready var chase_timer :Timer = $ChaseTimer
+signal chase_ended
 
 @onready var navigation_agent_3d : NavigationAgent3D = $NavigationAgent3D
 @onready var direction = Vector3.ZERO
@@ -19,23 +18,27 @@ extends CharacterBody3D
 @onready var speed
 @export var walk_speed = 1.25
 @export var run_speed = 3.0
-@export var dash_speed = 9.0
-@onready var turn_speed = .1
+@export var dash_speed = 6.0
+@onready var turn_speed = .05
 
 @onready var attacking = false
 signal attack_started
 signal attack_ended
+@export var combat_range : float = 3.0
+@onready var combat_timer = $CombatTimer
+signal parried_started()
+signal hurt_started
+var can_be_hurt = true
 
 @onready var retreating = false
-signal retreat_started
-signal retreat_ended
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper
 
 var current_state : set = update_current_state # Enemy states controlled by enum PlayerStates
 enum state {
 	FREE,
-	ALERT,
+	CHASE,
+	COMBAT,
 	ATTACK,
 	DYNAMIC_ACTION,
 	DEAD
@@ -46,23 +49,20 @@ func update_current_state(_new_state):
 	match current_state:
 		state.FREE:
 			speed = walk_speed
-		state.ALERT:
+		state.CHASE:
 			speed = run_speed
+		state.COMBAT:
+			speed = walk_speed
 		state.ATTACK:
+			speed = 0.0
+		state.DYNAMIC_ACTION:
 			speed = 0.0
 		state.DEAD:
 			speed = 0.0
 	print("state is: "+ str(current_state))
 			
 func _ready() -> void:
-	current_state = state.FREE
-	
 	add_to_group(group_name)
-	set_collision_layer_value(3,true)
-	set_collision_mask_value(1,true)
-	set_collision_mask_value(2,true)
-	set_collision_mask_value(3,true)
-	
 	set_default_target()
 
 	if target_sensor:
@@ -71,6 +71,9 @@ func _ready() -> void:
 		
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(_on_animation_measured)
+
+	current_state = state.FREE
+	
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	
@@ -80,31 +83,35 @@ func _physics_process(_delta):
 				navigation()
 				rotate_character()
 				free_movement()
-		state.ALERT:
+		state.CHASE:
 			if is_on_floor():
 				navigation()
 				rotate_character()
 				free_movement()
-				combat_logic()
-				
+				chase_or_fight()
+		state.COMBAT:
+			rotate_character()
+			free_movement()
+			reset_attack_clock()
+			chase_or_fight()
 		state.ATTACK:
-			dash_movement()
+			free_movement()
 			
 		state.DYNAMIC_ACTION:
 			rotate_character()
-			dash_movement()
+			
 
-func update_target(_new_target):
+func set_target(_new_target): 
 	target = _new_target
 	if target != default_target:
-		current_state = state.ALERT
+		current_state = state.CHASE
 	else:
 		current_state = state.FREE
 	
 func _on_target_spotted(_spotted_target): # Updates from a TargetSensor if a target is found.
 	if target != _spotted_target:
 		target = _spotted_target
-	chase_timer.stop()
+	chase_timer.start()
 
 func _on_target_lost():
 	chase_timer.start()
@@ -115,6 +122,7 @@ func _on_chase_timer_timeout():
 func give_up():
 	current_state = state.DYNAMIC_ACTION
 	speed = 0.0
+	chase_ended.emit()
 	await get_tree().create_timer(2).timeout
 	target = default_target
 	
@@ -127,7 +135,7 @@ func navigation():
 	if target:
 		navigation_agent_3d.target_position = target.global_position
 		var new_dir = (navigation_agent_3d.get_next_path_position() - global_position).normalized()
-		new_dir *= Vector3(1,0,1) # strip the y value so enemy stays on floor
+		new_dir *= Vector3(1,0,1) # strip the y value so enemy stays at currentt level
 		direction = new_dir
 		
 func free_movement():
@@ -147,43 +155,54 @@ func set_default_target(): ## Creates a node to return to after patrolling if
 		default_target = spawn_location
 	target = default_target
 
-func combat_logic():
-	if global_position.distance_to(target.global_position) <= navigation_agent_3d.target_desired_distance :
-		var random_choice = randi_range(1,2)
-		match random_choice:
-			1:
-				attack()
-			2:
-				retreat()
+func chase_or_fight(): ## depending on distance to target, run or walk
+	var current_distance = global_position.distance_to(target.global_position)
+	if current_distance > combat_range && current_state != state.CHASE:
+		current_state = state.CHASE
+	elif current_distance <= combat_range && current_state != state.COMBAT:
+		current_state = state.COMBAT
+
+func _on_combat_timer_timeout():
+	combat_randomizer()
+
+func reset_attack_clock():
+	if current_state == state.COMBAT:
+		if combat_timer.is_stopped():
+			combat_timer.start()
+			
+func combat_randomizer():
+	var random_choice = randi_range(1,10)
+	if random_choice <= 3:
+		retreat()
+	else:
+		attack()
 
 func attack():
 	current_state = state.ATTACK
+	var new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
+	look_at(new_pos,Vector3.UP, true)
 	attacking = true
-	print("I'm attacking the player!!")
 	attack_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
+	await get_tree().create_timer(.5).timeout
 	dash()
-	await get_tree().create_timer(anim_length *.5).timeout
+	await get_tree().create_timer(.5).timeout
 	attack_ended.emit()
 	attacking = false
-	if current_state == state.ATTACK:
-		current_state = state.ALERT
+	current_state = state.CHASE
 	
-
-func retreat():
-	retreat_started.emit()
+func retreat(): # Back away for a period of time
+	var retreat_duration = 1.0
 	retreating = true
-	current_state = state.DYNAMIC_ACTION
-	direction = global_position - to_global(Vector3.BACK)
+	current_state = state.COMBAT
+	var new_dir = Vector3.BACK
+	direction = global_position - to_global(new_dir)
 	speed = walk_speed
 	velocity = direction * speed
-	await get_tree().create_timer(2).timeout
-	retreat_ended.emit()
+	await get_tree().create_timer(retreat_duration).timeout
 	retreating = false
-	current_state = state.ALERT
-
+	current_state = state.CHASE
 	
 func dash(_new_direction : Vector3 = Vector3.FORWARD): 
 	# burst of speed toward indicated direction, or forward by default
@@ -192,20 +211,30 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	var dash_duration = .2
 	await get_tree().create_timer(dash_duration).timeout
 	speed = 0.0
-	direction = Vector3.ZERO
 	velocity = direction * speed
-	
-func dash_movement():
-	# required in the process function states for dodges/dashes
-	velocity = direction * speed
-	move_and_slide()
-		
-func _on_navigation_agent_3d_target_reached():
-	if target != default_target:
-		combat_logic()
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 	#print("Anim Length: " + str(anim_length))
 
+func hit(_by_who, _by_what):
+	target = _by_who
+	if can_be_hurt == true:
+		can_be_hurt = false
+		current_state = state.DYNAMIC_ACTION
+		hurt_started.emit()
+		anim_length = .4
+		if anim_state_tree:
+			await anim_state_tree.animation_measured
+		await get_tree().create_timer(anim_length).timeout
+		can_be_hurt = true
+		current_state = state.CHASE
 
+	
+func parried():
+	current_state = state.DYNAMIC_ACTION
+	parried_started.emit()
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	current_state = state.CHASE

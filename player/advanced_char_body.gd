@@ -33,6 +33,7 @@ signal gate_started
 var weapon_type :String = "SLASH"
 signal weapon_change_started
 signal weapon_changed
+signal weapon_change_ended
 signal attack_started
 signal attack_ended
 ## A helper variable for inputs across 2 key inputs "shift+ attack", etc.
@@ -120,10 +121,11 @@ func _ready():
 	await get_tree().create_timer(2).timeout
 	current_state = state.FREE
 	
+## Makes variable changes for each state, primiarily used for updating movement speeds
 func change_state(new_state):
 	current_state = new_state
-	print("current state is " + str(current_state))
 	changed_state.emit(current_state)
+	
 	match current_state:
 		state.FREE:
 			speed = default_speed
@@ -136,8 +138,8 @@ func change_state(new_state):
 		state.DYNAMIC_ACTION:
 			speed = walk_speed
 
-func _input(_event:InputEvent):
 
+func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
@@ -262,23 +264,21 @@ func rotate_player():
 	if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
-		#print(transform.basis * Vector3(input_dir.x,0,input_dir.y))
-				# Assuming forwardVector and newMovementDirection are your vectors
+		# Assuming forwardVector and newMovementDirection are your vectors
 		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
 		
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
 		move_dot_product = forward_vector.dot(calc_direction().normalized())
-		#print("cross: "  + str(strafe_cross_product))
-		#print("dot: " + str(move_dot_product))
+
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 	elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
 		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
 		if input_dir:
 			var new_direction = calc_direction().normalized()
-		# Rotate the player per the perspective of the camera
+			# Rotate the player per the perspective of the camera
 			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.2)
 			global_transform.basis = Basis(target_rotation)
-	# move_and_slide() unused. (controlled by States).
+	# move_and_slide() unused here. Controlled by States and free_movement().
 
 func strafe_targeting():
 	strafing = !strafing
@@ -293,13 +293,12 @@ func calc_direction():
 
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
-	anim_length = .3
+	anim_length = .5
 	if anim_state_tree: 
-		# anim_length will be updated by the animation_started signal
-		await anim_state_tree.animation_started
+		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length,_is_special_attack)
 	await get_tree().create_timer(anim_length *.4).timeout
-	dash()
+	dash() ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_ended.emit()
 	if current_state == state.ATTACK:
@@ -307,10 +306,15 @@ func attack(_is_special_attack : bool = false):
 
 func air_attack():
 	current_state = state.AIRATTACK
-	
+	if anim_state_tree: 
+		await anim_state_tree.animation_measured
+	attack_started.emit(anim_length)
+		
 func air_movement():
 	move_and_slide()
 	if is_on_floor():
+		if current_state == state.AIRATTACK:
+			attack_ended.emit()
 		current_state = state.FREE
 		
 func jump():
@@ -470,6 +474,9 @@ func weapon_change():
 		change_duration = anim_length
 	await get_tree().create_timer(change_duration*.5).timeout
 	weapon_changed.emit()
+	if weapon_system:
+		await weapon_system.equipment_changed
+	weapon_change_ended.emit(weapon_type)
 	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
 	

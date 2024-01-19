@@ -1,14 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cppm5fkbguoqx"]
+[gd_scene load_steps=5 format=3 uid="uid://cppm5fkbguoqx"]
 
-[ext_resource type="Script" path="res://weapons/weapon_object.gd" id="1_ec0w3"]
-[ext_resource type="Script" path="res://resources/WeaponResource.gd" id="2_ssjk8"]
-
-[sub_resource type="Resource" id="Resource_f5877"]
-script = ExtResource("2_ssjk8")
-name = "Hammer of valor"
-weapon_type = 1
-attack_power = 1
-defense_power = 1
+[ext_resource type="Script" path="res://weapons/weapon_object.gd" id="1_m38qy"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_2wmyg"]
 top_radius = 0.02
@@ -21,11 +13,10 @@ bottom_radius = 0.0
 height = 0.335
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ogvqq"]
-size = Vector3(0.54, 0.892, 0.435)
+size = Vector3(0.265, 0.892, 0.335)
 
 [node name="WeaponObject" type="Area3D"]
-script = ExtResource("1_ec0w3")
-weapon_info = SubResource("Resource_f5877")
+script = ExtResource("1_m38qy")
 
 [node name="Handle" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.333657, 0)

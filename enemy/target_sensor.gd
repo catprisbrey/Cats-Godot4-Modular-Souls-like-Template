@@ -5,6 +5,7 @@ extends Area3D
 ## target. If it succeeds, a 'target_spotted' signal emits. Connect wherever
 ## useful, for example, into navegation code to persue the player.
 
+@export var player_node : CharacterBody3D 
 @onready var eyeline : RayCast3D = $Eyeline
 @export var target_group_name : String = "Player"
 @export_flags_3d_physics var dectection_layer_mask
@@ -14,7 +15,6 @@ signal target_spotted
 signal target_lost
 
 var potential_target
-var target
 var checking_active = false
 # Called whe@n the node enters the scene tree for the first time.
 
@@ -22,10 +22,13 @@ func _ready():
 	set_collision_mask_value(dectection_layer_mask,true)
 	eyeline.set_collision_mask_value(dectection_layer_mask,true)
 
+	if player_node:
+		if player_node.has_signal("chase_ended"):
+			player_node.chase_ended.connect(_on_chase_ended)
 ## Lookat a sensed body's direction, if there is a clean line of site
 ## return that node to be assigned as a target
 func eyeline_check():
-	if checking_active && potential_target:
+	if potential_target:
 		eyeline.look_at(potential_target.global_position + Vector3.UP,Vector3.UP,true)
 		await get_tree().process_frame
 		if eyeline.is_colliding():
@@ -45,10 +48,10 @@ func _on_body_entered(_body):
 
 func _on_body_exited(_body):
 	if _body.is_in_group(target_group_name):
-		potential_target = null
-		checking_active = false
 		target_lost.emit()
 
-
+func _on_chase_ended():
+	potential_target = null
+	
 func _on_check_interval_timeout():
 	eyeline_check()

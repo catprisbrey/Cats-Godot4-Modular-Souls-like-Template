@@ -3,6 +3,8 @@ class_name AnimationTreeSoulsBase
 
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
+@onready var weapon_state_machine : AnimationNodeStateMachinePlayback
+
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
 var guard_value :float = 0.0
@@ -21,6 +23,7 @@ func _ready():
 	player_node.door_started.connect(_on_door_started)
 	player_node.gate_started.connect(_on_gate_started)
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
+	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
 	player_node.gadget_change_started.connect(_on_gadget_change_started)
 	player_node.gadget_started.connect(_on_gadget_started)
 	player_node.parry_started.connect(_on_parry_started)
@@ -30,6 +33,7 @@ func _ready():
 	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
 	
+	_on_weapon_change_ended(player_node.weapon_type)
 func _on_changed_state(_new_state):
 	pass
 
@@ -65,7 +69,8 @@ func _on_block_started():
 func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
 	var randi_hurt = randi_range(1,2)
 	request_oneshot("Hurt"+ str(randi_hurt))
-
+	weapon_state_machine.start("MoveStrafe")
+	
 func _on_death_started():
 	base_state_machine.travel("Death")
 
@@ -102,6 +107,9 @@ func _on_jump_started():
 func _on_weapon_change_started():
 	request_oneshot("WeaponChange")
 
+func _on_weapon_change_ended(_new_weapon):
+	weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon)+"_tree/playback")
+
 func _on_gadget_change_started():
 	request_oneshot("GadgetChange")
 
@@ -114,7 +122,6 @@ func _on_ladder_finished(top_or_bottom):
 	
 func set_ladder():
 	set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",-player_node.input_dir.y)
-
 	
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product

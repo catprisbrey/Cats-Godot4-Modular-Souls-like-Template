@@ -102,9 +102,6 @@ func _lookat_target():
 		if look_target:
 			look_at(look_target.global_position ,Vector3.UP)
 			
-			#var dot_of_them = global_position.dot(look_target.global_position)
-			#rotate_toward(global_rotation.y, global_rotation.y + dot_of_them,.5)
-
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
 	&& current_cam_buffer:
