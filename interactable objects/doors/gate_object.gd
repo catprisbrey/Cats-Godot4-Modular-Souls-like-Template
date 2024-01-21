@@ -1,6 +1,13 @@
 extends StaticBody3D
 class_name GateObject
 
+## This gate object expects waits to be told to "activate". Interactables
+## typically are on physics layer 4, and in group "Interactable"
+## Interacts are a bit of a 'handshake'. The requestor tells the gate
+## to activate. The gate replies back to the requestor a translation and wait time
+## so the requestor can be in sync, moving to a good position before running 
+## their own "start_gate" logic and animations.
+
 @onready var opened = false
 @onready var gate_anim_player :AnimationPlayer = $GateAnimPlayer
 
@@ -22,8 +29,9 @@ func activate(_requestor,_sensor_loc):
 		var move_time = .3
 		
 		if opened == false:
-			_requestor.start_gate(new_translation, move_time)
-			await get_tree().create_timer(move_time + 1).timeout
+			if _requestor.has_method("start_gate"):
+				_requestor.start_gate(new_translation, move_time)
+				await get_tree().create_timer(move_time + 1).timeout
 			open_gate()
 
 func shake_gate():

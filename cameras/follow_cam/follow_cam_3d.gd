@@ -2,6 +2,9 @@
 extends Node3D
 class_name FollowCam
 
+## Expects a spring arm child. The spring arm should have a camera3D child.
+## Will follow the follow_target and rotate based on mouse or joystick input
+
 @export_range(1,50,1) var mouse_sensitivity = 15.0
 @export_range(1,50,1) var joystick_sensitivity = 15.0
 var targeting = false

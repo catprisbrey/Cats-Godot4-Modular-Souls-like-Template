@@ -1,10 +1,17 @@
 extends Node3D
 class_name InteractSensors
 
-## This Class will sense objects in layer 4, that are in the group Interactable
-## when the "interact" button is pressed, it simple calls "activate" on whatever
-## interactable body it currently sees. This allows all other logic to happen
-## on the interactable object node's script instead of here.
+## Player node figurative "eye balls". This will sense objects in layer 4 by 
+## default, but can be overridden by setting the detection_mask layers. 
+## This detects objects in the detection_group of that layer.
+## This class focuses ONLY on detection and signalling out what was seen 
+## and which sensor saw it. Actual activation of interactable objects 
+## happens between a 'handshake' exchange between the player and the interactable
+## node.
+
+
+@export_flags_3d_physics var detection_mask = 8
+@export var detection_group = "Interactable"
 @onready var top_sensor = $TopSensor
 @onready var bottom_sensor = $BottomSensor
 
@@ -14,29 +21,32 @@ signal interact_updated
 @onready var interactable_bottom
 
 func _ready():
+	top_sensor.set_collision_mask_value(detection_mask)
+	bottom_sensor.set_collision_layer_value(detection_mask)
+	
 	top_sensor.body_entered.connect(_top_body_entered)
 	top_sensor.body_exited.connect(_top_body_exited)
 	bottom_sensor.body_entered.connect(_bottom_body_entered)
 	bottom_sensor.body_exited.connect(_bottom_body_exited)
 
 func _top_body_entered(_top_body):
-	if _top_body.is_in_group("Interactable"):
+	if _top_body.is_in_group(detection_group):
 		interactable_top = _top_body
 		_interact_update()
 
 func _top_body_exited(_top_body):
-	if _top_body.is_in_group("Interactable"):
+	if _top_body.is_in_group(detection_group):
 		if interactable_top == _top_body:
 			interactable_top = null
 		_interact_update()
 
 func _bottom_body_entered(_bottom_body):
-	if _bottom_body.is_in_group("Interactable"):
+	if _bottom_body.is_in_group(detection_group):
 		interactable_bottom = _bottom_body
 		_interact_update()
 	
 func _bottom_body_exited(_bottom_body):
-	if _bottom_body.is_in_group("Interactable"):
+	if _bottom_body.is_in_group(detection_group):
 		if interactable_bottom == _bottom_body:
 			interactable_bottom = null
 		_interact_update()

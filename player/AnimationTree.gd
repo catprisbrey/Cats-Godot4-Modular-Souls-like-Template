@@ -87,9 +87,7 @@ func _on_sprint_started():
 	base_state_machine.travel("SPRINT_tree")
 	
 func _on_dodge_started():
-
 	request_oneshot("Dodge")
-
 
 func _on_door_started():
 	request_oneshot("OpenDoor")
