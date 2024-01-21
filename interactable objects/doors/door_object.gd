@@ -1,10 +1,15 @@
 extends StaticBody3D
+class_name DoorObject
 
 @onready var opened = false
 @onready var door_anim_player :AnimationPlayer = $DoorAnimPlayer
 
 @export var locked : bool = false
 var anim
+
+
+func get_type():
+	return type
 
 func activate(_requestor,_sensor_loc):
 	if locked:

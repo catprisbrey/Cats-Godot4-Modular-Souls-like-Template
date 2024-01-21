@@ -20,7 +20,7 @@ class_name CharacterBodySoulsBase
 ## The sensor that spotted the object, TOP sensor, or BOTTOM sensor.
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 ## The newly sensed interactable node.
-@onready var interactable
+@onready var interactable : Node3D
 signal door_started
 signal gate_started
 
@@ -444,7 +444,7 @@ func interact():
 	## TOP/BOTTOM/BOTH sees the interactable
 	if interactable:
 		interactable.activate(self,interact_loc)
-
+	
 func start_door(door_transform, move_time):
 	current_state = state.STATIC_ACTION
 	# After timer finishes, return to pre-dodge state

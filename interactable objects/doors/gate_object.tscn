@@ -97,6 +97,7 @@ _data = {
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_jmheh")
+metadata/type = "gate"
 
 [node name="DetectorBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04274, 0)

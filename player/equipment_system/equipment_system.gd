@@ -76,7 +76,7 @@ func _on_equipment_changed():
 		equipment_changed.emit(current_equipment)
 		
 func _on_action_started(_anim_time= .5,_is_special_attack = false):
-	## awaiting so the col shape is monitoring about mid-attack
+	## awaiting so the area3D starts monitoring about mid-attack
 	if current_equipment:
 		await get_tree().create_timer(_anim_time *.3).timeout
 		current_equipment.monitoring = true

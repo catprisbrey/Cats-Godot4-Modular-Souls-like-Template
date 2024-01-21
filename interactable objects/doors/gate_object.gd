@@ -1,4 +1,5 @@
 extends StaticBody3D
+class_name GateObject
 
 @onready var opened = false
 @onready var gate_anim_player :AnimationPlayer = $GateAnimPlayer
