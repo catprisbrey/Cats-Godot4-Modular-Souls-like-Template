@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="1_4e1ny"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_gdpnd"]
+size = Vector3(1, 5.12242, 0.1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwy3a"]
 albedo_color = Color(0.756863, 0.176471, 1, 1)
 
@@ -9,82 +12,81 @@ albedo_color = Color(0.756863, 0.176471, 1, 1)
 material = SubResource("StandardMaterial3D_fwy3a")
 size = Vector3(0.7, 0.05, 0.05)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gdpnd"]
-size = Vector3(1, 5.12242, 0.1)
-
 [node name="Ladder" type="StaticBody3D" groups=["Interactable"]]
 collision_layer = 9
 script = ExtResource("1_4e1ny")
 
-[node name="Rung1" type="MeshInstance3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51121, 0)
+shape = SubResource("BoxShape3D_gdpnd")
+
+[node name="JustRungs" type="Node3D" parent="."]
+
+[node name="Rung1" type="MeshInstance3D" parent="JustRungs"]
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung2" type="MeshInstance3D" parent="."]
+[node name="Rung2" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung3" type="MeshInstance3D" parent="."]
+[node name="Rung3" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung4" type="MeshInstance3D" parent="."]
+[node name="Rung4" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung5" type="MeshInstance3D" parent="."]
+[node name="Rung5" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung6" type="MeshInstance3D" parent="."]
+[node name="Rung6" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung7" type="MeshInstance3D" parent="."]
+[node name="Rung7" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung8" type="MeshInstance3D" parent="."]
+[node name="Rung8" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.68479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung9" type="MeshInstance3D" parent="."]
+[node name="Rung9" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.08479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung10" type="MeshInstance3D" parent="."]
+[node name="Rung10" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.48479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung11" type="MeshInstance3D" parent="."]
+[node name="Rung11" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.88479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung12" type="MeshInstance3D" parent="."]
+[node name="Rung12" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.28479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung13" type="MeshInstance3D" parent="."]
+[node name="Rung13" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.68479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
 
-[node name="Rung14" type="MeshInstance3D" parent="."]
+[node name="Rung14" type="MeshInstance3D" parent="JustRungs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.98479, 0)
 mesh = SubResource("BoxMesh_t6jw6")
 skeleton = NodePath("")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51121, 0)
-shape = SubResource("BoxShape3D_gdpnd")
