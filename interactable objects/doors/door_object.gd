@@ -8,8 +8,6 @@ class_name DoorObject
 var anim
 
 
-func get_type():
-	return type
 
 func activate(_requestor,_sensor_loc):
 	if locked:

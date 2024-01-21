@@ -443,6 +443,7 @@ func interact():
 	## the command passes the player node, and which sensor,
 	## TOP/BOTTOM/BOTH sees the interactable
 	if interactable:
+ 
 		interactable.activate(self,interact_loc)
 	
 func start_door(door_transform, move_time):
