@@ -25,7 +25,7 @@ radial_segments = 8
 rings = 4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7pavc"]
-size = Vector3(0.5, 1, 0.5)
+size = Vector3(0.35, 0.5, 0.35)
 
 [sub_resource type="Gradient" id="Gradient_ohsiu"]
 offsets = PackedFloat32Array(0, 0.0740741, 0.599327, 0.814815, 1)
@@ -76,7 +76,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.293596, 0)
 mesh = SubResource("CapsuleMesh_vti3j")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.470184, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00253296, 0.450897, 0)
 shape = SubResource("BoxShape3D_7pavc")
 
 [node name="TorchFlame" type="GPUParticles3D" parent="."]
