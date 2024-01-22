@@ -20,7 +20,7 @@ signal equipment_changed
 ## The secondary item location. Bone attachments or Marker3Ds work well for placement
 @export var stored_mount_point : Node3D
 ## The item currently under the primary held mount node
-@onready var current_equipment : Area3D
+@onready var current_equipment : Node3D
 ## The item currently under the stored/sheathed node
 @onready var stored_equipment : Node3D
 

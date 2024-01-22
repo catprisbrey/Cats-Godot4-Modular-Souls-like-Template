@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://djx3nkpgstgea"]
+
+[ext_resource type="Script" path="res://player/equipment_system/equipment_system.gd" id="1_752pb"]
+
+[node name="EquipmentSystem" type="Node3D"]
+script = ExtResource("1_752pb")
+
+[node name="RightHand" type="BoneAttachment3D" parent="."]
+transform = Transform3D(-0.446748, -0.198807, 0.832485, -0.399184, -0.793552, -0.458296, 0.810952, -0.577572, 0.303279, -0.54886, 1.12559, 0.185904)
+bone_name = "RightHand"
+bone_idx = 33
+use_external_skeleton = true
+external_skeleton = NodePath("../../GodotBase/godot_rig/GeneralSkeleton")
+
+[node name="HandPivot" type="Marker3D" parent="RightHand"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.085, 0.025)
+
+[node name="BackBone" type="BoneAttachment3D" parent="."]
+transform = Transform3D(0.992714, -0.0159678, 0.11943, 0.081072, 0.821781, -0.564006, -0.0891393, 0.569579, 0.817089, 0.00508255, 1.06605, 0.224998)
+bone_name = "UpperChest"
+bone_idx = 3
+use_external_skeleton = true
+external_skeleton = NodePath("../../GodotBase/godot_rig/GeneralSkeleton")
+
+[node name="BackPivot" type="Marker3D" parent="BackBone"]
+transform = Transform3D(2.10847e-08, 0.258819, -0.965926, 8.44439e-08, -0.965926, -0.258819, -1, -7.61094e-08, -4.2222e-08, -0.105, 0.275, -0.15)

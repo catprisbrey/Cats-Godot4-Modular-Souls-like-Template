@@ -1,15 +1,16 @@
 [gd_scene load_steps=15 format=3 uid="uid://bbwrvilne1py1"]
 
-[ext_resource type="Script" path="res://gadget_object.gd" id="1_asltl"]
-[ext_resource type="Script" path="res://gadget_resource.gd" id="2_g3xdk"]
+[ext_resource type="Script" path="res://weapons/equipment_object.gd" id="1_5qfvl"]
+[ext_resource type="Script" path="res://resources/equipment_resource.gd" id="2_shnyh"]
 [ext_resource type="Script" path="res://weapons/TorchFlame.gd" id="3_itn8w"]
 
-[sub_resource type="Resource" id="Resource_q5mwd"]
-script = ExtResource("2_g3xdk")
-name = "Torchy"
-object_type = "TORCH"
-attack_power = 1
-defense_power = 1
+[sub_resource type="Resource" id="Resource_wyl03"]
+script = ExtResource("2_shnyh")
+name = "Torch"
+object_type = "OTHER"
+power = 1
+weight = 1
+value = 1
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_p8ylt"]
 top_radius = 0.02
@@ -63,8 +64,8 @@ size = Vector2(0.03, 0.03)
 orientation = 2
 
 [node name="Torch" type="Area3D"]
-script = ExtResource("1_asltl")
-equipment_info = SubResource("Resource_q5mwd")
+script = ExtResource("1_5qfvl")
+equipment_info = SubResource("Resource_wyl03")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.212494, 0)

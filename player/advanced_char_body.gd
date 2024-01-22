@@ -294,13 +294,15 @@ func calc_direction():
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
 	anim_length = .5
+
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length,_is_special_attack)
-	await get_tree().create_timer(anim_length *.4).timeout
-	dash() ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.3).timeout
+	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+	await get_tree().create_timer(anim_length *.4).timeout
 	attack_ended.emit()
+	
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
@@ -328,15 +330,15 @@ func jump():
 		await get_tree().create_timer(jump_duration *.7).timeout
 	velocity.y = jump_velocity
 
-func dash(_new_direction : Vector3 = Vector3.FORWARD): 
+func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .2): 
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	var dash_duration = .2
-	await get_tree().create_timer(dash_duration).timeout
 	speed = default_speed
 	velocity = direction * speed
-
+	await get_tree().create_timer(_duration).timeout
+	direction = Vector3.ZERO
+	
 func dodge_or_sprint():
 	if sprint_timer.is_stopped():
 		sprint_timer.start(.3)
@@ -477,14 +479,15 @@ func weapon_change():
 	weapon_changed.emit()
 	if weapon_system:
 		await weapon_system.equipment_changed
+	print(weapon_type)
 	weapon_change_ended.emit(weapon_type)
 	await get_tree().create_timer(change_duration*.5).timeout
 	current_state = state.FREE
 	
-func _on_weapon_equipment_changed(_new_weapon:WeaponObject):
+func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
 	weapon_type = _new_weapon.equipment_info.object_type
 
-func _on_gadget_equipment_changed(_new_gadget:GadgetObject):
+func _on_gadget_equipment_changed(_new_gadget:EquipmentObject):
 	gadget_type = _new_gadget.equipment_info.object_type
 
 func gadget_change():

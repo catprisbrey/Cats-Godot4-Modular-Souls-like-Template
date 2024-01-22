@@ -4,6 +4,7 @@ class_name AnimationTreeSoulsBase
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var weapon_state_machine : AnimationNodeStateMachinePlayback
+@onready var weapon_movement_tree : String = "SLASH"
 
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
@@ -101,8 +102,17 @@ func _on_jump_started():
 func _on_weapon_change_started():
 	request_oneshot("WeaponChange")
 
-func _on_weapon_change_ended(_new_weapon):
-	weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon)+"_tree/playback")
+func _on_weapon_change_ended(_new_weapon_type):
+	
+	var weapon_tree_exists = tree_root.get_node("MovementStates").has_node(str(_new_weapon_type)+"_tree")
+	if weapon_tree_exists:
+		#weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
+		weapon_movement_tree = _new_weapon_type
+		
+	else:
+		weapon_movement_tree = "SLASH"
+	
+	weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
 
 func _on_gadget_change_started():
 	request_oneshot("GadgetChange")
@@ -120,23 +130,21 @@ func set_ladder():
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
 	# Forward and back are acording to input, since direction changes by fixed camera orientation
-	#var new_dir = player_node.input_dir.y - player_node.input_dir.x
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
-		new_blend *= .4 
-	lerp_movement = get("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position")
+		new_blend *= .4 # Force a walk speed
+	lerp_movement = get("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
-	set("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
+	set("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position", lerp_movement)
 
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
-		new_blend *= .5 
-	lerp_movement = get("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position")
+		new_blend *= .5 # force a walk speed
+	lerp_movement = get("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
-	#var new_blend = Vector2(0,abs(player_node.strafe_cross_product) + abs(player_node.move_dot_product))
-	set("parameters/MovementStates/" + player_node.weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)
+	set("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position",lerp_movement)
 
 
 func _on_animation_started(anim_name):

@@ -1,14 +1,15 @@
 [gd_scene load_steps=8 format=3 uid="uid://dva7owhrl4wew"]
 
-[ext_resource type="Script" path="res://weapons/weapon_object.gd" id="1_smndo"]
-[ext_resource type="Script" path="res://resources/WeaponResource.gd" id="2_camfr"]
+[ext_resource type="Script" path="res://weapons/equipment_object.gd" id="1_2vkpj"]
+[ext_resource type="Script" path="res://resources/equipment_resource.gd" id="2_15vxs"]
 
-[sub_resource type="Resource" id="Resource_2oa3u"]
-script = ExtResource("2_camfr")
-name = "Sword"
+[sub_resource type="Resource" id="Resource_rfg87"]
+script = ExtResource("2_15vxs")
+name = "Equipable Item"
 object_type = "SLASH"
-attack_power = 1
-defense_power = 1
+power = 1
+weight = 1
+value = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ixmqc"]
 
@@ -50,8 +51,8 @@ size = Vector3(0.25, 1, 0.4)
 [node name="Sword" type="Area3D"]
 collision_layer = 0
 collision_mask = 4
-script = ExtResource("1_smndo")
-equipment_info = SubResource("Resource_2oa3u")
+script = ExtResource("1_2vkpj")
+equipment_info = SubResource("Resource_rfg87")
 
 [node name="Sword" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.25722, 0, 0, 0, -5.55457e-08, 1.25083, 0, -1.27074, -5.46756e-08, 0, -0.085, 0)
