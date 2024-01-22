@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3w5gegc1yqut"]
+
+[ext_resource type="Script" path="res://player/footfall_system/footfall_system.gd" id="1_b8ejw"]
+[ext_resource type="AudioStream" uid="uid://5c6nh3b73jyn" path="res://player/footfall_system/footstep.wav" id="2_j5va6"]
+
+[node name="FootfallSystem" type="BoneAttachment3D"]
+use_external_skeleton = true
+external_skeleton = NodePath("")
+script = ExtResource("1_b8ejw")
+
+[node name="Pivot" type="Marker3D" parent="."]
+
+[node name="Floorcast" type="RayCast3D" parent="Pivot"]
+target_position = Vector3(0, -0.2, 0)
+
+[node name="StepAudio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_j5va6")
+volume_db = -5.0
+max_distance = 7.0

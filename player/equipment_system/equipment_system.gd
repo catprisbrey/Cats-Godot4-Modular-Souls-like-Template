@@ -24,6 +24,8 @@ signal equipment_changed
 ## The item currently under the stored/sheathed node
 @onready var stored_equipment : Node3D
 
+signal hit_target
+
 func _ready():
 	if player_node:
 		if player_node.has_signal(change_signal):
@@ -49,7 +51,6 @@ func _ready():
 			stored_equipment.equipped = false
 			stored_equipment.monitoring = false
 	
-
 func _on_equipment_changed():
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
 		stored_equipment = stored_mount_point.get_child(0)
@@ -61,9 +62,7 @@ func _on_equipment_changed():
 		held_mount_point.add_child(stored_equipment)
 		stored_mount_point.add_child(current_equipment)
 		
-		
 		# Update to current equipment
-		
 		current_equipment.equipped = false
 		if current_equipment.is_connected("body_entered", _on_body_entered):
 			current_equipment.disconnect("body_entered",_on_body_entered)

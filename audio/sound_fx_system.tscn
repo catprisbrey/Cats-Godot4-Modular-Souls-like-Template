@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnlnymg5dhv0j"]
+
+[ext_resource type="AudioStream" uid="uid://dxa2b1dimc1kk" path="res://weapons/sounds/hit_1.wav" id="1_23enh"]
+[ext_resource type="Script" path="res://audio/SoundFXSystem.gd" id="2_2uyks"]
+
+[node name="SoundFXSystem" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_23enh")
+volume_db = -3.0
+max_distance = 7.0
+script = ExtResource("2_2uyks")

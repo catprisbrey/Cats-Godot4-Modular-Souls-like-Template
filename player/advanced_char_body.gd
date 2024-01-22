@@ -201,9 +201,16 @@ func _input(_event:InputEvent):
 		elif _event.is_action_pressed("jump"):
 				jump()
 				
+	elif current_state == state.LADDER:
+		if _event.is_action_pressed("dodge_dash"):
+			current_state = state.FREE
+				
 	if _event.is_action_released("use_gadget"):
 		if not secondary_action:
 			end_guard()
+			
+	
+			
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	match current_state:
