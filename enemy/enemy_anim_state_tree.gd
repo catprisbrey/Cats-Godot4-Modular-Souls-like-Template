@@ -13,7 +13,6 @@ func _ready():
 		player_node.parried_started.connect(_on_parry_started)
 		player_node.hurt_started.connect(_on_hurt_started)
 		
-		
 	animation_started.connect(_on_animation_started)
 	
 func _process(_delta):
@@ -39,11 +38,13 @@ func request_oneshot(oneshot:String):
 func abort_oneshot(oneshot):
 	set("parameters/"+ str(oneshot) + "/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 	print(oneshot)
+
 func set_movement():
 	if player_node.retreating:
 		smooth_walk_blend1(-.5)
 	
-	elif abs(player_node.velocity.x) + abs(player_node.velocity.z) < .1: ## not moving
+	elif abs(player_node.velocity.x) + abs(player_node.velocity.z) < .1:  ## not moving
+		
 		smooth_walk_blend1(0.0)
 	
 	else: ## we can assume they're moving now

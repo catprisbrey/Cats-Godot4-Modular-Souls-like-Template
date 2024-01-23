@@ -76,29 +76,25 @@ func _ready() -> void:
 	
 func _physics_process(_delta):
 	apply_gravity(_delta)
-	
-	match current_state:
-		state.FREE:
-			if is_on_floor():
-				navigation()
-				rotate_character()
-				free_movement()
-		state.CHASE:
-			if is_on_floor():
-				navigation()
-				rotate_character()
-				free_movement()
-				chase_or_fight()
-		state.COMBAT:
-			rotate_character()
-			free_movement()
-			reset_attack_clock()
-			chase_or_fight()
-		state.ATTACK:
-			free_movement()
-			
-		state.DYNAMIC_ACTION:
-			rotate_character()
+	if is_on_floor():
+		match current_state:
+				state.FREE:
+					navigation()
+					rotate_character()
+					free_movement()
+				state.CHASE:
+					navigation()
+					rotate_character()
+					free_movement()
+					chase_or_fight()
+				state.COMBAT:
+					rotate_character()
+					free_movement()
+					reset_attack_clock()
+					chase_or_fight()
+				state.ATTACK:
+					free_movement()
+		
 			
 
 func set_target(_new_target): 
@@ -215,7 +211,6 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
-	#print("Anim Length: " + str(anim_length))
 
 func hit(_by_who, _by_what):
 	target = _by_who
@@ -229,12 +224,12 @@ func hit(_by_who, _by_what):
 		await get_tree().create_timer(anim_length).timeout
 		can_be_hurt = true
 		current_state = state.CHASE
-
 	
 func parried():
 	current_state = state.DYNAMIC_ACTION
 	parried_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length).timeout
+	await get_tree().create_timer(anim_length +1.0).timeout
 	current_state = state.CHASE
+

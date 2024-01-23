@@ -60,9 +60,11 @@ var parry_window = .3
 signal parry_started
 signal block_started
 signal hurt_started
+signal damage_taken
 signal death_started
 
 signal use_item_started
+signal item_used
 
 # Jump and Gravity
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -306,7 +308,7 @@ func attack(_is_special_attack : bool = false):
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length,_is_special_attack)
 	await get_tree().create_timer(anim_length *.3).timeout
-	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
 	attack_ended.emit()
 	
@@ -541,16 +543,17 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 
-func hit(_attacker:Node3D, _weapon_stats = null):
+func hit(_who, _by_what):
 	if can_be_hurt:
 		if parry_active:
 			parry()
-			if _attacker.has_method("parried"):
-				_attacker.parried()
+			if _who.has_method("parried"):
+				_who.parried()
 			return
 		elif guarding:
 			block()
 		else:
+			damage_taken.emit(_by_what)
 			hurt()
 
 func block():
@@ -590,10 +593,12 @@ func hurt():
 func use_item():
 	current_state = state.DYNAMIC_ACTION
 	use_item_started.emit()
-	anim_length = .5
+	anim_length = 1.0
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length).timeout
+	await get_tree().create_timer(anim_length * .5).timeout
+	item_used.emit()
+	await get_tree().create_timer(anim_length * .5).timeout
 	if current_state == state.DYNAMIC_ACTION:
 		current_state = state.FREE
 

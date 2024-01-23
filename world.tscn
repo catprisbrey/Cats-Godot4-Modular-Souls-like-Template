@@ -50,7 +50,11 @@ data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0,
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u2ney"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mjuy0"]
+albedo_color = Color(0.819608, 0.239216, 0.168627, 1)
+
 [sub_resource type="PrismMesh" id="PrismMesh_pf3ai"]
+material = SubResource("StandardMaterial3D_mjuy0")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_my86n"]
 
@@ -145,8 +149,6 @@ _data = {
 "spin": SubResource("Animation_7qud4")
 }
 
-[sub_resource type="PrismMesh" id="PrismMesh_e8mbl"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbidk"]
 
 [node name="World" type="Node3D"]
@@ -206,6 +208,11 @@ collision_layer = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_u2ney")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy" groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
+mesh = SubResource("PrismMesh_pf3ai")
+skeleton = NodePath("../..")
+
 [node name="Baddy2" type="CharacterBody3D" parent="." groups=["Targets"]]
 transform = Transform3D(0.696652, 0, 0.717409, 0, 1, 0, -0.717409, 0, 0.696652, -0.333106, 0, 11.8602)
 collision_layer = 4
@@ -241,14 +248,14 @@ libraries = {
 transform = Transform3D(0.795558, 0, -0.605877, 0, 1, 0, 0.605877, 0, 0.795558, -5.35772, 0, 9.52317)
 collision_layer = 4
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy3" groups=["Targets"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
-mesh = SubResource("PrismMesh_e8mbl")
-skeleton = NodePath("../..")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Baddy3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_xbidk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Baddy3" groups=["Targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50601, 0)
+mesh = SubResource("PrismMesh_pf3ai")
+skeleton = NodePath("../..")
 
 [node name="Ladderv2" parent="." instance=ExtResource("8_30vqq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.20462, 0, -5.52359)
@@ -268,7 +275,7 @@ transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.07872
 [node name="Player" parent="." instance=ExtResource("1_k2mnc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6101, 0, -0.316795)
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("8_6u132")]
+[node name="Enemy" parent="." instance=ExtResource("8_6u132")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0, -3.97313)
 
 [connection signal="body_entered" from="Baddy2/SpinWeapon" to="Baddy2/SpinWeapon" method="_on_body_entered"]
