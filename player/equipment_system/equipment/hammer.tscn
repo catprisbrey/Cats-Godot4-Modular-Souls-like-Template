@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://cppm5fkbguoqx"]
+
+[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_kejao"]
+[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_u8yoy"]
+
+[sub_resource type="Resource" id="Resource_g4dft"]
+script = ExtResource("2_u8yoy")
+name = "Hammer"
+object_type = "HEAVY"
+power = 1
+weight = 1
+value = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2wmyg"]
+top_radius = 0.02
+bottom_radius = 0.02
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rkyuf"]
+top_radius = 0.1
+bottom_radius = 0.0
+height = 0.335
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ogvqq"]
+size = Vector3(0.265, 0.892, 0.335)
+
+[node name="WeaponObject" type="Area3D"]
+script = ExtResource("1_kejao")
+equipment_info = SubResource("Resource_g4dft")
+
+[node name="Handle" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.333657, 0)
+mesh = SubResource("CylinderMesh_2wmyg")
+
+[node name="Bat" type="MeshInstance3D" parent="Handle"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.0301712, 0.386607, 0)
+mesh = SubResource("CylinderMesh_rkyuf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.426219, 0)
+shape = SubResource("BoxShape3D_ogvqq")

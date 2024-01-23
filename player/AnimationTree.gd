@@ -1,7 +1,7 @@
 extends AnimationTree
 class_name AnimationTreeSoulsBase
 
-@export var player_node : CharacterBody3D
+@export var player_node : CharacterBodySoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var weapon_state_machine : AnimationNodeStateMachinePlayback
 @onready var weapon_movement_tree : String = "SLASH"
@@ -111,7 +111,6 @@ func _on_weapon_change_ended(_new_weapon_type):
 		
 	else:
 		weapon_movement_tree = "SLASH"
-	
 	weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
 
 func _on_gadget_change_started():

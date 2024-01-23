@@ -1,7 +1,7 @@
 extends Area3D
 
 @onready var animation_player = $"../AnimationPlayer"
-@export var facts : EquipmentResource
+@export var facts : EquipmentResource = EquipmentResource.new()
 
 func _ready():
 	animation_player.play("spin")
