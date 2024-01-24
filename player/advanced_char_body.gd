@@ -173,11 +173,15 @@ func _input(_event:InputEvent):
 			
 			elif _event.is_action_pressed("jump"):
 				jump()
-			elif _event.is_action_pressed("use_weapon"):
+				
+			elif _event.is_action_pressed("use_weapon_light"):
 				if secondary_action:
 					attack(secondary_action)
 				else:
 					attack()
+					
+			elif _event.is_action_pressed("use_weapon_strong"):
+				attack(secondary_action)
 			# dodge
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge_or_sprint()
@@ -191,7 +195,10 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("change_secondary"):
 				gadget_change()
 
-			elif _event.is_action_pressed("use_gadget"): 
+			elif _event.is_action_pressed("use_gadget_strong"): 
+					use_gadget()
+					
+			elif _event.is_action_pressed("use_gadget_light"):
 				if secondary_action:
 					use_gadget()
 				else:
@@ -200,7 +207,7 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("use_item"): 
 				use_item()
 		else: # if not on floor
-			if _event.is_action_pressed("use_weapon"):
+			if _event.is_action_pressed("use_weapon_light"):
 				air_attack()
 	
 	elif current_state == state.SPRINT:
@@ -214,14 +221,14 @@ func _input(_event:InputEvent):
 		if _event.is_action_pressed("dodge_dash"):
 			current_state = state.FREE
 				
-	if _event.is_action_released("use_gadget"):
+	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
 			end_guard()
 			
 	
 			
 func _physics_process(_delta):
-	apply_gravity(_delta)
+	
 	match current_state:
 		state.FREE:
 			rotate_player()
@@ -248,9 +255,11 @@ func _physics_process(_delta):
 			free_movement()
 			rotate_player()
 			
+	apply_gravity(_delta)
+	
 func apply_gravity(_delta):
-	if !is_on_floor() && \
-	current_state != state.LADDER:
+	if !is_on_floor() \
+	&& current_state != state.LADDER:
 		velocity.y -= gravity * _delta
 		
 func free_movement():
@@ -318,7 +327,6 @@ func attack(_is_special_attack : bool = false):
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
 	attack_ended.emit()
-	
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 

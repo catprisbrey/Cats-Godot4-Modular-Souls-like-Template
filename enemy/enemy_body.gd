@@ -178,7 +178,7 @@ func combat_randomizer():
 
 func attack():
 	current_state = state.ATTACK
-	var new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
+	#var _new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
 	attacking = true
 	attack_started.emit()
 	if anim_state_tree:

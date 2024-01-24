@@ -1,6 +1,10 @@
 extends BoneAttachment3D
 class_name FootfallSensor
 
+## Set the external skeleton to your character body. Assign the bone to each foot.
+## If the raycast isn't pointed down to the floor, adjust its x rotatino.
+## The cast will sense and signal each step down and up step action.
+
 signal foot_stepped
 signal foot_lifted
 

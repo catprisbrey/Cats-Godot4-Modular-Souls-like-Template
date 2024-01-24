@@ -4,10 +4,8 @@
 [ext_resource type="AudioStream" uid="uid://bnqorddnmpojj" path="res://audio/SoundFX/step/step_2.wav" id="2_tfol7"]
 [ext_resource type="AudioStream" uid="uid://nbwjlkyrx4ya" path="res://audio/SoundFX/shuffle/shuffle_3.wav" id="3_4wlbn"]
 
-[node name="FootstepSoundSystem" type="Node3D" node_paths=PackedStringArray("left_foot", "right_foot")]
+[node name="FootstepSoundSystem" type="Node3D"]
 script = ExtResource("1_wt0br")
-left_foot = NodePath("")
-right_foot = NodePath("")
 step_sound = ExtResource("2_tfol7")
 pant_sound = ExtResource("3_4wlbn")
 

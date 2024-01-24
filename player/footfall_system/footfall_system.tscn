@@ -8,7 +8,7 @@ external_skeleton = NodePath("")
 script = ExtResource("1_b8ejw")
 
 [node name="Pivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 0, 0, 0)
 
 [node name="Floorcast" type="RayCast3D" parent="Pivot"]
 target_position = Vector3(0, -0.2, 0)
