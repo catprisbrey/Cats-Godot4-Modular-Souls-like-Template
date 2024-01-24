@@ -4,6 +4,12 @@ class_name CharacterBodySoulsBase
 ## and update control orientation to match it. Strafing will lock rotation to
 ## to face camera perspective, except for dodging actions.
 
+## A LOT of actions here have signals delayed by timers. This is bad form.
+## It's bad for production but handy when protoyping new animations and you don't
+## want to hard bake where each trigger happens every time you change something.
+## Once player animations are finalized, add the signal triggers to the animations
+## and remove the timers in the functions here as needed. 
+
 ## Manages all animations generally pulling info it needs from states and substates.
 @export var anim_state_tree : AnimationTree
 #### When the anim_state_tree starts a new animatino, this variable updates with it's length
@@ -321,6 +327,8 @@ func air_attack():
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length)
+	await get_tree().create_timer(.3).timeout
+	attack_swing_started.emit()
 		
 func air_movement():
 	move_and_slide()
@@ -451,11 +459,9 @@ func _on_interact_updated(_int_bottom, _int_top):
 	print(str(interactable) + " at " + interact_loc)
 	
 func interact():
-	## The only command passed to interactable objects:
-	## the command passes the player node, and which sensor,
-	## TOP/BOTTOM/BOTH sees the interactable
+	## interactions are a handshake. The interactable will reply back with more
+	## info or actions if needed.
 	if interactable:
- 
 		interactable.activate(self,interact_loc)
 	
 func start_door(door_transform, move_time):

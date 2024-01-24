@@ -13,11 +13,12 @@ func _ready():
 	new_stream = sound_1
 	
 func _on_trigger_signal(_1 = null):
-	if sound_2 != null:
-		match randi_range(1,2):
-			1: new_stream = sound_1
-			2: new_stream = sound_2
-	stream = new_stream
-	pitch_scale = randf_range(.7,1)
-	play()
-	print("attack sound??")
+	if !playing:
+		if sound_2 != null:
+			match randi_range(1,2):
+				1: new_stream = sound_1
+				2: new_stream = sound_2
+		stream = new_stream
+		pitch_scale = randf_range(.7,1)
+		play()
+

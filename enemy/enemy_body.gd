@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name EnemyBase
 
 @export var group_name :String = "Targets"
 
@@ -24,9 +25,11 @@ signal chase_ended
 @onready var attacking = false
 signal attack_started
 signal attack_ended
+signal attack_swing_started
+
 @export var combat_range : float = 3.0
 @onready var combat_timer = $CombatTimer
-signal parried_started()
+signal parried_started
 signal hurt_started
 var can_be_hurt = true
 
@@ -176,12 +179,12 @@ func combat_randomizer():
 func attack():
 	current_state = state.ATTACK
 	var new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
-	look_at(new_pos,Vector3.UP, true)
 	attacking = true
 	attack_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(.5).timeout
+	attack_swing_started.emit()
 	dash()
 	await get_tree().create_timer(.5).timeout
 	attack_ended.emit()
