@@ -13,11 +13,11 @@ dest_files=["res://.godot/imported/step_4.wav-09b8daf1a531a01eec29830276cc1436.s
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

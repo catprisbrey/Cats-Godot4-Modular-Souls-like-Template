@@ -13,11 +13,11 @@ dest_files=["res://.godot/imported/clang_1.wav-12bfa1321ad36c4dfa9fd0243f79b8ba.
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

@@ -1,8 +1,12 @@
 extends AudioStreamPlayer3D
 
 @export var player_node : CharacterBodySoulsBase
+@export var left_foot : FootfallSensor
+@export var right_foot : FootfallSensor
+@export var step_sound : AudioStream 
 @export var dodge_sound : AudioStream  
 @export var jump_sound : AudioStream 
+@export var swing_sound : AudioStream
 @export var equipement_change_sound : AudioStream 
 @export var block_sound : AudioStream 
 @export var parry_sound : AudioStream 
@@ -18,11 +22,17 @@ func _ready():
 	player_node.jump_started.connect(_on_jump_started)
 	player_node.gadget_change_started.connect(_on_gadget_change_started)
 	player_node.weapon_change_started.connect(_on_gadget_change_started)
+	player_node.attack_swing_started.connect(_on_attack_swing_started)
 	player_node.parry_started.connect(_on_parry_started)
 	player_node.hurt_started.connect(_on_hurt_started)
 	player_node.block_started.connect(_on_block_started)
 	player_node.use_item_started.connect(_on_use_item_started)
 	player_node.death_started.connect(_on_death_started)
+	
+	if left_foot:
+		left_foot.foot_stepped.connect(_on_foot_stepped)
+	if right_foot:
+		right_foot.foot_stepped.connect(_on_foot_stepped)
 	
 func _randomize_and_play(_new_value):
 	new_stream = _new_value
@@ -31,12 +41,18 @@ func _randomize_and_play(_new_value):
 	pitch_scale = randf_range(.7,1)
 	play()
 
+func _on_foot_stepped():
+	new_stream = step_sound
+
 func _on_jump_started():
 	new_stream = jump_sound
 	
 func _on_dodge_started():
 	new_stream = dodge_sound
-	
+
+func _on_attack_swing_started():
+	new_stream = swing_sound
+
 func _on_gadget_change_started():
 	new_stream = equipement_change_sound
 	

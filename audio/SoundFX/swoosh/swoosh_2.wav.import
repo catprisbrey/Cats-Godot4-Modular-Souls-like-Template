@@ -13,11 +13,11 @@ dest_files=["res://.godot/imported/swoosh_2.wav-b230855ebf6b3d23bb2ab927b857c0d4
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

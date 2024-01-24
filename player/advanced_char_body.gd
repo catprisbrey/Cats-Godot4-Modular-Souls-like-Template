@@ -35,6 +35,7 @@ signal weapon_change_started
 signal weapon_changed
 signal weapon_change_ended
 signal attack_started
+signal attack_swing_started
 signal attack_ended
 ## A helper variable for inputs across 2 key inputs "shift+ attack", etc.
 var secondary_action
@@ -303,11 +304,11 @@ func calc_direction():
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
 	anim_length = .5
-
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length,_is_special_attack)
-	await get_tree().create_timer(anim_length *.3).timeout
+	await get_tree().create_timer(anim_length *.4).timeout
+	attack_swing_started.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
 	attack_ended.emit()

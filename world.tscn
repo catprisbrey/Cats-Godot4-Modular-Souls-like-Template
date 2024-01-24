@@ -273,10 +273,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0532727, 7.15256e-07, -5.7
 [node name="AreaCam" parent="." instance=ExtResource("8_tgyg3")]
 transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.0787201, 0.908271, 0, 11.4209)
 
-[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6101, 0, -0.316795)
-
 [node name="Enemy" parent="." instance=ExtResource("8_6u132")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0, -3.97313)
+
+[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
 
 [connection signal="body_entered" from="Baddy2/SpinWeapon" to="Baddy2/SpinWeapon" method="_on_body_entered"]

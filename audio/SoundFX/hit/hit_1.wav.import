@@ -13,11 +13,11 @@ dest_files=["res://.godot/imported/hit_1.wav-7a754557c5e99ebf1a52fc4a0a04013f.sa
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

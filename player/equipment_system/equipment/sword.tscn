@@ -1,10 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dva7owhrl4wew"]
+[gd_scene load_steps=8 format=3 uid="uid://dva7owhrl4wew"]
 
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_2vkpj"]
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_15vxs"]
-[ext_resource type="PackedScene" uid="uid://dnlnymg5dhv0j" path="res://audio/sound_fx_system.tscn" id="3_hdvgq"]
-[ext_resource type="AudioStream" uid="uid://dxa2b1dimc1kk" path="res://player/equipment_system/equipment/sounds/hit_1.wav" id="3_ii2i5"]
-[ext_resource type="AudioStream" uid="uid://umm6ehd8n7iw" path="res://player/equipment_system/equipment/sounds/hit_2.wav" id="5_2t1kc"]
 
 [sub_resource type="Resource" id="Resource_rfg87"]
 script = ExtResource("2_15vxs")
@@ -65,9 +62,3 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.515, 0)
 shape = SubResource("BoxShape3D_jk5hn")
-
-[node name="SoundFXSystem" parent="." node_paths=PackedStringArray("triggering_node") instance=ExtResource("3_hdvgq")]
-sound_1 = ExtResource("3_ii2i5")
-sound_2 = ExtResource("5_2t1kc")
-triggering_node = NodePath("..")
-trigger_signal_name = "body_entered"

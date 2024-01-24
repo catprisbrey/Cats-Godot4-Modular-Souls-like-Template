@@ -13,11 +13,11 @@ dest_files=["res://.godot/imported/swish_1.wav-7c5a85bf5462ee09b681cf906a1f89d1.
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
-edit/normalize=false
+edit/normalize=true
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1

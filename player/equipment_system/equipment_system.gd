@@ -87,6 +87,7 @@ func _on_action_ended():
 func _on_body_entered(_hit_body):
 	if _hit_body.is_in_group(target_group):
 		if _hit_body.has_method("hit"):
+			hit_target.emit()
 			_hit_body.hit(player_node,current_equipment.equipment_info)
 
 func _on_hurt_started():
