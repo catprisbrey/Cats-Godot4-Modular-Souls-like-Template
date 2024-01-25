@@ -55,6 +55,7 @@ var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
+signal gadget_swing_started
 signal gadget_activated
 signal gadget_deactivated
 ## When guarding this substate is true
@@ -543,7 +544,6 @@ func end_guard():
 
 func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
 	current_state = state.STATIC_ACTION
-	speed = 0.0
 	gadget_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_started
@@ -551,12 +551,14 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 		gadget_activated.emit(anim_length)
 		await get_tree().create_timer(attack_duration *.45).timeout
 		dash()
+		gadget_swing_started.emit()
 		await get_tree().create_timer(attack_duration *.3).timeout
 		gadget_deactivated.emit()
 	else:
 		gadget_activated.emit(.1)
 		await get_tree().create_timer(.3).timeout
 		dash()
+		gadget_swing_started
 		gadget_deactivated.emit()
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE

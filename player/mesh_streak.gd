@@ -1,6 +1,14 @@
 extends MeshInstance3D
 class_name MeshStreak
 
+## Creates a streak/ribbon of mesh to make attacks look cooler. It dynamically
+## creates a mesh starting at an origin node, plus an bottom offset, to a streak
+## top offset position. You can turn it on and off with the bool "actvated".
+## It can be triggered using signals to turn on and off, or turn off based on
+## lifetime. 
+## You can add a custom material for your own colors/textures, etc, or leave
+## the field empty to use a default
+
 @onready var mesh_array = []
 
 @export var lifetime = .4
@@ -14,12 +22,14 @@ class_name MeshStreak
 @export var origin_node: Node3D = self
 ## Where the bottom of the steak points should start in relation to the origin node.
 @export var streak_bottom = Vector3.ZERO
-## Where the top of the steak points should start in relation to the origin node.
+## Where the top of the steak points should end in relation to the origin node.
 @export var streak_top = Vector3.UP
 
-## Recommend to turn shading off, and use transparency or glow for a cool look.
+## Recommend to turn shading off, and use transparency or glow for a cool look. 
+## Leave this empty to use a default white transparent gradient. 
 @export var custom_material : StandardMaterial3D 
 
+## a helper counter to reduce how many edges are created.
 @onready var counter : int = 0
 @onready var activated : bool
 
