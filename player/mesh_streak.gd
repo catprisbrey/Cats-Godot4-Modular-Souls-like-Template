@@ -33,15 +33,15 @@ class_name MeshStreak
 @onready var counter : int = 0
 @onready var activated : bool
 
-
+## probably not necessary but every edge is it's own class
 class edge:
 	var top_p : Vector3
 	var bottom_p : Vector3
 
 func _ready():
-	top_level =  true
+	top_level =  true # don't follow the parent, be independant
+	material_check() # if no material is set, create one and add it.
 	
-	material_check()
 	
 	if trigger_node:
 		trigger_node.connect(start_trigger_signal,_on_start_trigger_signal)
