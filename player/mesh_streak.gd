@@ -18,7 +18,7 @@ class_name MeshStreak
 @export var streak_top = Vector3.UP
 
 ## Recommend to turn shading off, and use transparency or glow for a cool look.
-@export var new_material : StandardMaterial3D = StandardMaterial3D.new()
+@export var custom_material : StandardMaterial3D 
 
 @onready var counter : int = 0
 @onready var activated : bool
@@ -30,9 +30,8 @@ class edge:
 
 func _ready():
 	top_level =  true
-	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	
-	new_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	material_check()
 	
 	if trigger_node:
 		trigger_node.connect(start_trigger_signal,_on_start_trigger_signal)
@@ -72,10 +71,12 @@ func mesh_update():
 	if mesh_array.size() != 0:
 		var surface_tool = SurfaceTool.new()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-		surface_tool.set_material(new_material)
+		surface_tool.set_material(custom_material)
 
 		for each_edge in mesh_array:
+			surface_tool.set_uv(Vector2.ZERO)
 			surface_tool.add_vertex(each_edge.top_p)
+			surface_tool.set_uv(Vector2.RIGHT)
 			surface_tool.add_vertex(each_edge.bottom_p)
 		mesh = surface_tool.commit()
 	
@@ -94,4 +95,20 @@ func create_edge():
 	
 func remove_edge():
 	mesh_array.pop_front()
+
+func material_check(): ## Create a new default material for the streak
+	if custom_material == null:
+		custom_material = StandardMaterial3D.new()
+		custom_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		custom_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		custom_material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		var new_grad_texture : GradientTexture1D = GradientTexture1D.new()
+		var new_gradient : Gradient = Gradient.new()
+		new_gradient.set_color(0,Color(1,1,1,.3))
+		new_gradient.set_offset(0,.6)
+		new_gradient.set_color(1,Color(1,1,1,0))
+		new_gradient.set_offset(1,1)	
+		new_grad_texture.gradient = new_gradient
+		custom_material.albedo_texture = new_grad_texture
+		
 
