@@ -146,6 +146,8 @@ func change_state(new_state):
 			speed = sprint_speed
 		state.DYNAMIC_ACTION:
 			speed = walk_speed
+		state.STATIC_ACTION:
+			speed = 0.0
 
 
 func _input(_event:InputEvent):
@@ -369,9 +371,10 @@ func dodge_or_sprint():
 	if sprint_timer.is_stopped():
 		sprint_timer.start(.3)
 		await sprint_timer.timeout
-		if current_state == state.FREE:
-			current_state = state.SPRINT
-			sprint_started.emit()
+		if current_state == state.FREE \
+			&& input_dir:
+				current_state = state.SPRINT
+				sprint_started.emit()
 		
 func end_sprint():
 	if current_state == state.SPRINT:
