@@ -33,7 +33,7 @@ func _ready():
 	player_node.use_item_started.connect(_on_use_item_started)
 	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
-	
+	player_node.landed_hard.connect(_on_landed_hard)
 	_on_weapon_change_ended(player_node.weapon_type)
 func _on_changed_state(_new_state):
 	pass
@@ -52,6 +52,9 @@ func _process(_delta):
 
 func request_oneshot(oneshot:String):
 	set("parameters/" + oneshot + "/request",true)
+
+func _on_landed_hard():
+	request_oneshot("LandedHard")
 
 func set_guarding():
 	if player_node.guarding:

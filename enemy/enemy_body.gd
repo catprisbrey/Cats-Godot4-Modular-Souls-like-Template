@@ -22,7 +22,6 @@ signal chase_ended
 @export var dash_speed = 6.0
 @onready var turn_speed = .05
 
-@onready var attacking = false
 signal attack_started
 signal attack_ended
 signal attack_swing_started
@@ -102,10 +101,11 @@ func _physics_process(_delta):
 
 func set_target(_new_target): 
 	target = _new_target
-	if target != default_target:
-		current_state = state.CHASE
-	else:
-		current_state = state.FREE
+	if current_state != state.ATTACK:
+		if target != default_target:
+			current_state = state.CHASE
+		else:
+			current_state = state.FREE
 	
 func _on_target_spotted(_spotted_target): # Updates from a TargetSensor if a target is found.
 	if target != _spotted_target:
@@ -179,16 +179,17 @@ func combat_randomizer():
 func attack():
 	current_state = state.ATTACK
 	#var _new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
-	attacking = true
+	direction = Vector3.ZERO
 	attack_started.emit()
+	anim_length = .5
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(.5).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	attack_swing_started.emit()
 	dash()
-	await get_tree().create_timer(.5).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	attack_ended.emit()
-	attacking = false
+
 	current_state = state.CHASE
 	
 func retreat(): # Back away for a period of time
@@ -231,6 +232,7 @@ func hit(_by_who, _by_what):
 func parried():
 	current_state = state.DYNAMIC_ACTION
 	parried_started.emit()
+	anim_length = 2.0
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length +1.0).timeout

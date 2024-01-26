@@ -25,18 +25,22 @@ signal equipment_changed
 @onready var stored_equipment : Node3D
 
 signal hit_target
+signal hit_world
 
 func _ready():
 	if player_node:
 		if player_node.has_signal(change_signal):
 			player_node.connect(change_signal,_on_equipment_changed)
+		## needed to turn on/off monitoring when attacks start/end
 		if player_node.has_signal(activate_signal):
 			player_node.connect(activate_signal,_on_action_started)
 		if player_node.has_signal(deactivate_signal):
 			player_node.connect(deactivate_signal,_on_action_ended)
+		## needed to turn off monitoring if hurt mid-attack
 		if player_node.has_signal("hurt_started"):
 			player_node.hurt_started.connect(_on_hurt_started)
 			 
+	## update what weapon we're starting with
 	if held_mount_point:
 		if held_mount_point.get_child(0):
 			current_equipment = held_mount_point.get_child(0)
@@ -44,7 +48,7 @@ func _ready():
 			current_equipment.monitoring = false
 			if current_equipment.has_signal("body_entered"):
 				current_equipment.body_entered.connect(_on_body_entered)
-		
+	## update what gadget we're holding
 	if stored_mount_point:
 		if stored_mount_point.get_child(0):
 			stored_equipment = stored_mount_point.get_child(0)
@@ -89,6 +93,8 @@ func _on_body_entered(_hit_body):
 		if _hit_body.has_method("hit"):
 			hit_target.emit()
 			_hit_body.hit(player_node,current_equipment.equipment_info)
+	else: 
+		hit_world.emit()
 
 func _on_hurt_started():
 	current_equipment.monitoring = false

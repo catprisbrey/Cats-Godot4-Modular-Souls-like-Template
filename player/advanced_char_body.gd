@@ -77,6 +77,9 @@ signal item_used
 # Jump and Gravity
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
+@onready var last_altitude = global_position
+@export var hard_landing_height = 5 # how far they can fall before 'hard landing'
+signal landed_hard
 signal jump_started
 
 ## Dodge and Sprint Mechanics.
@@ -217,6 +220,7 @@ func _input(_event:InputEvent):
 		
 		if _event.is_action_released("dodge_dash"):
 			end_sprint()
+			
 		elif _event.is_action_pressed("jump"):
 				jump()
 				
@@ -242,8 +246,9 @@ func _physics_process(_delta):
 			free_movement()
 			
 		state.DODGE:
-			rotate_player()
 			dash_movement()
+			rotate_player()
+			
 			
 		state.LADDER:
 			ladder_movement()
@@ -259,11 +264,15 @@ func _physics_process(_delta):
 			rotate_player()
 			
 	apply_gravity(_delta)
+	fall_check()
 	
 func apply_gravity(_delta):
 	if !is_on_floor() \
 	&& current_state != state.LADDER:
 		velocity.y -= gravity * _delta
+	
+				
+
 		
 func free_movement():
 	# Get the movement orientation from the angles of the player to the camera.
@@ -343,11 +352,38 @@ func air_attack():
 		
 func air_movement():
 	move_and_slide()
+	## for landing
 	if is_on_floor():
 		if current_state == state.AIRATTACK:
 			attack_ended.emit()
-		current_state = state.FREE
+			current_state = state.FREE
 		
+		
+		
+func fall_check():
+	## If you leave the floor, store last position.
+	## When you land again, compare the distances from start to finish, if greater
+	## than the hard_landing_height, then trigger a hard landing. Otherwise, 
+	## clear the last_altitude variable.
+	if !is_on_floor() && last_altitude == null: 
+		last_altitude = global_position
+	if is_on_floor() && last_altitude != null:
+		var fall_distance = last_altitude.distance_to(global_position)
+		print(fall_distance)
+		if fall_distance > hard_landing_height:
+			hard_landing()
+		last_altitude = null
+				
+func hard_landing():
+		current_state = state.STATIC_ACTION
+		landed_hard.emit()
+		anim_length = .4
+		if anim_state_tree:
+			await anim_state_tree.animation_measured
+		await get_tree().create_timer(anim_length).timeout
+		if current_state == state.STATIC_ACTION:
+			current_state = state.FREE
+	
 func jump():
 	if anim_state_tree:
 		jump_started.emit()
@@ -381,6 +417,11 @@ func end_sprint():
 	if current_state == state.SPRINT:
 		current_state = state.FREE
 		
+func dash_movement():
+	# required in the process function states for dodges/dashes
+	velocity = direction * speed
+	move_and_slide()
+	
 func dodge(): 
 	# Burst of speed toward an input direction, or backwards
 	current_state = state.DODGE
@@ -394,21 +435,17 @@ func dodge():
 	else: # Dodge toward the 'BACK' of your global position
 		direction = (global_position - to_global(Vector3.BACK)).normalized()
 		dodge_started.emit()
+		
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		dodge_duration = anim_length
+		dodge_duration = anim_length *.4
 	# After timer finishes, return to pre-dodge state
 	await get_tree().create_timer(dodge_duration).timeout
 	dodge_ended.emit()
+	speed = default_speed
 	current_state = state.FREE
 	can_be_hurt = true
-	speed = default_speed
-	direction = Vector3.ZERO
-		
-func dash_movement():
-	# required in the process function states for dodges/dashes
-	velocity = direction * speed
-	move_and_slide()
+
 	
 func ladder_movement():
 	# move up and down ladders per the indicated direction
@@ -446,11 +483,12 @@ func exit_ladder(exit_loc):
 	var tween = create_tween()
 	tween.tween_property(self,"global_position", dismount_pos,dismount_time)
 	await tween.finished
+	last_altitude = global_position
 	current_state = state.FREE
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
-	#print("Anim Length: " + str(anim_length))
+
 
 func _on_interact_updated(_int_bottom, _int_top):
 	## This updates the interactable objects and
@@ -468,7 +506,7 @@ func _on_interact_updated(_int_bottom, _int_top):
 	else:
 		interactable = null
 		interact_loc = ""
-	print(str(interactable) + " at " + interact_loc)
+
 	
 func interact():
 	## interactions are a handshake. The interactable will reply back with more
@@ -558,7 +596,7 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 		gadget_activated.emit(.1)
 		await get_tree().create_timer(.3).timeout
 		dash()
-		gadget_swing_started
+		gadget_swing_started.emit()
 		gadget_deactivated.emit()
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
@@ -584,7 +622,7 @@ func block():
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
 	if current_state == state.STATIC_ACTION:
-		current_state = state.FREE
+		current_state = state.DYNAMIC_ACTION
 
 func parry():
 	current_state = state.STATIC_ACTION

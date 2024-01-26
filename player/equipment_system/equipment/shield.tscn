@@ -49,6 +49,7 @@ shadow_mesh = SubResource("ArrayMesh_3s2sc")
 size = Vector3(0.655, 0.705, 0.256)
 
 [node name="Shield" type="Area3D"]
+collision_mask = 5
 script = ExtResource("1_jnnne")
 equipment_info = SubResource("Resource_ldg7y")
 

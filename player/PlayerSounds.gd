@@ -22,6 +22,7 @@ func _ready():
 		player_node.gadget_change_started.connect(_on_gadget_change_started)
 		player_node.weapon_change_started.connect(_on_gadget_change_started)
 		player_node.attack_swing_started.connect(_on_attack_swing_started)
+		player_node.gadget_swing_started.connect(_on_attack_swing_started)
 		player_node.parry_started.connect(_on_parry_started)
 		player_node.hurt_started.connect(_on_hurt_started)
 		player_node.block_started.connect(_on_block_started)

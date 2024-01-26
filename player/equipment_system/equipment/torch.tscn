@@ -64,6 +64,7 @@ size = Vector2(0.03, 0.03)
 orientation = 2
 
 [node name="Torch" type="Area3D"]
+collision_mask = 5
 script = ExtResource("1_5qfvl")
 equipment_info = SubResource("Resource_wyl03")
 

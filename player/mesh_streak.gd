@@ -48,7 +48,7 @@ func _ready():
 		if use_end_signal:
 			trigger_node.connect(end_trigger_signal,_on_end_trigger_signal)
 	else:
-		printerr("No trigger node assigned to start the mesh strekk")
+		printerr("No trigger node assigned to start the mesh streak")
 	
 	if origin_node == null:
 		origin_node = get_parent()

@@ -46,11 +46,10 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_yw71y")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jk5hn"]
-size = Vector3(0.25, 1, 0.4)
+size = Vector3(0.4, 0.75, 0.4)
 
 [node name="Sword" type="Area3D"]
-collision_layer = 0
-collision_mask = 4
+collision_mask = 5
 script = ExtResource("1_2vkpj")
 equipment_info = SubResource("Resource_rfg87")
 

@@ -25,6 +25,7 @@ height = 0.335
 size = Vector3(0.265, 0.892, 0.335)
 
 [node name="WeaponObject" type="Area3D"]
+collision_mask = 5
 script = ExtResource("1_kejao")
 equipment_info = SubResource("Resource_g4dft")
 
