@@ -357,9 +357,7 @@ func air_movement():
 		if current_state == state.AIRATTACK:
 			attack_ended.emit()
 			current_state = state.FREE
-		
-		
-		
+
 func fall_check():
 	## If you leave the floor, store last position.
 	## When you land again, compare the distances from start to finish, if greater

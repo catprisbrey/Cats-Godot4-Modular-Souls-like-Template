@@ -4,6 +4,7 @@ extends AudioStreamPlayer
 
 @export var dodge_sound : AudioStream  
 @export var jump_sound : AudioStream 
+@export var hard_land_sound : AudioStream
 @export var swing_sound : AudioStream
 @export var equipement_change_sound : AudioStream 
 @export var block_sound : AudioStream 
@@ -28,7 +29,7 @@ func _ready():
 		player_node.block_started.connect(_on_block_started)
 		player_node.use_item_started.connect(_on_use_item_started)
 		player_node.death_started.connect(_on_death_started)
-	
+		player_node.landed_hard.connect(_on_landed_hard)
 	
 func _randomize_and_play(_new_value):
 	new_stream = _new_value
@@ -36,6 +37,9 @@ func _randomize_and_play(_new_value):
 	print("Sound should play")
 	pitch_scale = randf_range(.9,1.2)
 	play()
+
+func _on_landed_hard():
+	new_stream = hard_land_sound
 
 func _on_jump_started():
 	new_stream = jump_sound
