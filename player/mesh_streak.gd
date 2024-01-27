@@ -1,24 +1,19 @@
 extends MeshInstance3D
 class_name MeshStreak
 
-## Creates a streak/ribbon of mesh to make attacks look cooler. It dynamically
+## Creates a continous streak/ribbon of mesh to make attacks look cooler. It dynamically
 ## creates a mesh starting at an origin node, plus an bottom offset, to a streak
-## top offset position. You can turn it on and off with the bool "actvated".
-## It can be triggered using signals to turn on and off, or turn off based on
-## lifetime. 
-## You can add a custom material for your own colors/textures, etc, or leave
-## the field empty to use a default
+## top offset position. You can turn it on and off with the bool "emmitting".
+## if the lifetime is not 0, then after the lifetime it will turn off.
 
 @onready var mesh_array = []
+@export var emitting : bool = false : set = _set_emitting
+## Will stop emitting after the lifetime. Set to 0 to never stop emitting.
+@export var lifetime = .5
 
-@export var lifetime = .4
-@export var use_end_signal : bool = false
-## The node with the signal to start (and perhaps end) mesh streak.
-@export var trigger_node : Node
-@export var start_trigger_signal : String = "attack_swing_started"
-@export var end_trigger_signal : String = "attack_ended"
-
-## Node where the mesh will base it's own origin points.
+## Node where the mesh will base its the offset origins vertext points. If left
+## empty, then a get_parent() will be used, and offest will be based on that parent's
+## origin.
 @export var origin_node: Node3D = self
 ## Where the bottom of the steak points should start in relation to the origin node.
 @export var streak_bottom = Vector3.ZERO
@@ -31,40 +26,29 @@ class_name MeshStreak
 
 ## a helper counter to reduce how many edges are created.
 @onready var counter : int = 0
-@onready var activated : bool
 
-## probably not necessary but every edge is it's own class
+
+## Helper class to keep verteces in pairs of top and bottom pairs ot make quads.
 class edge:
 	var top_p : Vector3
 	var bottom_p : Vector3
+
+func _set_emitting(_new_value):
+	emitting = _new_value
+	if lifetime != 0:
+		await get_tree().create_timer(lifetime).timeout
+		emitting = !emitting
 
 func _ready():
 	top_level =  true # don't follow the parent, be independant
 	material_check() # if no material is set, create one and add it.
 	
-	
-	if trigger_node:
-		trigger_node.connect(start_trigger_signal,_on_start_trigger_signal)
-		if use_end_signal:
-			trigger_node.connect(end_trigger_signal,_on_end_trigger_signal)
-	else:
-		printerr("No trigger node assigned to start the mesh streak")
-	
 	if origin_node == null:
 		origin_node = get_parent()
 
-func _on_start_trigger_signal():
-	activated = true
-	if !use_end_signal:
-		await get_tree().create_timer(lifetime).timeout
-		activated = false
-	
-func _on_end_trigger_signal():
-	activated = false
-
 func _process(_delta):
 	
-	if activated:
+	if emitting:
 		counter += 1
 		if counter > 1:
 			counter = 0
@@ -121,4 +105,3 @@ func material_check(): ## Create a new default material for the streak
 		new_grad_texture.gradient = new_gradient
 		custom_material.albedo_texture = new_grad_texture
 		
-

@@ -1,6 +1,20 @@
 extends Node3D
 class_name EquipmentSystem
 
+## A node that listens for signals from a player node to change equipment, or
+## to activate and deactivate Area3D equipment nodes.
+## When the 'change_signal" emits from the player node, the child #0 under
+## the held_mount_point will reparent to the stored_mount_point, and same for
+## child #0 of stored, will move to held. Handy for swaping objects from hand
+## bones to back bones or similar.
+
+## the Activate and deactivate signals will turn on and off monitoring for the 
+## area3d children. Also if they hit things in the target_group they'll emit
+## the hit_target signal, and if they hit anything else, they'll emit hit_world
+## signal. Hitting target will communicate equipment and player_node info to the
+## object receiving the hit.
+
+
 signal equipment_changed
 ## The node that will emit the weapon change signal
 @export var player_node : CharacterBody3D
@@ -33,9 +47,9 @@ func _ready():
 			player_node.connect(change_signal,_on_equipment_changed)
 		## needed to turn on/off monitoring when attacks start/end
 		if player_node.has_signal(activate_signal):
-			player_node.connect(activate_signal,_on_action_started)
+			player_node.connect(activate_signal,_on_activated)
 		if player_node.has_signal(deactivate_signal):
-			player_node.connect(deactivate_signal,_on_action_ended)
+			player_node.connect(deactivate_signal,_on_deactivated)
 		## needed to turn off monitoring if hurt mid-attack
 		if player_node.has_signal("hurt_started"):
 			player_node.hurt_started.connect(_on_hurt_started)
@@ -78,13 +92,13 @@ func _on_equipment_changed():
 		current_equipment.equipped = true
 		equipment_changed.emit(current_equipment)
 		
-func _on_action_started(_anim_time= .5,_is_special_attack = false):
+func _on_activated(_anim_time= .5,_is_special_attack = false):
 	## awaiting so the area3D starts monitoring about mid-attack
 	if current_equipment:
 		await get_tree().create_timer(_anim_time *.3).timeout
 		current_equipment.monitoring = true
 
-func _on_action_ended():
+func _on_deactivated():
 	if current_equipment:
 		current_equipment.monitoring = false
 		

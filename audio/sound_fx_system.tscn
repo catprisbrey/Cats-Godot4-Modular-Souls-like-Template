@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dnlnymg5dhv0j"]
 
-[ext_resource type="Script" path="res://audio/SoundFXSystem.gd" id="2_2uyks"]
+[ext_resource type="Script" path="res://audio/SoundFXSystemV1.gd" id="2_2uyks"]
 
 [node name="SoundFXSystem" type="AudioStreamPlayer3D"]
 volume_db = -3.0

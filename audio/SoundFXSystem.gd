@@ -1,32 +1,19 @@
 extends AudioStreamPlayer3D
-class_name SoundFXTrigger2
+class_name SoundFXTrigger
 
-@export var sound_1 : AudioStream 
-@export var sound_2 : AudioStream
-@onready var new_stream = sound_1
+## Takes a node, and a signal string. When the signal is emitted by the 
+## triggering node, this stream  will shuffle its pitch and play. Useful
+## for making footsteps, sword hits, etc less monotonous.
 
 @export var triggering_node : Node
-@export var sound_1_signal : String = "hit_target"
-@export var sound_2_signal : String = "hit_world"
+@export var sound_trigger_signal : String = "hit_target"
 
 func _ready():
-	if triggering_node.has_signal(sound_1_signal):
-		triggering_node.connect(sound_1_signal,_on_sound_1_signal)
-	if triggering_node.has_signal(sound_2_signal):
-		triggering_node.connect(sound_2_signal,_on_sound_2_signal)
+	if triggering_node:
+		if triggering_node.has_signal(sound_trigger_signal):
+			triggering_node.connect(sound_trigger_signal,_on_sound_trigger_signal)
 	
-	new_stream = sound_1
-	
-func _on_sound_1_signal(_1 = null):
+func _on_sound_trigger_signal(_1 = null):
 	if !playing:
-		new_stream = sound_1
-		stream = new_stream
-		pitch_scale = randf_range(.7,1)
-		play()
-
-func _on_sound_2_signal(_1 = null):
-	if !playing:
-		new_stream = sound_2
-		stream = new_stream
-		pitch_scale = randf_range(.7,1)
+		pitch_scale = randf_range(.8,1.1)
 		play()
