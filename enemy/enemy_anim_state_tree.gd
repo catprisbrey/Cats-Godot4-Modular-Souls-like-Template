@@ -2,6 +2,8 @@ extends AnimationTree
 
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
+@onready var current_state
+
 var last_oneshot
 
 signal animation_measured
@@ -9,16 +11,19 @@ signal animation_measured
 
 func _ready():
 	if player_node:
-		player_node.attack_started.connect(_on_attack_started)
 		player_node.parried_started.connect(_on_parry_started)
 		player_node.hurt_started.connect(_on_hurt_started)
-		
-	animation_started.connect(_on_animation_started)
+		player_node.state_changed.connect(_on_state_changed)
 	
 func _process(_delta):
 		set_movement()
-		
-func _on_attack_started():
+	
+func _on_state_changed(_new_state):
+	current_state = _new_state
+	if _new_state == player_node.state.ATTACK:
+		start_attack()
+	
+func start_attack():
 	var randi_attack = randi_range(1,2)
 	request_oneshot("Attack"+ str(randi_attack))
 	last_oneshot = "Attack"+ str(randi_attack)

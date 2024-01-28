@@ -77,7 +77,7 @@ signal item_used
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
 @onready var last_altitude = global_position
-@export var hard_landing_height = 5 # how far they can fall before 'hard landing'
+@export var hard_landing_height = 4.5 # how far they can fall before 'hard landing'
 signal landed_hard
 signal jump_started
 
@@ -246,7 +246,7 @@ func _physics_process(_delta):
 			free_movement()
 			
 		state.DODGE:
-			dash_movement()
+			dash_movement(_delta)
 			rotate_player()
 			
 			
@@ -254,7 +254,7 @@ func _physics_process(_delta):
 			ladder_movement()
 			
 		state.ATTACK:
-			dash_movement()
+			dash_movement(_delta)
 			
 		state.AIRATTACK:
 			air_movement()
@@ -270,9 +270,6 @@ func apply_gravity(_delta):
 	if !is_on_floor() \
 	&& current_state != state.LADDER:
 		velocity.y -= gravity * _delta
-	
-				
-
 		
 func free_movement():
 	# Get the movement orientation from the angles of the player to the camera.
@@ -357,13 +354,13 @@ func air_movement():
 
 func fall_check():
 	## If you leave the floor, store last position.
-	## When you land again, compare the distances from start to finish, if greater
+	## When you land again, compare the distances of both location y values, if greater
 	## than the hard_landing_height, then trigger a hard landing. Otherwise, 
 	## clear the last_altitude variable.
 	if !is_on_floor() && last_altitude == null: 
 		last_altitude = global_position
 	if is_on_floor() && last_altitude != null:
-		var fall_distance = last_altitude.distance_to(global_position)
+		var fall_distance = abs(last_altitude.y - global_position.y)
 		print(fall_distance)
 		if fall_distance > hard_landing_height:
 			hard_landing()
@@ -394,8 +391,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .2):
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	speed = default_speed
-	velocity = direction * speed
+	#speed = default_speed
 	await get_tree().create_timer(_duration).timeout
 	direction = Vector3.ZERO
 	
@@ -412,7 +408,8 @@ func end_sprint():
 	if current_state == state.SPRINT:
 		current_state = state.FREE
 		
-func dash_movement():
+func dash_movement(_delta):
+	apply_gravity(_delta)
 	# required in the process function states for dodges/dashes
 	velocity = direction * speed
 	move_and_slide()
@@ -423,17 +420,17 @@ func dodge():
 	can_be_hurt = false
 	sprint_timer.stop()
 	var dodge_duration : float = .5
+	
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
 		dodge_started.emit()
-
 	else: # Dodge toward the 'BACK' of your global position
 		direction = (global_position - to_global(Vector3.BACK)).normalized()
 		dodge_started.emit()
 		
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		dodge_duration = anim_length *.4
+		dodge_duration = anim_length *.7
 	# After timer finishes, return to pre-dodge state
 	await get_tree().create_timer(dodge_duration).timeout
 	dodge_ended.emit()
