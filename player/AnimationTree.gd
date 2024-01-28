@@ -155,5 +155,5 @@ func set_free_move():
 
 func _on_animation_started(anim_name):
 	var new_anim_length = get_node(anim_player).get_animation(anim_name).length
-	print(anim_name)
+	#print("animation name: " + str(anim_name))
 	animation_measured.emit(new_anim_length)

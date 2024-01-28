@@ -37,7 +37,7 @@ var can_be_hurt = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper
 
 signal state_changed
-var current_state : set = update_current_state # Enemy states controlled by enum PlayerStates
+var current_state = state.FREE : set = update_current_state # Enemy states controlled by enum PlayerStates
 enum state {
 	FREE,
 	CHASE,
@@ -63,7 +63,6 @@ func update_current_state(_new_state):
 		state.DEAD:
 			speed = 0.0
 	state_changed.emit(_new_state)
-	print("state is: "+ str(current_state))
 			
 func _ready() -> void:
 	add_to_group(group_name)
@@ -75,8 +74,6 @@ func _ready() -> void:
 		
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(_on_animation_measured)
-
-	current_state = state.FREE
 	
 func _physics_process(_delta):
 	apply_gravity(_delta)

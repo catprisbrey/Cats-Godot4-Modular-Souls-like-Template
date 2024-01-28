@@ -11,7 +11,7 @@ class_name CharacterBodySoulsBase
 ## and remove the timers in the functions here as needed. 
 
 ## Manages all animations generally pulling info it needs from states and substates.
-@export var anim_state_tree : AnimationTree
+@export var anim_state_tree : AnimationTreeSoulsBase
 #### When the anim_state_tree starts a new animatino, this variable updates with it's length
 @onready var anim_length = .5
 
@@ -108,7 +108,7 @@ signal ladder_finished
 
 # State management
 enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
-@onready var current_state = state.SPAWN : set = change_state
+@onready var current_state = state.STATIC_ACTION : set = change_state
 signal changed_state
 
 func _ready():
@@ -129,7 +129,9 @@ func _ready():
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
 	
-	await get_tree().create_timer(2).timeout
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 	
 ## Makes variable changes for each state, primiarily used for updating movement speeds
@@ -358,7 +360,6 @@ func fall_check():
 		last_altitude = global_position
 	if is_on_floor() && last_altitude != null:
 		var fall_distance = abs(last_altitude.y - global_position.y)
-		print(fall_distance)
 		if fall_distance > hard_landing_height:
 			hard_landing()
 		last_altitude = null

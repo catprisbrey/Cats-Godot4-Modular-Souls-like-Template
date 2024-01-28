@@ -52,7 +52,6 @@ func eyeline_check(_new_target):
 		if eyeline.is_colliding():
 			if eyeline.get_collider() == _new_target:
 				target_found.emit(_new_target)
-				print("target found!: " + str(_new_target))
 
 func _get_closest():
 	## Attempts to find a target close to center screen

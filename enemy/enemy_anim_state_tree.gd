@@ -42,7 +42,6 @@ func request_oneshot(oneshot:String):
 	
 func abort_oneshot(oneshot):
 	set("parameters/"+ str(oneshot) + "/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
-	print(oneshot)
 
 func set_movement():
 	if player_node.retreating:
@@ -69,5 +68,4 @@ func smooth_walk_blend1(_new_target: float):
 
 func _on_animation_started(anim_name):
 	var new_anim_length = get_node(anim_player).get_animation(anim_name).length
-	print(anim_name)
 	animation_measured.emit(new_anim_length)
