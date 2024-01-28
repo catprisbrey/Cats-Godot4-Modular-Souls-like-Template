@@ -26,9 +26,8 @@ signal equipment_changed
 ## items themselves should manage what "active" means, but typically this is
 ## monitoring/collision shapes, emitters,sound FX, etc. 
 @export var activate_signal : String = "attack_started"
-## The signal name from player_node for when the item should be inactive
-@export var deactivate_signal : String = "attack_ended"
 
+@export var hurt_interrupt_signal : String = "hurt_started"
 ## The primary item location. Bone attachments or Marker3Ds work well for placement
 @export var held_mount_point : Node3D
 ## The secondary item location. Bone attachments or Marker3Ds work well for placement
@@ -48,10 +47,8 @@ func _ready():
 		## needed to turn on/off monitoring when attacks start/end
 		if player_node.has_signal(activate_signal):
 			player_node.connect(activate_signal,_on_activated)
-		if player_node.has_signal(deactivate_signal):
-			player_node.connect(deactivate_signal,_on_deactivated)
 		## needed to turn off monitoring if hurt mid-attack
-		if player_node.has_signal("hurt_started"):
+		if player_node.has_signal(hurt_interrupt_signal):
 			player_node.hurt_started.connect(_on_hurt_started)
 			 
 	## update what weapon we're starting with
@@ -92,14 +89,14 @@ func _on_equipment_changed():
 		current_equipment.equipped = true
 		equipment_changed.emit(current_equipment)
 		
-func _on_activated(_anim_time= .5,_is_special_attack = false):
+func _on_activated():
 	## awaiting so the area3D starts monitoring about mid-attack
 	if current_equipment:
-		await get_tree().create_timer(_anim_time *.3).timeout
+		await get_tree().create_timer(player_node.anim_length * .3).timeout
+		## pause and start monitoring to hit things
 		current_equipment.monitoring = true
-
-func _on_deactivated():
-	if current_equipment:
+		await get_tree().create_timer(player_node.anim_length *.3).timeout
+		## after moment turn off monitoring to not hit things
 		current_equipment.monitoring = false
 		
 func _on_body_entered(_hit_body):

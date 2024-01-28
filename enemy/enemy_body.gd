@@ -185,11 +185,9 @@ func attack():
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
-	attack_swing_started.emit()
+	attack_started.emit()
 	dash()
 	await get_tree().create_timer(anim_length *.5).timeout
-	attack_ended.emit()
-
 	current_state = state.CHASE
 	
 func retreat(): # Back away for a period of time

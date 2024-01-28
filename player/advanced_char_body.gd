@@ -41,8 +41,7 @@ signal weapon_change_started
 signal weapon_changed
 signal weapon_change_ended
 signal attack_started
-signal attack_swing_started
-signal attack_ended
+
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 var secondary_action
 
@@ -334,12 +333,10 @@ func attack(_is_special_attack : bool = false):
 	anim_length = .5
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	attack_started.emit(anim_length,_is_special_attack)
 	await get_tree().create_timer(anim_length *.4).timeout
-	attack_swing_started.emit()
+	attack_started.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
-	attack_ended.emit()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
@@ -349,14 +346,13 @@ func air_attack():
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length)
 	await get_tree().create_timer(.3).timeout
-	attack_swing_started.emit()
+	attack_started.emit()
 		
 func air_movement():
 	move_and_slide()
 	## for landing
 	if is_on_floor():
 		if current_state == state.AIRATTACK:
-			attack_ended.emit()
 			current_state = state.FREE
 
 func fall_check():
