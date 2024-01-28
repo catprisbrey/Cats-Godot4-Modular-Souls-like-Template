@@ -52,5 +52,22 @@ func _bottom_body_exited(_bottom_body):
 		_interact_update()
 	
 func _interact_update():
-	#print("TOP: " + str(interactable_top) + " BOTTOM: " + str(interactable_bottom))
-	interact_updated.emit(interactable_bottom,interactable_top)
+	## This updates the interactable objects and
+	## which sensor spotted it if you have an 
+	## if an interact sensor added to the export.
+	var interactable
+	var interact_loc
+	if interactable_bottom && interactable_top:
+		interactable = interactable_bottom
+		interact_loc = "BOTH"
+	elif interactable_bottom && interactable_top == null:
+		interactable = interactable_bottom
+		interact_loc = "BOTTOM"
+	elif interactable_bottom == null && interactable_top:
+		interactable = interactable_top
+		interact_loc = "TOP"
+	else:
+		interactable = null
+		interact_loc = ""
+	
+	interact_updated.emit(interactable,interact_loc)

@@ -3,8 +3,8 @@ class_name AnimationTreeSoulsBase
 
 @export var player_node : CharacterBodySoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
-@onready var weapon_state_machine : AnimationNodeStateMachinePlayback
-@onready var weapon_movement_tree : String = "SLASH"
+@onready var current_weapon_tree : AnimationNodeStateMachinePlayback
+@onready var weapon_type : String = "SLASH"
 
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
@@ -14,7 +14,7 @@ signal animation_measured
 
 func _ready():
 	if !player_node:
-		push_warning("Player node must be set")
+		push_warning(str(self) + ": Player node must be set")
 		
 	player_node.dodge_started.connect(_on_dodge_started)
 	player_node.jump_started.connect(_on_jump_started)
@@ -34,7 +34,9 @@ func _ready():
 	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
 	player_node.landed_hard.connect(_on_landed_hard)
+	
 	_on_weapon_change_ended(player_node.weapon_type)
+	
 func _on_changed_state(_new_state):
 	pass
 
@@ -76,7 +78,7 @@ func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
 	else:
 		var randi_hurt = randi_range(1,2)
 		request_oneshot("Hurt"+ str(randi_hurt))
-		weapon_state_machine.start("MoveStrafe")
+		current_weapon_tree.start("MoveStrafe")
 	
 func _on_death_started():
 	base_state_machine.travel("Death")
@@ -106,15 +108,13 @@ func _on_weapon_change_started():
 	request_oneshot("WeaponChange")
 
 func _on_weapon_change_ended(_new_weapon_type):
-	
+	# if a wapon tree exixts, swap to it, otherwise, just use the "SLASH_tree" for rmovements.
 	var weapon_tree_exists = tree_root.get_node("MovementStates").has_node(str(_new_weapon_type)+"_tree")
 	if weapon_tree_exists:
-		#weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
-		weapon_movement_tree = _new_weapon_type
-		
+		weapon_type = _new_weapon_type
 	else:
-		weapon_movement_tree = "SLASH"
-	weapon_state_machine = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
+		weapon_type = "SLASH"
+	current_weapon_tree = get("parameters/MovementStates/"+str(_new_weapon_type)+"_tree/playback")
 
 func _on_gadget_change_started():
 	request_oneshot("GadgetChange")
@@ -135,18 +135,18 @@ func set_strafe():
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
 		new_blend *= .4 # Force a walk speed
-	lerp_movement = get("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position")
+	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
-	set("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position", lerp_movement)
+	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)
 
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
 		new_blend *= .5 # force a walk speed
-	lerp_movement = get("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position")
+	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
-	set("parameters/MovementStates/" + weapon_movement_tree + "_tree/MoveStrafe/blend_position",lerp_movement)
+	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)
 
 
 func _on_animation_started(anim_name):

@@ -155,6 +155,10 @@ func change_state(new_state):
 
 
 func _input(_event:InputEvent):
+		# Update current orientation to camera when nothing pressed
+	if !Input.is_anything_pressed():
+		current_camera = get_viewport().get_camera_3d()
+	
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
@@ -162,10 +166,7 @@ func _input(_event:InputEvent):
 	if _event.is_action_pressed("strafe_target"):
 		strafe_targeting()
 		
-	# Update current orientation to camera when nothing pressed
-	if !Input.is_anything_pressed():
-		current_camera = get_viewport().get_camera_3d()
-	
+	# a helper for keyboard controls, not really used for joypad
 	if Input.is_action_pressed("secondary_action"):
 		secondary_action = true
 	else:
@@ -181,14 +182,14 @@ func _input(_event:InputEvent):
 				jump()
 				
 			elif _event.is_action_pressed("use_weapon_light"):
-				if secondary_action:
+				if secondary_action: # big attack for keyboard
 					attack(secondary_action)
 				else:
 					attack()
 					
 			elif _event.is_action_pressed("use_weapon_strong"):
-				attack(secondary_action)
-			# dodge
+				attack(secondary_action) # big attack for joypad
+
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge_or_sprint()
 				
@@ -488,22 +489,9 @@ func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
 
-func _on_interact_updated(_int_bottom, _int_top):
-	## This updates the interactable objects and
-	## which sensor spotted it if you have an 
-	## if an interact sensor added to the export.
-	if _int_bottom && _int_top:
-		interactable = _int_bottom
-		interact_loc = "BOTH"
-	elif _int_bottom && _int_top == null:
-		interactable = _int_bottom
-		interact_loc = "BOTTOM"
-	elif _int_bottom == null && _int_top:
-		interactable = _int_top
-		interact_loc = "TOP"
-	else:
-		interactable = null
-		interact_loc = ""
+func _on_interact_updated(_interactable, _int_loc):
+	interactable = _interactable
+	interact_loc = _int_loc
 
 	
 func interact():
