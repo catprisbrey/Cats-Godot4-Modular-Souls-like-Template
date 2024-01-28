@@ -54,9 +54,8 @@ var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
-signal gadget_swing_started
 signal gadget_activated
-signal gadget_deactivated
+
 ## When guarding this substate is true
 @onready var guarding = false
 ## The first moments of guarding, the parry window is active, allowing to parry()
@@ -152,7 +151,39 @@ func change_state(new_state):
 		state.STATIC_ACTION:
 			speed = 0.0
 
+			
+func _physics_process(_delta):
+	
+	match current_state:
+		state.FREE:
+			rotate_player()
+			free_movement()
 
+		state.SPRINT:
+			rotate_player()
+			free_movement()
+			
+		state.DODGE:
+			dash_movement()
+			rotate_player()
+			
+			
+		state.LADDER:
+			ladder_movement()
+			
+		state.ATTACK:
+			dash_movement()
+			
+		state.AIRATTACK:
+			air_movement()
+		
+		state.DYNAMIC_ACTION:
+			free_movement()
+			rotate_player()
+			
+	apply_gravity(_delta)
+	fall_check()
+	
 func _input(_event:InputEvent):
 		# Update current orientation to camera when nothing pressed
 	if !Input.is_anything_pressed():
@@ -231,40 +262,6 @@ func _input(_event:InputEvent):
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
 			end_guard()
-			
-	
-			
-func _physics_process(_delta):
-	
-	match current_state:
-		state.FREE:
-			rotate_player()
-			free_movement()
-
-		state.SPRINT:
-			rotate_player()
-			free_movement()
-			
-		state.DODGE:
-			dash_movement(_delta)
-			rotate_player()
-			
-			
-		state.LADDER:
-			ladder_movement()
-			
-		state.ATTACK:
-			dash_movement(_delta)
-			
-		state.AIRATTACK:
-			air_movement()
-		
-		state.DYNAMIC_ACTION:
-			free_movement()
-			rotate_player()
-			
-	apply_gravity(_delta)
-	fall_check()
 	
 func apply_gravity(_delta):
 	if !is_on_floor() \
@@ -408,8 +405,8 @@ func end_sprint():
 	if current_state == state.SPRINT:
 		current_state = state.FREE
 		
-func dash_movement(_delta):
-	apply_gravity(_delta)
+func dash_movement():
+
 	# required in the process function states for dodges/dashes
 	velocity = direction * speed
 	move_and_slide()
@@ -564,19 +561,10 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 	gadget_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_started
-		var attack_duration = anim_length
-		gadget_activated.emit(anim_length)
-		await get_tree().create_timer(attack_duration *.45).timeout
-		dash()
-		gadget_swing_started.emit()
-		await get_tree().create_timer(attack_duration *.3).timeout
-		gadget_deactivated.emit()
-	else:
-		gadget_activated.emit(.1)
-		await get_tree().create_timer(.3).timeout
-		dash()
-		gadget_swing_started.emit()
-		gadget_deactivated.emit()
+	var attack_duration = anim_length
+	await get_tree().create_timer(attack_duration *.3).timeout
+	gadget_activated.emit()
+	dash()
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 

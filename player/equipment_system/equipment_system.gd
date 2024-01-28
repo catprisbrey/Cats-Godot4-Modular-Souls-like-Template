@@ -27,7 +27,7 @@ signal equipment_changed
 ## monitoring/collision shapes, emitters,sound FX, etc. 
 @export var activate_signal : String = "attack_started"
 
-@export var hurt_interrupt_signal : String = "hurt_started"
+@export var deactivate_signal : String = "hurt_started"
 ## The primary item location. Bone attachments or Marker3Ds work well for placement
 @export var held_mount_point : Node3D
 ## The secondary item location. Bone attachments or Marker3Ds work well for placement
@@ -48,8 +48,8 @@ func _ready():
 		if player_node.has_signal(activate_signal):
 			player_node.connect(activate_signal,_on_activated)
 		## needed to turn off monitoring if hurt mid-attack
-		if player_node.has_signal(hurt_interrupt_signal):
-			player_node.hurt_started.connect(_on_hurt_started)
+		if player_node.has_signal(deactivate_signal):
+			player_node.hurt_started.connect(_on_stop_signal)
 			 
 	## update what weapon we're starting with
 	if held_mount_point:
@@ -94,7 +94,7 @@ func _on_activated():
 	if current_equipment:
 		## pause and start monitoring to hit things
 		current_equipment.monitoring = true
-		await get_tree().create_timer(player_node.anim_length *.3).timeout
+		await get_tree().create_timer(player_node.anim_length *.4).timeout
 		## after moment turn off monitoring to not hit things
 		current_equipment.monitoring = false
 		
@@ -106,5 +106,5 @@ func _on_body_entered(_hit_body):
 	else: 
 		hit_world.emit()
 
-func _on_hurt_started():
+func _on_stop_signal():
 	current_equipment.monitoring = false
