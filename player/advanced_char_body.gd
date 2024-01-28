@@ -34,7 +34,7 @@ signal gate_started
 ## Weapons and attacking equipment system that manages moving nodes from the 
 ## attacking hand, to their sheathed location
 @export var weapon_system : EquipmentSystem
-## A helper variable, tracks the current weapon type for easier referencing fro
+## A helper variable, tracks the current weapon type for easier referencing from
 ## the anim_state_tree
 var weapon_type :String = "SLASH"
 signal weapon_change_started
@@ -43,13 +43,13 @@ signal weapon_change_ended
 signal attack_started
 signal attack_swing_started
 signal attack_ended
-## A helper variable for inputs across 2 key inputs "shift+ attack", etc.
+## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 var secondary_action
 
 ## Gadgets and guarding equipment system that manages moving nodes from the 
 ## off-hand, to their hip location
 @export var gadget_system : EquipmentSystem
-## A helper variable, tracks the current gadget type for easier referencing fro
+## A helper variable, tracks the current gadget type for easier referencing from
 ## the anim_state_tree
 var gadget_type :String = "SHIELD"
 signal gadget_change_started

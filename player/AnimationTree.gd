@@ -1,6 +1,9 @@
 extends AnimationTree
 class_name AnimationTreeSoulsBase
 
+## A companion to the SoulsCharacterBase, expects a lot of specific signals and will react to them
+## by triggering oneshot animations, switching trees, blending run types, etc.
+
 @export var player_node : CharacterBodySoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
@@ -51,6 +54,7 @@ func _process(_delta):
 		set_ladder()
 		
 	set_guarding()
+
 
 func request_oneshot(oneshot:String):
 	set("parameters/" + oneshot + "/request",true)
