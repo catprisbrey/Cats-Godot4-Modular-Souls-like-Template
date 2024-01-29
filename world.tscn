@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=33 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="Script" path="res://test_attacker.gd" id="1_08kqi"]
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="8_q06xa"]
 [ext_resource type="PackedScene" uid="uid://cwxpu4en7wpi6" path="res://cameras/area_cam/area_cam.tscn" id="8_tgyg3"]
+[ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="9_7y6wk"]
+[ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="10_sq3wn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -277,5 +279,11 @@ transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.07872
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0, -3.97313)
 
 [node name="Player" parent="." instance=ExtResource("1_k2mnc")]
+
+[node name="ChestObject" parent="." instance=ExtResource("9_7y6wk")]
+transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -6.59881, 1.43051e-06, -5.20081)
+
+[node name="LeverObject" parent="." instance=ExtResource("10_sq3wn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.66276, 4.76837e-07, -4.05574)
 
 [connection signal="body_entered" from="Baddy2/SpinWeapon" to="Baddy2/SpinWeapon" method="_on_body_entered"]

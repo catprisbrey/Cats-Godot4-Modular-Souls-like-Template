@@ -34,7 +34,6 @@ func _ready():
 func _randomize_and_play(_new_value):
 	new_stream = _new_value
 	stream = new_stream
-	print("Sound should play")
 	pitch_scale = randf_range(.9,1.2)
 	play()
 

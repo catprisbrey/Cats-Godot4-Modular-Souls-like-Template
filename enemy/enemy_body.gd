@@ -36,7 +36,8 @@ var can_be_hurt = true
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper
 
-var current_state : set = update_current_state # Enemy states controlled by enum PlayerStates
+signal state_changed
+var current_state = state.FREE : set = update_current_state # Enemy states controlled by enum PlayerStates
 enum state {
 	FREE,
 	CHASE,
@@ -61,7 +62,7 @@ func update_current_state(_new_state):
 			speed = 0.0
 		state.DEAD:
 			speed = 0.0
-	print("state is: "+ str(current_state))
+	state_changed.emit(_new_state)
 			
 func _ready() -> void:
 	add_to_group(group_name)
@@ -73,8 +74,6 @@ func _ready() -> void:
 		
 	if anim_state_tree:
 		anim_state_tree.animation_measured.connect(_on_animation_measured)
-
-	current_state = state.FREE
 	
 func _physics_process(_delta):
 	apply_gravity(_delta)
@@ -178,28 +177,21 @@ func combat_randomizer():
 
 func attack():
 	current_state = state.ATTACK
-	#var _new_pos = Vector3(target.global_position.x, global_position.y,target.global_position.z)
-	direction = Vector3.ZERO
-	attack_started.emit()
 	anim_length = .5
-	if anim_state_tree:
+	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
-	attack_swing_started.emit()
-	dash()
-	await get_tree().create_timer(anim_length *.5).timeout
-	attack_ended.emit()
-
+	await get_tree().create_timer(anim_length *.4).timeout
+	attack_started.emit()
+	dash() ## delayed dash to move forward during attack animation
+	await get_tree().create_timer(anim_length *.4).timeout
 	current_state = state.CHASE
+	
 	
 func retreat(): # Back away for a period of time
 	var retreat_duration = 1.0
 	retreating = true
 	current_state = state.COMBAT
-	var new_dir = Vector3.BACK
-	direction = global_position - to_global(new_dir)
-	speed = walk_speed
-	velocity = direction * speed
+	direction = -global_transform.basis.z.normalized()
 	await get_tree().create_timer(retreat_duration).timeout
 	retreating = false
 	current_state = state.CHASE

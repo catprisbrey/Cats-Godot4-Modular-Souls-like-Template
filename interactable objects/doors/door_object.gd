@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends InteractableObject
 class_name DoorObject
 
 ## This door object expects waits to be told to "activate". Interactables
@@ -31,8 +31,8 @@ func activate(_requestor = self,_sensor_loc = Vector3.ZERO):
 		
 		if opened == false:
 			# Requestor 'handshake', to trigger them to take open door actions
-			if _requestor.has_method("start_door"):
-				_requestor.start_door(new_translation, move_time)
+			if _requestor.has_method("start_interact"):
+				_requestor.start_interact(interact_type,new_translation, move_time)
 				await get_tree().create_timer(move_time + .5).timeout
 			open_door(dist_to_front, dist_to_back)
 			

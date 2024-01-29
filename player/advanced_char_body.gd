@@ -11,7 +11,7 @@ class_name CharacterBodySoulsBase
 ## and remove the timers in the functions here as needed. 
 
 ## Manages all animations generally pulling info it needs from states and substates.
-@export var anim_state_tree : AnimationTree
+@export var anim_state_tree : AnimationTreeSoulsBase
 #### When the anim_state_tree starts a new animatino, this variable updates with it's length
 @onready var anim_length = .5
 
@@ -27,8 +27,11 @@ class_name CharacterBodySoulsBase
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 ## The newly sensed interactable node.
 @onready var interactable : Node3D
+signal interact_started
 signal door_started
 signal gate_started
+signal chest_started
+signal lever_started
 
 
 ## Weapons and attacking equipment system that manages moving nodes from the 
@@ -41,8 +44,7 @@ signal weapon_change_started
 signal weapon_changed
 signal weapon_change_ended
 signal attack_started
-signal attack_swing_started
-signal attack_ended
+
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 var secondary_action
 
@@ -55,9 +57,8 @@ var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
 signal gadget_started
-signal gadget_swing_started
 signal gadget_activated
-signal gadget_deactivated
+
 ## When guarding this substate is true
 @onready var guarding = false
 ## The first moments of guarding, the parry window is active, allowing to parry()
@@ -78,7 +79,7 @@ signal item_used
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
 @onready var last_altitude = global_position
-@export var hard_landing_height = 5 # how far they can fall before 'hard landing'
+@export var hard_landing_height :float = 4 # how far they can fall before 'hard landing'
 signal landed_hard
 signal jump_started
 
@@ -98,19 +99,19 @@ var input_dir : Vector2
 var direction = Vector3.ZERO
 
 # Strafing
-var strafing :bool = false
+var strafing :bool = false : set = set_strafe_targeting
 @onready var strafe_cross_product = 0.0
 @onready var move_dot_product = 0.0
 signal strafe_toggled
 
-# Climbing
-@export var climb_speed = 1.0
+# Laddering
+@export var ladder_climb_speed = 1.0
 signal ladder_started
 signal ladder_finished
 
 # State management
 enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
-@onready var current_state = state.SPAWN : set = change_state
+@onready var current_state = state.STATIC_ACTION : set = change_state
 signal changed_state
 
 func _ready():
@@ -131,7 +132,9 @@ func _ready():
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
 	
-	await get_tree().create_timer(2).timeout
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 	
 ## Makes variable changes for each state, primiarily used for updating movement speeds
@@ -143,7 +146,7 @@ func change_state(new_state):
 		state.FREE:
 			speed = default_speed
 		state.LADDER:
-			speed = climb_speed
+			speed = ladder_climb_speed
 		state.DODGE:
 			speed = dodge_speed
 		state.SPRINT:
@@ -153,7 +156,39 @@ func change_state(new_state):
 		state.STATIC_ACTION:
 			speed = 0.0
 
+			
+func _physics_process(_delta):
+	
+	match current_state:
+		state.FREE:
+			rotate_player()
+			free_movement()
 
+		state.SPRINT:
+			rotate_player()
+			free_movement()
+			
+		state.DODGE:
+			dash_movement()
+			rotate_player()
+			
+			
+		state.LADDER:
+			ladder_movement()
+			
+		state.ATTACK:
+			dash_movement()
+			
+		state.AIRATTACK:
+			air_movement()
+		
+		state.DYNAMIC_ACTION:
+			free_movement()
+			rotate_player()
+			
+	apply_gravity(_delta)
+	fall_check()
+	
 func _input(_event:InputEvent):
 		# Update current orientation to camera when nothing pressed
 	if !Input.is_anything_pressed():
@@ -162,9 +197,9 @@ func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
-	# strafe toggle on/off
+	## strafe toggle on/off
 	if _event.is_action_pressed("strafe_target"):
-		strafe_targeting()
+		strafing = !strafing
 		
 	# a helper for keyboard controls, not really used for joypad
 	if Input.is_action_pressed("secondary_action"):
@@ -232,48 +267,11 @@ func _input(_event:InputEvent):
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
 			end_guard()
-			
-	
-			
-func _physics_process(_delta):
-	
-	match current_state:
-		state.FREE:
-			rotate_player()
-			free_movement()
-
-		state.SPRINT:
-			rotate_player()
-			free_movement()
-			
-		state.DODGE:
-			dash_movement()
-			rotate_player()
-			
-			
-		state.LADDER:
-			ladder_movement()
-			
-		state.ATTACK:
-			dash_movement()
-			
-		state.AIRATTACK:
-			air_movement()
-		
-		state.DYNAMIC_ACTION:
-			free_movement()
-			rotate_player()
-			
-	apply_gravity(_delta)
-	fall_check()
 	
 func apply_gravity(_delta):
 	if !is_on_floor() \
 	&& current_state != state.LADDER:
 		velocity.y -= gravity * _delta
-	
-				
-
 		
 func free_movement():
 	# Get the movement orientation from the angles of the player to the camera.
@@ -302,8 +300,8 @@ func rotate_player():
 	if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
-		# Assuming forwardVector and newMovementDirection are your vectors
-		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
+
+		var forward_vector = global_transform.basis.z.normalized() 
 		
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
 		move_dot_product = forward_vector.dot(calc_direction().normalized())
@@ -318,10 +316,13 @@ func rotate_player():
 			global_transform.basis = Basis(target_rotation)
 	# move_and_slide() unused here. Controlled by States and free_movement().
 
-func strafe_targeting():
-	strafing = !strafing
-	strafe_toggled.emit(strafing)
+func set_strafe_targeting(_new_value):
+	strafing = _new_value
+	strafe_toggled.emit(_new_value)
 
+func _on_target_cleared():
+	strafing = false
+	
 ## calculate and return the direction of movement oriented to the current camera
 func calc_direction():
 	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)
@@ -334,12 +335,10 @@ func attack(_is_special_attack : bool = false):
 	anim_length = .5
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	attack_started.emit(anim_length,_is_special_attack)
 	await get_tree().create_timer(anim_length *.4).timeout
-	attack_swing_started.emit()
+	attack_started.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
-	attack_ended.emit()
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
@@ -349,26 +348,24 @@ func air_attack():
 		await anim_state_tree.animation_measured
 	attack_started.emit(anim_length)
 	await get_tree().create_timer(.3).timeout
-	attack_swing_started.emit()
+	attack_started.emit()
 		
 func air_movement():
 	move_and_slide()
 	## for landing
 	if is_on_floor():
 		if current_state == state.AIRATTACK:
-			attack_ended.emit()
 			current_state = state.FREE
 
 func fall_check():
 	## If you leave the floor, store last position.
-	## When you land again, compare the distances from start to finish, if greater
+	## When you land again, compare the distances of both location y values, if greater
 	## than the hard_landing_height, then trigger a hard landing. Otherwise, 
 	## clear the last_altitude variable.
 	if !is_on_floor() && last_altitude == null: 
 		last_altitude = global_position
 	if is_on_floor() && last_altitude != null:
-		var fall_distance = last_altitude.distance_to(global_position)
-		print(fall_distance)
+		var fall_distance = abs(last_altitude.y - global_position.y)
 		if fall_distance > hard_landing_height:
 			hard_landing()
 		last_altitude = null
@@ -398,8 +395,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .2):
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	speed = default_speed
-	velocity = direction * speed
+	#speed = default_speed
 	await get_tree().create_timer(_duration).timeout
 	direction = Vector3.ZERO
 	
@@ -417,6 +413,7 @@ func end_sprint():
 		current_state = state.FREE
 		
 func dash_movement():
+
 	# required in the process function states for dodges/dashes
 	velocity = direction * speed
 	move_and_slide()
@@ -427,17 +424,17 @@ func dodge():
 	can_be_hurt = false
 	sprint_timer.stop()
 	var dodge_duration : float = .5
+	
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
 		dodge_started.emit()
-
 	else: # Dodge toward the 'BACK' of your global position
 		direction = (global_position - to_global(Vector3.BACK)).normalized()
 		dodge_started.emit()
 		
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		dodge_duration = anim_length *.4
+		dodge_duration = anim_length *.7
 	# After timer finishes, return to pre-dodge state
 	await get_tree().create_timer(dodge_duration).timeout
 	dodge_ended.emit()
@@ -488,36 +485,26 @@ func exit_ladder(exit_loc):
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
-
 func _on_interact_updated(_interactable, _int_loc):
 	interactable = _interactable
 	interact_loc = _int_loc
-
 	
 func interact():
 	## interactions are a handshake. The interactable will reply back with more
 	## info or actions if needed.
 	if interactable:
 		interactable.activate(self,interact_loc)
-	
-func start_door(door_transform, move_time):
-	current_state = state.STATIC_ACTION
-	# After timer finishes, return to pre-dodge state
-	var tween = create_tween()
-	tween.tween_property(self,"global_transform", door_transform, move_time)
-	await tween.finished
-	door_started.emit()
-	await get_tree().create_timer(1.5).timeout
-	current_state = state.FREE
 
-func start_gate(gate_transform, move_time):
+func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = global_transform, move_time : float = .5):
 	current_state = state.STATIC_ACTION
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
-	tween.tween_property(self,"global_transform", gate_transform, move_time)
+	tween.tween_property(self,"global_transform", desired_transform, move_time)
 	await tween.finished
-	gate_started.emit()
-	await get_tree().create_timer(1.5).timeout
+	interact_started.emit(interact_type)
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 
 func weapon_change():
@@ -571,19 +558,10 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 	gadget_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_started
-		var attack_duration = anim_length
-		gadget_activated.emit(anim_length)
-		await get_tree().create_timer(attack_duration *.45).timeout
-		dash()
-		gadget_swing_started.emit()
-		await get_tree().create_timer(attack_duration *.3).timeout
-		gadget_deactivated.emit()
-	else:
-		gadget_activated.emit(.1)
-		await get_tree().create_timer(.3).timeout
-		dash()
-		gadget_swing_started.emit()
-		gadget_deactivated.emit()
+	var attack_duration = anim_length
+	await get_tree().create_timer(attack_duration *.3).timeout
+	gadget_activated.emit()
+	dash()
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 

@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends InteractableObject
 class_name LadderObject
 
 ## This ladder object expects waits to be told to "activate". Interactables

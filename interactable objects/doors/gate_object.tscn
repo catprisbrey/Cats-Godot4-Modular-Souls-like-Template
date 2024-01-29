@@ -1,6 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bp5aql2ip2qwi"]
+[gd_scene load_steps=13 format=3 uid="uid://bp5aql2ip2qwi"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jmheh"]
+[ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
+[ext_resource type="AudioStream" uid="uid://b7mejiv87ktbl" path="res://audio/SoundFX/clack/clack_1.wav" id="3_0j2dh"]
+[ext_resource type="AudioStream" uid="uid://bc1pbogw28uc4" path="res://audio/SoundFX/creak/creak_3.wav" id="4_ohgwa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xq5w"]
 size = Vector3(2, 2, 2)
@@ -45,7 +48,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_4eqcm"]
 resource_name = "Open"
-length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -57,6 +59,42 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 2.1, 0), Vector3(0, 2, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ratchet:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Clank:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Creak:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(-0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_4xpfs"]
@@ -85,6 +123,42 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ratchet:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Clank:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Creak:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b5b81"]
 _data = {
@@ -93,10 +167,11 @@ _data = {
 "RESET": SubResource("Animation_4xpfs")
 }
 
-[node name="GateObject" type="StaticBody3D" groups=["Interactable"]]
+[node name="GateObject" type="StaticBody3D"]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_jmheh")
+interact_type = "GATE"
 
 [node name="DetectorBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04274, 0)
@@ -149,3 +224,15 @@ skeleton = NodePath("../../../..")
 libraries = {
 "": SubResource("AnimationLibrary_b5b81")
 }
+
+[node name="Ratchet" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_4mohy")
+pitch_scale = 1.35
+
+[node name="Clank" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_0j2dh")
+pitch_scale = 0.7
+
+[node name="Creak" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_ohgwa")
+pitch_scale = 0.47

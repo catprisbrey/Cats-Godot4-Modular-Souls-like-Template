@@ -15,6 +15,7 @@ size = Vector3(0.7, 0.05, 0.05)
 [node name="Ladder" type="StaticBody3D" groups=["Interactable"]]
 collision_layer = 9
 script = ExtResource("1_4e1ny")
+interact_type = "LADDER"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51121, 0)
