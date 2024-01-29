@@ -2,15 +2,11 @@
 
 [ext_resource type="Script" path="res://cameras/follow_cam/follow_cam_3d.gd" id="1_y42mi"]
 
-[node name="FollowCam" type="Node3D" node_paths=PackedStringArray("spring_arm_3d", "camera_3d")]
+[node name="FollowCam" type="SpringArm3D" node_paths=PackedStringArray("camera_3d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 top_level = true
+spring_length = 2.0
 script = ExtResource("1_y42mi")
-spring_arm_3d = NodePath("SpringArm3D")
-camera_3d = NodePath("SpringArm3D/Camera3D")
+camera_3d = NodePath("Camera3D")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.8, 0)
-spring_length = 0.6
-margin = 0.1
-
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="."]

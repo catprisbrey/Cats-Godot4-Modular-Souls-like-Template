@@ -96,7 +96,7 @@ var input_dir : Vector2
 var direction = Vector3.ZERO
 
 # Strafing
-var strafing :bool = false
+var strafing :bool = false : set = set_strafe_targeting
 @onready var strafe_cross_product = 0.0
 @onready var move_dot_product = 0.0
 signal strafe_toggled
@@ -194,9 +194,9 @@ func _input(_event:InputEvent):
 	if _event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 		
-	# strafe toggle on/off
+	## strafe toggle on/off
 	if _event.is_action_pressed("strafe_target"):
-		strafe_targeting()
+		strafing = !strafing
 		
 	# a helper for keyboard controls, not really used for joypad
 	if Input.is_action_pressed("secondary_action"):
@@ -297,8 +297,8 @@ func rotate_player():
 	if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
-		# Assuming forwardVector and newMovementDirection are your vectors
-		var forward_vector = global_transform.basis.z.normalized() # Example: Forward vector of the character
+
+		var forward_vector = global_transform.basis.z.normalized() 
 		
 		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
 		move_dot_product = forward_vector.dot(calc_direction().normalized())
@@ -313,10 +313,13 @@ func rotate_player():
 			global_transform.basis = Basis(target_rotation)
 	# move_and_slide() unused here. Controlled by States and free_movement().
 
-func strafe_targeting():
-	strafing = !strafing
-	strafe_toggled.emit(strafing)
+func set_strafe_targeting(_new_value):
+	strafing = _new_value
+	strafe_toggled.emit(_new_value)
 
+func _on_target_cleared():
+	strafing = false
+	
 ## calculate and return the direction of movement oriented to the current camera
 func calc_direction():
 	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)

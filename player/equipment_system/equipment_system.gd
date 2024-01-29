@@ -90,11 +90,11 @@ func _on_equipment_changed():
 		equipment_changed.emit(current_equipment)
 		
 func _on_activated():
-	## awaiting so the area3D starts monitoring about mid-attack
+	## awaiting so the area3D starts monitoring about after attack wind-up
 	if current_equipment:
 		## pause and start monitoring to hit things
 		current_equipment.monitoring = true
-		await get_tree().create_timer(player_node.anim_length *.4).timeout
+		await get_tree().create_timer(player_node.anim_length *.35).timeout
 		## after moment turn off monitoring to not hit things
 		current_equipment.monitoring = false
 		
