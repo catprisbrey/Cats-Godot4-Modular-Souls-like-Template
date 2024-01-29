@@ -8,6 +8,7 @@ class_name AnimationTreeSoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
+@onready var interact_type :String = "GENERIC"
 
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
@@ -26,6 +27,7 @@ func _ready():
 	player_node.changed_state.connect(_on_changed_state)
 	player_node.door_started.connect(_on_door_started)
 	player_node.gate_started.connect(_on_gate_started)
+	player_node.interact_started.connect(_on_interact_started)
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
 	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
 	player_node.gadget_change_started.connect(_on_gadget_change_started)
@@ -99,6 +101,11 @@ func _on_sprint_started():
 func _on_dodge_started():
 	request_oneshot("Dodge")
 
+func _on_interact_started(_new_interact_type):
+	interact_type = _new_interact_type
+	await get_tree().process_frame
+	request_oneshot("Interacts")
+			
 func _on_door_started():
 	request_oneshot("OpenDoor")
 

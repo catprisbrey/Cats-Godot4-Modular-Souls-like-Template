@@ -27,8 +27,11 @@ class_name CharacterBodySoulsBase
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
 ## The newly sensed interactable node.
 @onready var interactable : Node3D
+signal interact_started
 signal door_started
 signal gate_started
+signal chest_started
+signal lever_started
 
 
 ## Weapons and attacking equipment system that manages moving nodes from the 
@@ -101,8 +104,8 @@ var strafing :bool = false : set = set_strafe_targeting
 @onready var move_dot_product = 0.0
 signal strafe_toggled
 
-# Climbing
-@export var climb_speed = 1.0
+# Laddering
+@export var ladder_climb_speed = 1.0
 signal ladder_started
 signal ladder_finished
 
@@ -143,7 +146,7 @@ func change_state(new_state):
 		state.FREE:
 			speed = default_speed
 		state.LADDER:
-			speed = climb_speed
+			speed = ladder_climb_speed
 		state.DODGE:
 			speed = dodge_speed
 		state.SPRINT:
@@ -482,36 +485,26 @@ func exit_ladder(exit_loc):
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
-
 func _on_interact_updated(_interactable, _int_loc):
 	interactable = _interactable
 	interact_loc = _int_loc
-
 	
 func interact():
 	## interactions are a handshake. The interactable will reply back with more
 	## info or actions if needed.
 	if interactable:
 		interactable.activate(self,interact_loc)
-	
-func start_door(door_transform, move_time):
-	current_state = state.STATIC_ACTION
-	# After timer finishes, return to pre-dodge state
-	var tween = create_tween()
-	tween.tween_property(self,"global_transform", door_transform, move_time)
-	await tween.finished
-	door_started.emit()
-	await get_tree().create_timer(1.5).timeout
-	current_state = state.FREE
 
-func start_gate(gate_transform, move_time):
+func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = global_transform, move_time : float = .5):
 	current_state = state.STATIC_ACTION
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
-	tween.tween_property(self,"global_transform", gate_transform, move_time)
+	tween.tween_property(self,"global_transform", desired_transform, move_time)
 	await tween.finished
-	gate_started.emit()
-	await get_tree().create_timer(1.5).timeout
+	interact_started.emit(interact_type)
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 
 func weapon_change():

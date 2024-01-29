@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends InteractableObject
 class_name GateObject
 
 ## This gate object expects waits to be told to "activate". Interactables
@@ -29,8 +29,8 @@ func activate(_requestor,_sensor_loc):
 		var move_time = .3
 		
 		if opened == false:
-			if _requestor.has_method("start_gate"):
-				_requestor.start_gate(new_translation, move_time)
+			if _requestor.has_method("start_interact"):
+				_requestor.start_interact(interact_type,new_translation, move_time)
 				await get_tree().create_timer(move_time + 1).timeout
 			open_gate()
 

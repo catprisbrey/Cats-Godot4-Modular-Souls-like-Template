@@ -1,7 +1,7 @@
 extends Node3D
 class_name InteractSensors
 
-## Player node figurative "eye balls". This will sense objects in layer 4 by 
+## Player node's figurative "eye balls". This will sense objects in layer 4 by 
 ## default, but can be overridden by setting the detection_mask layers. 
 ## This detects objects in the detection_group of that layer.
 ## This class focuses ONLY on detection and signalling out what was seen 
@@ -69,5 +69,5 @@ func _interact_update():
 	else:
 		interactable = null
 		interact_loc = ""
-	
+	print(interactable)
 	interact_updated.emit(interactable,interact_loc)

@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3yajhej5laa7"]
+
+[ext_resource type="Script" path="res://chest_object.gd" id="1_pdewx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f1ssk"]
+size = Vector3(1.5, 0.75, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uicmg"]
+albedo_color = Color(0.47451, 0.760784, 0.258824, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tydx3"]
+albedo_color = Color(0.47451, 0.760784, 0.258824, 1)
+
+[sub_resource type="Animation" id="Animation_qofnw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CSGBox3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.902558, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CSGBox3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_trxo7"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CSGBox3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.902558, 0), Vector3(0, 1.24631, -0.606141)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CSGBox3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.5708, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_32ftv"]
+_data = {
+"RESET": SubResource("Animation_qofnw"),
+"open": SubResource("Animation_trxo7")
+}
+
+[node name="ChestObject" type="StaticBody3D" groups=["Interactable"]]
+collision_layer = 9
+script = ExtResource("1_pdewx")
+interact_type = "CHEST"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_f1ssk")
+
+[node name="MeshInstance3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.373737, 0)
+size = Vector3(1.5, 0.75, 1)
+material = SubResource("StandardMaterial3D_uicmg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+operation = 2
+size = Vector3(1.3, 0.7, 0.8)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.902558, 0)
+size = Vector3(1.5, 0.25, 1)
+material = SubResource("StandardMaterial3D_tydx3")
+
+[node name="ChestAnimPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_32ftv")
+}

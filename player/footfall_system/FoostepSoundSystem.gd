@@ -1,7 +1,7 @@
 extends Node3D
 class_name FootstepSoundSystem
 
-## Receives signal sfrom FootfallSensors for when a foot steps down or up.
+## Receives signal from FootfallSensors for when a foot steps down or up.
 ## The signal will trigger a randonmized step sound or pants swoosh sound.
 ## 'Make Local' this node and be sure to assign the bones to the each foot,
 ## as well as 'make local' the feet nodes if to adjust their pivot x rotation
