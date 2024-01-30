@@ -39,12 +39,15 @@ signal lever_started
 @export var weapon_system : EquipmentSystem
 ## A helper variable, tracks the current weapon type for easier referencing from
 ## the anim_state_tree
+@onready var attack_combo_timer = Timer.new()
 var weapon_type :String = "SLASH"
 signal weapon_change_started
 signal weapon_changed
 signal weapon_change_ended
 signal attack_started
-
+signal attack_activated
+signal air_attack_started
+signal big_attack_started
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 var secondary_action
 
@@ -110,7 +113,7 @@ signal ladder_started
 signal ladder_finished
 
 # State management
-enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK,AIRATTACK}
+enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
 @onready var current_state = state.STATIC_ACTION : set = change_state
 signal changed_state
 
@@ -131,6 +134,9 @@ func _ready():
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
+	
+	add_child(attack_combo_timer)
+	attack_combo_timer.one_shot = true
 	
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
@@ -178,9 +184,6 @@ func _physics_process(_delta):
 			
 		state.ATTACK:
 			dash_movement()
-			
-		state.AIRATTACK:
-			air_movement()
 		
 		state.DYNAMIC_ACTION:
 			free_movement()
@@ -221,6 +224,7 @@ func _input(_event:InputEvent):
 					attack(secondary_action)
 				else:
 					attack()
+					
 					
 			elif _event.is_action_pressed("use_weapon_strong"):
 				attack(secondary_action) # big attack for joypad
@@ -332,30 +336,29 @@ func calc_direction():
 
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
-	anim_length = .5
+	anim_length = .3
+	if _is_special_attack:
+		big_attack_started.emit()
+	else:
+		attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.4).timeout
-	attack_started.emit()
+	attack_activated.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
-	await get_tree().create_timer(anim_length *.4).timeout
+	await get_tree().create_timer(anim_length *.6).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
+		
 func air_attack():
-	current_state = state.AIRATTACK
+	air_attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	attack_started.emit(anim_length)
 	await get_tree().create_timer(.3).timeout
-	attack_started.emit()
+	attack_activated.emit()
 		
-func air_movement():
-	move_and_slide()
-	## for landing
-	if is_on_floor():
-		if current_state == state.AIRATTACK:
-			current_state = state.FREE
+
 
 func fall_check():
 	## If you leave the floor, store last position.

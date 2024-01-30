@@ -271,6 +271,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33429, 0.0222168, -5.55055)
 
 [node name="DoorObject2" parent="." instance=ExtResource("5_w3y0b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0532727, 7.15256e-07, -5.72118)
+locked = true
 
 [node name="AreaCam" parent="." instance=ExtResource("8_tgyg3")]
 transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.0787201, 0.908271, 0, 11.4209)
@@ -283,7 +284,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0, -3.97313)
 [node name="ChestObject" parent="." instance=ExtResource("9_7y6wk")]
 transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -6.59881, 1.43051e-06, -5.20081)
 
-[node name="LeverObject" parent="." instance=ExtResource("10_sq3wn")]
+[node name="LeverObject" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_sq3wn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.66276, 4.76837e-07, -4.05574)
+node_to_control = NodePath("../DoorObject2")
 
 [connection signal="body_entered" from="Baddy2/SpinWeapon" to="Baddy2/SpinWeapon" method="_on_body_entered"]

@@ -8,7 +8,12 @@ class_name AnimationTreeSoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
+@onready var attack_count = 1
+@onready var attack_timer = Timer.new()
+@onready var hurt_count = 1
 @onready var interact_type :String = "GENERIC"
+
+@onready var anim_length
 
 var lerp_movement
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
@@ -17,6 +22,10 @@ var guard_value :float = 0.0
 signal animation_measured
 
 func _ready():
+	add_child(attack_timer)
+	attack_timer.one_shot = true
+	attack_timer.timeout.connect(_on_attack_timer_timeout)
+	
 	if !player_node:
 		push_warning(str(self) + ": Player node must be set")
 		
@@ -25,8 +34,6 @@ func _ready():
 	player_node.ladder_started.connect(_on_ladder_start)
 	player_node.ladder_finished.connect(_on_ladder_finished)
 	player_node.changed_state.connect(_on_changed_state)
-	player_node.door_started.connect(_on_door_started)
-	player_node.gate_started.connect(_on_gate_started)
 	player_node.interact_started.connect(_on_interact_started)
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
 	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
@@ -39,6 +46,10 @@ func _ready():
 	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
 	player_node.landed_hard.connect(_on_landed_hard)
+	
+	player_node.attack_started.connect(_on_attack_started)
+	player_node.big_attack_started.connect(_on_big_attack_started)
+	player_node.air_attack_started.connect(_on_air_attack_started)
 	
 	_on_weapon_change_ended(player_node.weapon_type)
 	
@@ -75,15 +86,40 @@ func set_guarding():
 func _on_parry_started():
 	request_oneshot("Parry")
 
+func _on_attack_started():
+	request_oneshot("Attack")
+	await animation_measured
+	attack_timer.start(anim_length +.2)
+	
+	match attack_count:
+		1:
+			attack_count = 2
+		2: 
+			attack_count = 1
+
+func _on_big_attack_started():
+	attack_count = 3
+	request_oneshot("Attack")
+	await animation_measured
+	attack_timer.start(anim_length +.2)
+	attack_count = 2
+	
+func _on_air_attack_started():
+	attack_count = 4
+	request_oneshot("Attack")
+	await animation_measured
+	attack_timer.start(.1)
+
+
 func _on_block_started():
 	request_oneshot("Block")
 
 func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
 	if player_node.current_state == player_node.state.LADDER:
-		request_oneshot("HurtLadder")
+		hurt_count = 3
 	else:
-		var randi_hurt = randi_range(1,2)
-		request_oneshot("Hurt"+ str(randi_hurt))
+		hurt_count = randi_range(1,2)
+		request_oneshot("Hurt")
 		current_weapon_tree.start("MoveStrafe")
 	
 func _on_death_started():
@@ -106,11 +142,6 @@ func _on_interact_started(_new_interact_type):
 	await get_tree().process_frame
 	request_oneshot("Interacts")
 			
-func _on_door_started():
-	request_oneshot("OpenDoor")
-
-func _on_gate_started():
-	request_oneshot("OpenGate")
 
 func _on_jump_started():
 	request_oneshot("Jump")
@@ -161,6 +192,9 @@ func set_free_move():
 
 
 func _on_animation_started(anim_name):
-	var new_anim_length = get_node(anim_player).get_animation(anim_name).length
+	anim_length = get_node(anim_player).get_animation(anim_name).length
 	#print("animation name: " + str(anim_name))
-	animation_measured.emit(new_anim_length)
+	animation_measured.emit(anim_length)
+
+func _on_attack_timer_timeout():
+	attack_count = 1

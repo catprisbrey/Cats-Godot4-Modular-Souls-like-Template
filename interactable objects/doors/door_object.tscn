@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=3 uid="uid://cnv210lnfdoan"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/door_object.gd" id="1_6re5x"]
-[ext_resource type="AudioStream" uid="uid://c261073wpmeb6" path="res://audio/SoundFX/creak/creak_1.wav" id="2_urw4c"]
-[ext_resource type="AudioStream" uid="uid://nbwjlkyrx4ya" path="res://audio/SoundFX/shuffle/shuffle_3.wav" id="3_pq4pd"]
+[ext_resource type="AudioStream" uid="uid://dmbreupif03hc" path="res://audio/SoundFX/creak/creak_4.wav" id="2_sslvw"]
+[ext_resource type="AudioStream" uid="uid://twq1ywacwc88" path="res://audio/SoundFX/hit/hit_blunt_04.wav" id="3_4d5yu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qwogy"]
 size = Vector3(2, 2, 2)
@@ -46,7 +46,7 @@ tracks/1/path = NodePath("Shake:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -187,8 +187,9 @@ libraries = {
 }
 
 [node name="Creak" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("2_urw4c")
-pitch_scale = 0.81
+stream = ExtResource("2_sslvw")
+pitch_scale = 0.6
 
 [node name="Shake" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("3_pq4pd")
+stream = ExtResource("3_4d5yu")
+pitch_scale = 1.4

@@ -31,7 +31,7 @@ func _ready():
 			
 	#if follow_target.has_signal("strafe_toggled"): ## to avoid hard coding using a SignalSwitch
 		#follow_target.strafe_toggled.connect(_on_strafe_toggled)
-	
+	#
 	if optional_targeting_system:
 
 		optional_targeting_system.targeting_changed.connect(_on_targeting_changed)
@@ -52,25 +52,25 @@ func _physics_process(_delta):
 	
 ## Normal free camera control
 func mouse_control(_event):
-	if targeting == false:
-		if _event is InputEventMouseMotion:
-			var new_rotation = rotation.x - _event.relative.y / 10000 * mouse_sensitivity
-			rotation.y -= _event.relative.x /  10000 * mouse_sensitivity
 
-			var clamped_rotation = clamp(new_rotation, -.8, 0.8) #rotation clamp
-			rotation.x = clamped_rotation
-			return
+	if _event is InputEventMouseMotion:
+		var new_rotation = rotation.x - _event.relative.y / 10000 * mouse_sensitivity
+		rotation.y -= _event.relative.x /  10000 * mouse_sensitivity
+
+		var clamped_rotation = clamp(new_rotation, -.8, 0.8) #rotation clamp
+		rotation.x = clamped_rotation
+		return
 
 func joystick_control(): # For controlling freecam rotation on gamepad
-	if targeting == false:
+
 		#if Input.get_vector("look_left","look_right","look_up","look_down"):
 	# Calculate the target rotation
-		var joy_input = Input.get_vector("look_left","look_right","look_up","look_down")
-		var temporary_rotation = rotation.x + joy_input.y / 400 * joystick_sensitivity
-		rotation.y -= joy_input.x / 300 * joystick_sensitivity
-		
-		var clamped_rotation = clamp(temporary_rotation, -.8, .8)
-		rotation.x = clamped_rotation
+	var joy_input = Input.get_vector("look_left","look_right","look_up","look_down")
+	var temporary_rotation = rotation.x + joy_input.y / 400 * joystick_sensitivity
+	rotation.y -= joy_input.x / 300 * joystick_sensitivity
+	
+	var clamped_rotation = clamp(temporary_rotation, -.8, .8)
+	rotation.x = clamped_rotation
 
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
