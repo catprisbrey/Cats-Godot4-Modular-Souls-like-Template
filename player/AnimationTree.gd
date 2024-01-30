@@ -12,7 +12,6 @@ class_name AnimationTreeSoulsBase
 @onready var attack_timer = Timer.new()
 @onready var hurt_count = 1
 @onready var interact_type :String = "GENERIC"
-
 @onready var anim_length
 
 var lerp_movement
@@ -33,7 +32,6 @@ func _ready():
 	player_node.jump_started.connect(_on_jump_started)
 	player_node.ladder_started.connect(_on_ladder_start)
 	player_node.ladder_finished.connect(_on_ladder_finished)
-	player_node.changed_state.connect(_on_changed_state)
 	player_node.interact_started.connect(_on_interact_started)
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
 	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
@@ -53,9 +51,6 @@ func _ready():
 	
 	_on_weapon_change_ended(player_node.weapon_type)
 	
-func _on_changed_state(_new_state):
-	pass
-
 func _process(_delta):
 	
 	if player_node.strafing:
