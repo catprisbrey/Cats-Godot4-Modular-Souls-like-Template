@@ -49,7 +49,7 @@ func _ready():
 			player_node.connect(activate_signal,_on_activated)
 		## needed to turn off monitoring if hurt mid-attack
 		if player_node.has_signal(deactivate_signal):
-			player_node.hurt_started.connect(_on_stop_signal)
+			player_node.connect(deactivate_signal,_on_stop_signal)
 			 
 	## update what weapon we're starting with
 	if held_mount_point:

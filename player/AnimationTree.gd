@@ -2,20 +2,28 @@ extends AnimationTree
 class_name AnimationTreeSoulsBase
 
 ## A companion to the SoulsCharacterBase, expects a lot of specific signals and will react to them
-## by triggering oneshot animations, switching trees, blending run types, etc.
+## by triggering oneshot animations, switching trees, blending run types, etc. This is really 
+## the meat of the souls modules since so much relies on animations and their timing.
+## Most of the difficulty comes from when the movement tree changes from one weapon type to another.
+## There are many ways to approach transitioning between different movement trees,
+## I simply found this to be most convenient.
 
 @export var player_node : CharacterBodySoulsBase
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
+@onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
+@onready var gadget_type : String = "SHIELD"
+@onready var item_type : String = "DRINK"
 @onready var attack_count = 1
 @onready var attack_timer = Timer.new()
 @onready var hurt_count = 1
 @onready var interact_type :String = "GENERIC"
 @onready var anim_length
 
+var last_oneshot = "Attack"
 var lerp_movement
-@onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
+
 var guard_value :float = 0.0
 
 signal animation_measured
@@ -30,26 +38,36 @@ func _ready():
 		
 	player_node.dodge_started.connect(_on_dodge_started)
 	player_node.jump_started.connect(_on_jump_started)
-	player_node.ladder_started.connect(_on_ladder_start)
-	player_node.ladder_finished.connect(_on_ladder_finished)
-	player_node.interact_started.connect(_on_interact_started)
-	player_node.weapon_change_started.connect(_on_weapon_change_started)
-	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
-	player_node.gadget_change_started.connect(_on_gadget_change_started)
-	player_node.gadget_started.connect(_on_gadget_started)
-	player_node.parry_started.connect(_on_parry_started)
-	player_node.hurt_started.connect(_on_hurt_started)
-	player_node.block_started.connect(_on_block_started)
-	player_node.use_item_started.connect(_on_use_item_started)
-	player_node.death_started.connect(_on_death_started)
 	player_node.sprint_started.connect(_on_sprint_started)
 	player_node.landed_hard.connect(_on_landed_hard)
 	
+	player_node.interact_started.connect(_on_interact_started)
+	player_node.ladder_started.connect(_on_ladder_start)
+	player_node.ladder_finished.connect(_on_ladder_finished)
+
+	player_node.weapon_change_started.connect(_on_weapon_change_started)
+	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
 	player_node.attack_started.connect(_on_attack_started)
 	player_node.big_attack_started.connect(_on_big_attack_started)
 	player_node.air_attack_started.connect(_on_air_attack_started)
 	
+	player_node.gadget_change_started.connect(_on_gadget_change_started)
+	player_node.gadget_change_ended.connect(_on_gadget_change_ended)
+	player_node.gadget_started.connect(_on_gadget_started)
+	
+	player_node.item_change_started.connect(_on_item_change_started)
+	player_node.item_change_ended.connect(_on_item_change_ended)
+	player_node.use_item_started.connect(_on_use_item_started)
+		
+	player_node.parry_started.connect(_on_parry_started)
+	player_node.hurt_started.connect(_on_hurt_started)
+	player_node.block_started.connect(_on_block_started)
+
+	player_node.death_started.connect(_on_death_started)
+
 	_on_weapon_change_ended(player_node.weapon_type)
+	_on_gadget_change_ended(player_node.gadget_type)
+	_on_item_change_ended(player_node.item_type)
 	
 func _process(_delta):
 	
@@ -65,6 +83,7 @@ func _process(_delta):
 
 
 func request_oneshot(oneshot:String):
+	last_oneshot = oneshot
 	set("parameters/" + oneshot + "/request",true)
 
 func _on_landed_hard():
@@ -113,9 +132,15 @@ func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
 	if player_node.current_state == player_node.state.LADDER:
 		hurt_count = 3
 	else:
+		abort_oneshot(last_oneshot)
 		hurt_count = randi_range(1,2)
 		request_oneshot("Hurt")
 		current_weapon_tree.start("MoveStrafe")
+		
+func abort_oneshot(_last_oneshot:String):
+	
+	set("parameters/" + _last_oneshot + "/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+
 	
 func _on_death_started():
 	base_state_machine.travel("Death")
@@ -155,6 +180,15 @@ func _on_weapon_change_ended(_new_weapon_type):
 
 func _on_gadget_change_started():
 	request_oneshot("GadgetChange")
+
+func _on_gadget_change_ended(_new_gadget_type):
+	gadget_type = _new_gadget_type
+
+func _on_item_change_started():
+	request_oneshot("ItemChange")
+
+func _on_item_change_ended(_new_item_type):
+	item_type = _new_item_type
 
 func _on_ladder_start(top_or_bottom):
 	base_state_machine.start("LADDER_tree")

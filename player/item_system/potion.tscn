@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhiuvwatv8m07"]
+
+[ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_yt1vo"]
+[ext_resource type="Script" path="res://player/item_system/item_resource.gd" id="2_ylj55"]
+
+[sub_resource type="Resource" id="Resource_3jppt"]
+script = ExtResource("2_ylj55")
+name = "Consumable Item"
+object_type = "DRINK"
+power = 1
+weight = 1
+value = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o7hv0"]
+size = Vector3(0.15, 0.15, 0.15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd6lb"]
+albedo_color = Color(0.776471, 0.34902, 0.305882, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_b6btr"]
+material = SubResource("StandardMaterial3D_sd6lb")
+radius = 0.05
+height = 0.1
+radial_segments = 12
+rings = 4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nwi5a"]
+material = SubResource("StandardMaterial3D_sd6lb")
+top_radius = 0.02
+bottom_radius = 0.005
+height = 0.05
+radial_segments = 12
+rings = 1
+
+[node name="Potion" type="CharacterBody3D"]
+script = ExtResource("1_yt1vo")
+item_info = SubResource("Resource_3jppt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_o7hv0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_b6btr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0501423, 0)
+mesh = SubResource("CylinderMesh_nwi5a")

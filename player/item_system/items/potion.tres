@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://8ujj54t15t8d"]
+
+[ext_resource type="Script" path="res://player/item_system/item_resource.gd" id="1_70la2"]
+[ext_resource type="Texture2D" uid="uid://cm1ys16eojv55" path="res://player/item_system/items/potion.png" id="2_yi74s"]
+
+[resource]
+script = ExtResource("1_70la2")
+name = "Consumable Item"
+object_type = "DRINK"
+power = 1
+weight = 1
+value = 1
+texture = ExtResource("2_yi74s")

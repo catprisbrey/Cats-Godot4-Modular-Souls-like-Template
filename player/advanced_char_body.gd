@@ -59,8 +59,11 @@ var secondary_action
 var gadget_type :String = "SHIELD"
 signal gadget_change_started
 signal gadget_changed
+signal gadget_change_ended
 signal gadget_started
 signal gadget_activated
+
+
 
 ## When guarding this substate is true
 @onready var guarding = false
@@ -75,6 +78,11 @@ signal hurt_started
 signal damage_taken
 signal death_started
 
+@export var item_system : ItemSystem 
+var item_type :String = "DRINK"
+signal item_change_started
+signal item_changed
+signal item_change_ended
 signal use_item_started
 signal item_used
 
@@ -102,7 +110,7 @@ var input_dir : Vector2
 var direction = Vector3.ZERO
 
 # Strafing
-var strafing :bool = false : set = set_strafe_targeting
+var strafing :bool = false
 @onready var strafe_cross_product = 0.0
 @onready var move_dot_product = 0.0
 signal strafe_toggled
@@ -131,6 +139,10 @@ func _ready():
 	if gadget_system:
 		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
+	
+	if item_system:
+		item_system.item_changed.connect(_on_item_changed)
+		_on_item_changed(item_system.current_item)
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
@@ -202,7 +214,7 @@ func _input(_event:InputEvent):
 		
 	## strafe toggle on/off
 	if _event.is_action_pressed("strafe_target"):
-		strafing = !strafing
+		set_strafe_targeting()
 		
 	# a helper for keyboard controls, not really used for joypad
 	if Input.is_action_pressed("secondary_action"):
@@ -250,6 +262,8 @@ func _input(_event:InputEvent):
 				else:
 					start_guard()
 			
+			elif _event.is_action_pressed("change_item"):
+				item_change()
 			elif _event.is_action_pressed("use_item"): 
 				use_item()
 		else: # if not on floor
@@ -320,10 +334,10 @@ func rotate_player():
 			global_transform.basis = Basis(target_rotation)
 	# move_and_slide() unused here. Controlled by States and free_movement().
 
-func set_strafe_targeting(_new_value):
-	strafing = _new_value
-	strafe_toggled.emit(_new_value)
-
+func set_strafe_targeting():
+	strafing = !strafing
+	strafe_toggled.emit(strafing)
+	
 func _on_target_cleared():
 	strafing = false
 	
@@ -336,17 +350,16 @@ func calc_direction():
 
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
-	anim_length = .3
 	if _is_special_attack:
 		big_attack_started.emit()
 	else:
 		attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length *.4).timeout
+	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
-	await get_tree().create_timer(anim_length *.6).timeout
+	await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
@@ -426,7 +439,6 @@ func dodge():
 	current_state = state.DODGE
 	can_be_hurt = false
 	sprint_timer.stop()
-	var dodge_duration : float = .5
 	
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
@@ -434,12 +446,10 @@ func dodge():
 	else: # Dodge toward the 'BACK' of your global position
 		direction = (global_position - to_global(Vector3.BACK)).normalized()
 		dodge_started.emit()
-		
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		dodge_duration = anim_length *.7
 	# After timer finishes, return to pre-dodge state
-	await get_tree().create_timer(dodge_duration).timeout
+	await get_tree().create_timer(anim_length *.7).timeout
 	dodge_ended.emit()
 	speed = default_speed
 	current_state = state.FREE
@@ -459,10 +469,11 @@ func ladder_movement():
 
 func start_ladder(top_or_bottom,mount_transform):
 	ladder_started.emit(top_or_bottom)
-	var wait_time = .4
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
-	tween.tween_property(self,"global_transform", mount_transform, wait_time)
+	tween.tween_property(self,"global_transform", mount_transform, anim_length *.4)
 	await tween.finished
 	current_state = state.LADDER
 	
@@ -470,17 +481,15 @@ func exit_ladder(exit_loc):
 	current_state = state.STATIC_ACTION
 	ladder_finished.emit(exit_loc)
 	var dismount_pos
-	var dismount_time = .3
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		dismount_time = anim_length *.6
 	match exit_loc:
 		"TOP":
 			dismount_pos = to_global(Vector3(0,1.5,.5))
 		"BOTTOM":
 			dismount_pos = global_position
 	var tween = create_tween()
-	tween.tween_property(self,"global_position", dismount_pos,dismount_time)
+	tween.tween_property(self,"global_position", dismount_pos, anim_length * .6)
 	await tween.finished
 	last_altitude = global_position
 	current_state = state.FREE
@@ -513,17 +522,15 @@ func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
 	weapon_change_started.emit()
-	var change_duration = .5
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		change_duration = anim_length
-	await get_tree().create_timer(change_duration*.5).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	weapon_changed.emit()
 	if weapon_system:
 		await weapon_system.equipment_changed
 	print(weapon_type)
 	weapon_change_ended.emit(weapon_type)
-	await get_tree().create_timer(change_duration*.5).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	current_state = state.FREE
 	
 func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
@@ -532,18 +539,39 @@ func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
 func _on_gadget_equipment_changed(_new_gadget:EquipmentObject):
 	gadget_type = _new_gadget.equipment_info.object_type
 
+func _on_item_changed(_new_item:ItemObject):
+	item_type = _new_item.item_info.object_type
+
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
 	gadget_change_started.emit()
-	var change_duration = .5
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-		change_duration = anim_length
-	await get_tree().create_timer(change_duration*.5).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	gadget_changed.emit()
-	await get_tree().create_timer(change_duration*.5).timeout
+	if gadget_system:
+		await gadget_system.equipment_changed
+	print(gadget_type)
+	gadget_change_ended.emit(gadget_type)
+	await get_tree().create_timer(anim_length *.5).timeout
 	current_state = state.FREE
 
+
+
+func item_change():
+	current_state = state.DYNAMIC_ACTION
+	item_change_started.emit()
+	if anim_state_tree:
+		await anim_state_tree.animation_measured
+	await get_tree().create_timer(anim_length *.5).timeout
+	item_changed.emit()
+	if item_system:
+		await item_system.item_changed
+	print(item_type)
+	item_change_ended.emit(item_type)
+	await get_tree().create_timer(anim_length *.5).timeout
+	current_state = state.FREE
+	
 func start_guard(): # Guarding, and for a short window, parring is possible
 	guarding = true
 	parry_active = true
@@ -561,10 +589,10 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 	gadget_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_started
-	var attack_duration = anim_length
-	await get_tree().create_timer(attack_duration *.3).timeout
+	await get_tree().create_timer(anim_length  *.3).timeout
 	gadget_activated.emit()
 	dash()
+	await get_tree().create_timer(anim_length  *.7).timeout
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
 
@@ -584,7 +612,6 @@ func hit(_who, _by_what):
 func block():
 	current_state = state.STATIC_ACTION
 	block_started.emit()
-	anim_length = .4
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
@@ -595,7 +622,6 @@ func parry():
 	current_state = state.STATIC_ACTION
 	can_be_hurt = false
 	parry_started.emit()
-	anim_length = .4
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
@@ -604,10 +630,10 @@ func parry():
 	can_be_hurt = true
 
 func hurt():
+	
 	current_state = state.STATIC_ACTION
 	can_be_hurt = false
 	hurt_started.emit()
-	anim_length = .4
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
@@ -618,7 +644,6 @@ func hurt():
 func use_item():
 	current_state = state.DYNAMIC_ACTION
 	use_item_started.emit()
-	anim_length = 1.0
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length * .5).timeout

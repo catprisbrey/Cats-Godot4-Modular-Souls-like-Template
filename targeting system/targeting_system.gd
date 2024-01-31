@@ -22,11 +22,11 @@ class_name TargetingSystem
 var left_list : Array = []
 var right_list : Array = []
 var center_list : Array = []
-
+var current_target : Node3D = null
 ## if enabled, sensors will actively report and signal out targets. It's more 
 ## performant to only enable this as needed. (such as if your player enters a
 ## targeting or strafing mode). 
-@export var targeting = false : set = set_targeting
+@export var targeting = false
 
 signal targeting_changed
 signal targets_updated
@@ -66,22 +66,18 @@ func _input(_event:InputEvent):
 	#if _event.is_action_pressed("strafe_target"):
 		#targeting = !targeting
 		
-func set_targeting(_new_value):
-	targeting = _new_value
-	targeting_changed.emit(_new_value)
 	
 func _on_targeting_changed(_toggle):
-	if _toggle:
-		get_closest()
-	else:
+	targeting = _toggle
+	if targeting == false:
 		_clear_lists()
+	else:
+		get_closest()
 	
 func select_new_target(_new_direction,_delay):
 	_update_targets()
 	await targets_updated
 	
-	# if an input direction is indicated, a new target
-	# will be selected from the left or right eye's list 
 	var new_target
 	if _new_direction == -1:
 		new_target = get_target(left_list)
@@ -99,10 +95,11 @@ func select_new_target(_new_direction,_delay):
 func _update_targets():
 	left_list = left_eye.get_overlapping_bodies()
 	right_list = right_eye.get_overlapping_bodies()
-	
+	center_list = center_eye.get_overlapping_bodies()
 	# Filters the arrays to only bodies in the target group
 	left_list = left_list.filter(_filter_body)
 	right_list = right_list.filter(_filter_body)
+	center_list = center_list.filter(_filter_body)
 	
 	targets_updated.emit()
 
@@ -122,34 +119,35 @@ func eyeline_check(_new_target):
 func get_closest():
 	# prioritize the center eye, but if no target found, check the next eyes for 
 	# a target to assign.
-	center_list = center_eye.get_overlapping_bodies()
-	center_list = center_list.filter(_filter_body)
-	var new_target = get_target(center_list)
+	_update_targets()
+	await targets_updated
+	
+	# if an input direction is indicated, a new target
+	# will be selected from the left or right eye's list 
+	var center_target
+	var right_target
+	var left_target
+	var new_target
+	center_target = get_target(center_list)
+	left_target = get_target(left_list)
+	right_target = get_target(right_list)
+	if center_target:
+		new_target = center_target
+	else:
+		if right_target:
+			new_target = right_target
+		else:
+			if left_target:
+				new_target = left_target
+			else:
+				new_target = null
 	if new_target:
 		if await eyeline_check(new_target):
 			target_found.emit(new_target)
-			return new_target
-	else: # no center eye target, move on to left eye
-		left_list = left_eye.get_overlapping_bodies()
-		left_list = left_list.filter(_filter_body)
-		new_target = get_target(left_list)
-		if new_target:
-			if await eyeline_check(new_target):
-				target_found.emit(new_target)
-				return new_target
-		else: # no left eye target, move on to right eye
-			right_list = right_eye.get_overlapping_bodies()
-			right_list = right_list.filter(_filter_body)
-			new_target = get_target(right_list)
-			if new_target:
-				if await eyeline_check(new_target):
-					target_found.emit(new_target)
-					return new_target
-			else: # no targetrs found, turn off targeting mode
-				targeting = false
-				return null
-				
-				
+	print(new_target)
+	# and then a small delay to prevent cycling too fast through targets
+	await get_tree().create_timer(.3).timeout
+
 func get_target(target_list:Array):
 	if !target_list.is_empty():
 			return target_list[0]

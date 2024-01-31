@@ -199,7 +199,7 @@ use_collision = true
 size = Vector3(1, 2, 11)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
-transform = Transform3D(0.993758, 0.111556, 0, -0.111556, 0.993758, 0, 0, 0, 1, -4.64165, 0, 0)
+transform = Transform3D(0.993758, 0.111556, 0, -0.111556, 0.993758, 0, 0, 0, 1, -9.33572, 0, 0)
 use_collision = true
 size = Vector3(10, 1, 5)
 
@@ -277,15 +277,15 @@ locked = true
 transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.0787201, 0.908271, 0, 11.4209)
 
 [node name="Enemy" parent="." instance=ExtResource("8_6u132")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0, -3.97313)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 5.14465, -3.97313)
 
 [node name="Player" parent="." instance=ExtResource("1_k2mnc")]
 
 [node name="ChestObject" parent="." instance=ExtResource("9_7y6wk")]
-transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -6.59881, 1.43051e-06, -5.20081)
+transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -8.02334, 1.43051e-06, -5.20081)
 
 [node name="LeverObject" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_sq3wn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.66276, 4.76837e-07, -4.05574)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19806, 4.76837e-07, -4.05574)
 node_to_control = NodePath("../DoorObject2")
 
 [connection signal="body_entered" from="Baddy2/SpinWeapon" to="Baddy2/SpinWeapon" method="_on_body_entered"]
