@@ -79,7 +79,7 @@ signal damage_taken
 signal death_started
 
 @export var item_system : InventorySystem
-var item_type :String = "DRINK"
+var current_item : ItemResource
 signal item_change_started
 signal item_changed
 signal item_change_ended
@@ -540,7 +540,7 @@ func _on_gadget_equipment_changed(_new_gadget:EquipmentObject):
 
 func _on_inventory_updated(_inventory):
 	if _inventory[0]:
-		item_type = _inventory[0].object_type
+		current_item = _inventory[0]
 	
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
@@ -565,8 +565,8 @@ func item_change():
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	item_changed.emit()
-	print(item_type)
-	item_change_ended.emit(item_type)
+	await get_tree().process_frame
+	item_change_ended.emit(current_item)
 	await get_tree().create_timer(anim_length *.5).timeout
 	current_state = state.FREE
 	

@@ -14,7 +14,7 @@ class_name AnimationTreeSoulsBase
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
 @onready var gadget_type : String = "SHIELD"
-@onready var item_type : String = "DRINK"
+@onready var current_item : ItemResource
 @onready var attack_count = 1
 @onready var attack_timer = Timer.new()
 @onready var hurt_count = 1
@@ -67,7 +67,7 @@ func _ready():
 
 	_on_weapon_change_ended(player_node.weapon_type)
 	_on_gadget_change_ended(player_node.gadget_type)
-	_on_item_change_ended(player_node.item_type)
+	_on_item_change_ended(player_node.current_item)
 	
 func _process(_delta):
 	
@@ -187,8 +187,8 @@ func _on_gadget_change_ended(_new_gadget_type):
 func _on_item_change_started():
 	request_oneshot("ItemChange")
 
-func _on_item_change_ended(_new_item_type):
-	item_type = _new_item_type
+func _on_item_change_ended(_new_item):
+	current_item = _new_item
 
 func _on_ladder_start(top_or_bottom):
 	base_state_machine.start("LADDER_tree")
