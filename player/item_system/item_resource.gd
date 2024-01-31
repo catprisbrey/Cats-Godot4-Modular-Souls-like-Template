@@ -15,6 +15,8 @@ signal item_used
 @export var texture : Texture2D
 var count = 1
 
+@export var physical_scene : PackedScene
+
 func activate():
 	print(name + " - was activated")
 	item_used.emit(self)

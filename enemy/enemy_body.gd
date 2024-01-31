@@ -224,7 +224,7 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD):
 	# burst of speed toward indicated direction, or forward by default
 	speed = dash_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
-	var dash_duration = .2
+	var dash_duration = .1
 	await get_tree().create_timer(dash_duration).timeout
 	speed = 0.0
 	velocity = direction * speed

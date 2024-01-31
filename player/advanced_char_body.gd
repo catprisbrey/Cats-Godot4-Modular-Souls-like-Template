@@ -357,7 +357,7 @@ func attack(_is_special_attack : bool = false):
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.1) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
@@ -406,7 +406,7 @@ func jump():
 		await get_tree().create_timer(jump_duration *.7).timeout
 	velocity.y = jump_velocity
 
-func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .2): 
+func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
 	direction = (global_position - to_global(_new_direction)).normalized()
@@ -555,8 +555,6 @@ func gadget_change():
 	gadget_change_ended.emit(gadget_type)
 	await get_tree().create_timer(anim_length *.5).timeout
 	current_state = state.FREE
-
-
 
 func item_change():
 	current_state = state.DYNAMIC_ACTION

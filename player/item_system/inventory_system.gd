@@ -21,7 +21,7 @@ func _ready():
 	inventory.append(starter_item)
 	inventory.append(starter_item)
 	inventory.append(starter_item2)
-	restack_amounts()
+	restack_inventory()
 	
 func _on_item_used_signal():
 	if current_item.count > 0:
@@ -36,7 +36,7 @@ func _on_change_item_signal():
 
 func add_item(_new_item: ItemResource):
 	inventory.append(_new_item)
-	restack_amounts()
+	restack_inventory()
 	
 func change_item(_start_index,_destination_index):
 	var start_item = inventory[_start_index]
@@ -58,7 +58,7 @@ func change_item(_start_index,_destination_index):
 	#inventory_updated.emit(inventory)
 	#return former_item
 	
-func restack_amounts():
+func restack_inventory():
 	var inventory_refresh = []
 	print(inventory)
 	await get_tree().process_frame
