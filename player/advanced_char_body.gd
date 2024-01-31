@@ -78,7 +78,7 @@ signal hurt_started
 signal damage_taken
 signal death_started
 
-@export var item_system : ItemSystem 
+@export var item_system : InventorySystem
 var item_type :String = "DRINK"
 signal item_change_started
 signal item_changed
@@ -140,9 +140,6 @@ func _ready():
 		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
 	
-	if item_system:
-		item_system.item_changed.connect(_on_item_changed)
-		_on_item_changed(item_system.current_item)
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
