@@ -140,6 +140,8 @@ func _ready():
 		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
 	
+	if item_system:
+		item_system.inventory_updated.connect(_on_inventory_updated)
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
@@ -536,9 +538,10 @@ func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
 func _on_gadget_equipment_changed(_new_gadget:EquipmentObject):
 	gadget_type = _new_gadget.equipment_info.object_type
 
-func _on_item_changed(_new_item:ItemObject):
-	item_type = _new_item.item_info.object_type
-
+func _on_inventory_updated(_inventory):
+	if _inventory[0]:
+		item_type = _inventory[0].object_type
+	
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
 	gadget_change_started.emit()
@@ -562,8 +565,6 @@ func item_change():
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	item_changed.emit()
-	if item_system:
-		await item_system.item_changed
 	print(item_type)
 	item_change_ended.emit(item_type)
 	await get_tree().create_timer(anim_length *.5).timeout

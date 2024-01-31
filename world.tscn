@@ -280,6 +280,13 @@ transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.07872
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 5.14465, -3.97313)
 
 [node name="Player" parent="." instance=ExtResource("1_k2mnc")]
+jump_velocity = 4.5
+hard_landing_height = 4.0
+dodge_speed = 8.0
+sprint_speed = 7.0
+default_speed = 4.0
+walk_speed = 1.0
+ladder_climb_speed = 1.0
 
 [node name="ChestObject" parent="." instance=ExtResource("9_7y6wk")]
 transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -8.02334, 1.43051e-06, -5.20081)

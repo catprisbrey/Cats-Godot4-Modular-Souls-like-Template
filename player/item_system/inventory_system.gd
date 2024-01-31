@@ -18,8 +18,10 @@ func _ready():
 		signaling_node.connect(change_item_signal,_on_change_item_signal)
 		signaling_node.connect(use_item_signal, _on_item_used_signal)
 	
-	add_item(starter_item)
-	add_item(starter_item2)
+	inventory.append(starter_item)
+	inventory.append(starter_item)
+	inventory.append(starter_item2)
+	restack_amounts()
 	
 func _on_item_used_signal():
 	if current_item.count > 0:
@@ -66,6 +68,7 @@ func restack_amounts():
 
 		for others in range(inventory_refresh.size()):
 			if this_item.name == inventory_refresh[others].name:
+				print(this_item.name)
 				this_item.count += inventory_refresh[others].count
 				found = true
 		if not found:
@@ -73,4 +76,6 @@ func restack_amounts():
 			
 	inventory = inventory_refresh
 	print(inventory)
+	if inventory[0]:
+		current_item = inventory[0]
 	inventory_updated.emit(inventory)

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_70la2")
-name = "Consumable Item"
+name = "Potion"
 object_type = "DRINK"
 power = 1
 weight = 1
