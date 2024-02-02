@@ -1,8 +1,8 @@
 [gd_scene load_steps=23 format=3 uid="uid://ccuwa5g83o4ev"]
 
-[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/full_character.tscn" id="1_k2mnc"]
+[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
-[ext_resource type="PackedScene" uid="uid://dydcpd450p5ig" path="res://enemy/enemy_base.tscn" id="8_6u132"]
+[ext_resource type="PackedScene" uid="uid://dydcpd450p5ig" path="res://enemy/CharacterBodyEnemyBase.tscn" id="8_6u132"]
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="8_q06xa"]
 [ext_resource type="PackedScene" uid="uid://cwxpu4en7wpi6" path="res://cameras/area_cam/area_cam.tscn" id="8_tgyg3"]
@@ -149,10 +149,10 @@ locked = true
 [node name="AreaCam" parent="." instance=ExtResource("8_tgyg3")]
 transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.0787201, 0.908271, 0, 11.4209)
 
-[node name="Enemy" parent="." instance=ExtResource("8_6u132")]
+[node name="CharacterBodyEnemyBase" parent="." instance=ExtResource("8_6u132")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0.14465, -3.97313)
 
-[node name="Player" parent="." instance=ExtResource("1_k2mnc")]
+[node name="CharacterBodySoulsBase" parent="." instance=ExtResource("1_k2mnc")]
 
 [node name="ChestObject" parent="." instance=ExtResource("9_7y6wk")]
 transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -8.02334, 1.43051e-06, -5.20081)

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://c622p3bhgteim"]
+
+[ext_resource type="Script" path="res://player/player_interact_sensors/player_interact_sensors.gd" id="1_4ex75"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sjf5m"]
+size = Vector3(0.3, 0.7, 0.4)
+
+[node name="PlayerInteractSensors" type="Node3D"]
+script = ExtResource("1_4ex75")
+
+[node name="TopSensor" type="Area3D" parent="."]
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TopSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0.305)
+shape = SubResource("BoxShape3D_sjf5m")
+
+[node name="BottomSensor" type="Area3D" parent="."]
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.25)
+shape = SubResource("BoxShape3D_sjf5m")

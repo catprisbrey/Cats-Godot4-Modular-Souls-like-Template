@@ -29,7 +29,7 @@ signal targeting_changed
 ## if no target is set, this node will attempt to find a CharacterBody3D to follow
 var look_target : Node3D 
 @onready var vertical_offset = global_position.y
-@export var optional_targeting_system : TargetingSystem
+@export var optional_targeting_system : PlayerTargetingSystem
 
 @export var aim_spring_length :float = .7
 signal target_cleared
@@ -116,7 +116,8 @@ func _on_target_found(new_target):
 		
 func _lookat_target():
 	if look_target: # needed to make sure you don't try to target a freed node.
-		if look_target.is_queued_for_deletion():
+		#if look_target.is_queued_for_deletion():
+		if !look_target.is_in_group("Targets"):
 			target_cleared.emit()
 			
 	if targeting: # otherwise track the target

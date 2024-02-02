@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c3yajhej5laa7"]
 
-[ext_resource type="Script" path="res://chest_object.gd" id="1_pdewx"]
+[ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_pdewx"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1ssk"]
