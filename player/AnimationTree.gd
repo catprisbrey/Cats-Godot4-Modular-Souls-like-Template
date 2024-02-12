@@ -155,6 +155,12 @@ func _on_sprint_started():
 	base_state_machine.travel("SPRINT_tree")
 	
 func _on_dodge_started():
+	if player_node.strafing:
+		var dodge_cross_product = player_node.strafe_cross_product
+		var dodge_dot_product = player_node.move_dot_product
+		set("parameters/DODGE_tree/RollBlend/blend_position", Vector2(dodge_cross_product,dodge_dot_product))
+	else:
+		set("parameters/DODGE_tree/RollBlend/blend_position", Vector2.ZERO)
 	request_oneshot("Dodge")
 
 func _on_interact_started(_new_interact_type):

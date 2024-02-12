@@ -315,17 +315,20 @@ func rotate_player():
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
 	
 	# StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
-	if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
+	if strafing == true: 
+	# alternative option: if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
 
 		var forward_vector = global_transform.basis.z.normalized() 
 		
-		strafe_cross_product = -forward_vector.cross(calc_direction().normalized()).y
-		move_dot_product = forward_vector.dot(calc_direction().normalized())
+		var new_direction = calc_direction().normalized()
+		strafe_cross_product = -forward_vector.cross(new_direction).y
+		move_dot_product = forward_vector.dot(new_direction)
 
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
-	elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
+	else: 
+	# alternative option: if elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
 		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
 		if input_dir:
 			var new_direction = calc_direction().normalized()
@@ -461,6 +464,7 @@ func ladder_movement():
 	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = (Vector3.DOWN * input_dir.y) * speed
 	# exiting ladder state triggers:
+	last_altitude = global_position
 	if interact_loc == "BOTTOM":
 		exit_ladder("TOP") 
 	if is_on_floor():
@@ -491,7 +495,6 @@ func exit_ladder(exit_loc):
 	var tween = create_tween()
 	tween.tween_property(self,"global_position", dismount_pos, anim_length * .6)
 	await tween.finished
-	last_altitude = global_position
 	current_state = state.FREE
 
 func _on_animation_measured(_new_length):
