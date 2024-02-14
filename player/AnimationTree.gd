@@ -211,7 +211,10 @@ func set_strafe():
 	# Forward and back are acording to input, since direction changes by fixed camera orientation
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
-		new_blend *= .4 # Force a walk speed
+		new_blend *= .25 # Force a walk animiation
+	else:
+		# apply input as a magnatude for more natural run versus walk animation blending
+		new_blend *= Vector2(abs(player_node.input_dir.x),abs(player_node.input_dir.y)) 
 	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
 	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position", lerp_movement)

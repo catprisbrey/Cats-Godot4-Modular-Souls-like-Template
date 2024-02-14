@@ -15,5 +15,5 @@ func _ready():
 	
 func _on_sound_trigger_signal(_1 = null):
 	if !playing:
-		pitch_scale = randf_range(.8,1.1)
+		#pitch_scale = randf_range(.8,1.1)
 		play()

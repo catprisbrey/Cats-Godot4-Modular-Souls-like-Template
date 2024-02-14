@@ -10,8 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="10_sq3wn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iyfyb"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_top_color = Color(0.313726, 0.454902, 0.643137, 1)
+sky_horizon_color = Color(0.67451, 0.643137, 0.694118, 1)
+ground_bottom_color = Color(0.301961, 0.32549, 0.372549, 1)
+ground_horizon_color = Color(0.215686, 0.243137, 0.352941, 1)
 
 [sub_resource type="Sky" id="Sky_8b3gf"]
 sky_material = SubResource("ProceduralSkyMaterial_iyfyb")
@@ -20,6 +22,9 @@ sky_material = SubResource("ProceduralSkyMaterial_iyfyb")
 background_mode = 2
 sky = SubResource("Sky_8b3gf")
 tonemap_mode = 2
+fog_density = 0.0
+fog_height = 0.5
+fog_height_density = 0.8033
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_hnb2x"]
 vertices = PackedVector3Array(-4.75, 0.5, -3.5, -4.5, 0.5, -4.5, -5.25, 0.5, -4.5, -4.75, 0.5, -3.5, -5.25, 0.5, -4.5, -6, 0.5, -5.25, -10, 0.5, -3.5, -10.75, 0.5, -2.75, -10, 0.5, -3.5, -6, 0.5, -16, -4, 0.5, -24, -24, 0.5, -24, -24, 0.5, -1.5, -5.25, 0.5, -16.75, -3.75, 0.5, -16.75, -4, 0.5, -24, -6, 0.5, -16, -5.25, 0.5, -16.75, -4, 0.5, -24, -10, 0.5, -3.5, -6, 0.5, -5.25, -6, 0.5, -16, -24, 0.5, -1.5, -10.75, 0.5, -1.25, -10.75, 0.5, -2.75, -3.75, 0.5, -16.75, 4, 0.5, -16.75, 4.25, 0.5, -24, -4, 0.5, -24, 4.25, 0.5, -24, 4, 0.5, -16.75, 5.5, 0.5, -16.75, 4.25, 0.5, -24, 5.5, 0.5, -16.75, 6.25, 0.5, -16, 24, 0.5, -24, 6.25, 0.5, -16, 6.25, 0.5, -6.75, 24, 0.5, -6.5, 24, 0.5, -24, -4, 5.5, -14.75, -4, 5.5, -6.5, 4, 5.5, -6.5, 4, 5.5, -14.75, -3.25, 0.5, -13.75, -3.25, 0.5, -7, 3.5, 0.5, -7, 3.5, 0.5, -13.75, -3.25, -4, -13.75, -3.25, -4, -7, 3.5, -4, -7, 3.5, -4, -13.75, -4.5, 0.5, -4.5, -4.75, 0.5, -3.5, -3.75, 0.5, -3, 5.5, 0.5, -4.5, -4.25, 0.75, -1.5, -8.75, 1.25, -1.5, -8.75, 1.25, 1.5, -4.25, 0.75, 1.5, -4.25, 0.5, 3.75, -5.75, 0.5, 3.75, -5.5, 0.5, 24, -4.25, 0.75, -1.5, -4.25, 0.75, 1.5, -3.5, 0.75, 2.25, 5.5, 0.5, -4.5, -3.75, 0.5, -3, 24, 0.5, -6.5, 6.25, 0.5, -6.75, 6.25, 0.5, -5.25, 5.5, 0.5, -4.5, -3.5, 0.5, 3, -4.25, 0.5, 3.75, -5.5, 0.5, 24, 24, 0.5, 24, 24, 0.5, -6.5, 24, 0.5, -6.5, 6.25, 0.5, -5.25, 5.5, 0.5, -4.5, 5.5, 0.5, -4.5, -3.5, 0.75, 2.25, -3.5, 0.5, 3, -24, 0.5, 1.75, -10.75, 0.5, 1.5, -10.75, 0.5, -1.25, -24, 0.5, -1.5, -10.75, 0.5, 3, -10.75, 0.5, 1.5, -24, 0.5, 1.75, -10, 0.5, 3.75, -10.75, 0.5, 3, -24, 0.5, 1.75, -24, 0.5, 24, -8.75, 0.5, 24, -8.75, 0.5, 24, -8.5, 0.5, 3.75, -10, 0.5, 3.75, -8.75, 0.5, 24, -5.5, 0.5, 24, -5.75, 0.5, 3.75, -8.5, 0.5, 3.75)
@@ -28,11 +33,17 @@ agent_radius = 1.0
 agent_max_slope = 60.0
 
 [sub_resource type="Gradient" id="Gradient_ubt8b"]
-offsets = PackedFloat32Array(0.246032, 1)
-colors = PackedColorArray(0.139357, 0.143696, 0.0604866, 1, 0.357547, 0.229057, 0.141964, 1)
+offsets = PackedFloat32Array(0.246032, 0.973494)
+colors = PackedColorArray(0.105531, 0.142219, 0.170428, 1, 0.347104, 0.328727, 0.360623, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k1xxj"]
-frequency = 0.0243
+noise_type = 2
+frequency = 0.0435
+fractal_type = 2
+fractal_octaves = 3
+fractal_lacunarity = 4.235
+fractal_gain = 0.235
+fractal_weighted_strength = 0.4
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_67xd7"]
 color_ramp = SubResource("Gradient_ubt8b")
@@ -65,6 +76,7 @@ environment = SubResource("Environment_jiblg")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_angular_distance = 5.0
 shadow_enabled = true
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]

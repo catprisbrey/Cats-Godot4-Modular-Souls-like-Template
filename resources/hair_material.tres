@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://ubep5t2j71nn"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ghpcj"]
+load_path = "res://.godot/imported/minnyquin_hair_alphamask.png-c49611769d0cd59c8e9b85cd2d1ec0b8.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7qgy0"]
+load_path = "res://.godot/imported/minnyquin_hair_normals.png-37954674734cde7f6a92669b84674c66.s3tc.ctex"
+
+[resource]
+resource_name = "BakedHair"
+transparency = 2
+alpha_scissor_threshold = 0.66
+alpha_antialiasing_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = SubResource("CompressedTexture2D_ghpcj")
+roughness = 0.59
+normal_enabled = true
+normal_scale = 7.25
+normal_texture = SubResource("CompressedTexture2D_7qgy0")
+anisotropy = 0.82
