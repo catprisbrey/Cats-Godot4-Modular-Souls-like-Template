@@ -79,6 +79,7 @@ signal block_started
 @export var health_system :Node
 signal hurt_started
 signal damage_taken
+signal health_received
 signal death_started
 var is_dead :bool = false
 
@@ -145,7 +146,7 @@ func _ready():
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
 	
 	if item_system:
-		item_system.inventory_updated.connect(_on_inventory_updated)
+		item_system.item_used.connect(_on_inventory_item_used)
 			
 	if health_system:
 		health_system.died.connect(death)
@@ -549,9 +550,8 @@ func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
 func _on_gadget_equipment_changed(_new_gadget:EquipmentObject):
 	gadget_type = _new_gadget.equipment_info.object_type
 
-func _on_inventory_updated(_inventory):
-	if _inventory[0]:
-		current_item = _inventory[0]
+func _on_inventory_item_used(_item):
+	current_item = _item
 	
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
@@ -615,6 +615,9 @@ func hit(_who, _by_what):
 		else:
 			damage_taken.emit(_by_what)
 			hurt()
+
+func heal(_by_what):
+	health_received.emit(_by_what)
 
 func block():
 	current_state = state.STATIC_ACTION

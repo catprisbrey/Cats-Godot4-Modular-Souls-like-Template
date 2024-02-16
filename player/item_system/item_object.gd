@@ -1,36 +1,29 @@
-extends CharacterBody3D
+extends RigidBody3D
 class_name ItemObject
 
-@export var item_info : ItemResource = ItemResource.new()
-@onready var carried = true
-const SPEED = 10.0
-const JUMP_VELOCITY = 4.5
-var direction : Vector3
+@export var target_group :String = "Player"
+@export_enum("HURT","HEAL") var effect_type :String = "HEAL"
+@export_enum("DRINK","THROWN","OTHER") var object_type : String= "DRINK"
+@export var power : int = 1
+@export var time_to_live : float = 2
+var player_node
+var use_item = false
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+func _ready():
+	freeze = true
 
+func activate():
+	top_level = true
+	freeze = false
+	use_item = true
+	await get_tree().create_timer(time_to_live).timeout
+	queue_free()
 
-func _physics_process(delta):
-	if carried == false:
-		free_movement()
-		apply_gravity(delta)
-	
-func throw():
-	carried = false
-	direction = to_global(Vector3(0,.2,1))
-
-func apply_gravity(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-
-func free_movement():
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
-	move_and_slide()
+func _on_area_3d_body_entered(body):
+	if body.is_in_group(target_group):
+		if effect_type == "HEAL":
+			if body.has_method("heal"):
+				body.heal(self)
+		elif effect_type == "HURT":
+			if body.has_method("hit"):
+				body.hit(player_node,self)

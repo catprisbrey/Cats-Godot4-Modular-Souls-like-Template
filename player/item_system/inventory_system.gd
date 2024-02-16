@@ -20,16 +20,20 @@ func _ready():
 	
 	# I'm giving the player some stuff to start with, but you can see here
 	# how obtaining items in game can be as simple as appendingg to the inventory array.
-	inventory.append(starter_item)
+	starter_item.count = 3
+	starter_item2.count = 3
 	inventory.append(starter_item)
 	inventory.append(starter_item2)
+	
 	restack_inventory()
 	
 func _on_item_used_signal():
 	if current_item.count > 0:
-		current_item.count -= 1
 		item_used.emit(current_item)
+		current_item.count -= 1
 		inventory_updated.emit(inventory)
+	else:
+		item_used.emit(null)
 		
 func _on_change_item_signal():
 	if inventory.size() > 0:
@@ -69,7 +73,7 @@ func restack_inventory(): ## Will stack same type items.
 		for item_check in range(inventory_refresh.size()):
 			## check each item, and flag if already found in our new inventory 
 			## being refreshed. If it's already found, just increment the count.
-			if this_item.name == inventory_refresh[item_check].name:
+			if this_item.item_name == inventory_refresh[item_check].item_name:
 				this_item.count += inventory_refresh[item_check].count
 				found = true
 

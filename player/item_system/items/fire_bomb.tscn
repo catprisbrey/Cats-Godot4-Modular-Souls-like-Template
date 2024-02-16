@@ -1,21 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://vs3idmafxkcd"]
+[gd_scene load_steps=8 format=3 uid="uid://vs3idmafxkcd"]
 
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_jvy25"]
-[ext_resource type="Script" path="res://player/item_system/item_resource.gd" id="2_d3rdf"]
 
-[sub_resource type="Resource" id="Resource_6a4lv"]
-script = ExtResource("2_d3rdf")
-name = "Consumable Item"
-object_type = "THROWN"
-power = 1
-weight = 1
-value = 1
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_qer70"]
-size = Vector3(0.15, 0.15, 0.15)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6ut2s"]
+radius = 0.0905
+height = 0.181
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr6c3"]
-albedo_color = Color(0.666667, 0.447059, 0.184314, 1)
+albedo_color = Color(0.258824, 0.254902, 0.262745, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_q552e"]
 material = SubResource("StandardMaterial3D_hr6c3")
@@ -35,12 +27,19 @@ height = 0.05
 radial_segments = 12
 rings = 1
 
-[node name="ItemObject" type="CharacterBody3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_x8ws2"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[node name="ItemObject" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 5
 script = ExtResource("1_jvy25")
-item_info = SubResource("Resource_6a4lv")
+target_group = "Targets"
+effect_type = "HURT"
+object_type = "THROWN"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_qer70")
+shape = SubResource("CapsuleShape3D_6ut2s")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_q552e")
@@ -48,3 +47,12 @@ mesh = SubResource("SphereMesh_q552e")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0501423, 0)
 mesh = SubResource("CylinderMesh_om8gq")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_x8ws2")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

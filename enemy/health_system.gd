@@ -21,14 +21,14 @@ func _ready():
 		if heal_reporting_node.has_signal(heal_signal):
 			heal_reporting_node.connect(heal_signal,_on_health_signal)
 			
-func _on_damage_signal(_by_what : EquipmentResource):
+func _on_damage_signal(_by_what):
 	var damage_power = _by_what.power
 	current_health -= damage_power
 	health_updated.emit(current_health)
 	if current_health <= 0:
 		died.emit()
 
-func _on_health_signal(_by_what : ItemResource):
+func _on_health_signal(_by_what):
 	var healing_power = _by_what.power
 	current_health += healing_power
 	if current_health > total_health:
