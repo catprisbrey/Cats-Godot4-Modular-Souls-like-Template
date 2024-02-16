@@ -75,9 +75,12 @@ signal gadget_activated
 var parry_window = .3
 signal parry_started
 signal block_started
+
+@export var health_system :Node
 signal hurt_started
 signal damage_taken
 signal death_started
+var is_dead :bool = false
 
 @export var item_system : InventorySystem
 var current_item : ItemResource
@@ -143,6 +146,10 @@ func _ready():
 	
 	if item_system:
 		item_system.inventory_updated.connect(_on_inventory_updated)
+			
+	if health_system:
+		health_system.died.connect(death)
+		
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
@@ -176,7 +183,6 @@ func change_state(new_state):
 
 			
 func _physics_process(_delta):
-	
 	match current_state:
 		state.FREE:
 			rotate_player()
@@ -631,16 +637,16 @@ func parry():
 	can_be_hurt = true
 
 func hurt():
-	
 	current_state = state.STATIC_ACTION
 	can_be_hurt = false
 	hurt_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	if current_state == state.STATIC_ACTION:
-		current_state = state.FREE
-	can_be_hurt = true
+	if !is_dead:
+		if current_state == state.STATIC_ACTION:
+			current_state = state.FREE
+		can_be_hurt = true
 
 func use_item():
 	current_state = state.DYNAMIC_ACTION
@@ -656,6 +662,6 @@ func use_item():
 func death():
 	current_state = state.STATIC_ACTION
 	can_be_hurt = false
+	is_dead = true
 	death_started.emit()
 	await get_tree().create_timer(3).timeout
-	

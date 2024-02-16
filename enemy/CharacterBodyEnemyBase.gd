@@ -30,6 +30,7 @@ signal attack_ended
 
 @export var combat_range : float = 3.0
 @onready var combat_timer = Timer.new()
+@export var attack_cooldown_time :float = 2.0
 signal parried_started
 
 @export var health_system :Node
@@ -37,6 +38,8 @@ signal hurt_started
 signal damage_taken
 signal death_started
 var can_be_hurt = true
+
+@export var ragdoll_death : bool = false
 @onready var general_skeleton = %GeneralSkeleton
 
 @onready var retreating = false
@@ -79,6 +82,7 @@ func _ready() -> void:
 	
 	add_child(combat_timer)
 	combat_timer.one_shot = true
+	combat_timer.wait_time = attack_cooldown_time
 	combat_timer.timeout.connect(_on_combat_timer_timeout)
 
 	add_child(chase_timer)
@@ -258,27 +262,24 @@ func parried():
 
 func death():
 	current_state = state.DEAD
-	await get_tree().create_timer(anim_length *.5).timeout
 	death_started.emit()
 	can_be_hurt = false
 	remove_from_group(group_name)
-	apply_ragdoll()
-	
+	if ragdoll_death:
+		apply_ragdoll()
+	await get_tree().create_timer(4).timeout
+	queue_free()
+
 func apply_ragdoll():
 	general_skeleton.physical_bones_start_simulation()
 	anim_state_tree.active = false
-
-	await get_tree().create_timer(2).timeout
-	var bone_transforms = []
-	var bone_count = general_skeleton.get_bone_count()
-	for i in bone_count:
-		bone_transforms.append(general_skeleton.get_bone_global_pose(i))
-	general_skeleton.physical_bones_stop_simulation()
-	for i in bone_count:
-		general_skeleton.set_bone_global_pose_override(i, bone_transforms[i],1,true)
-	#var tween = create_tween()
-	#tween.tween_property(self,"global_position",to_global(Vector3.DOWN),1)
-	#await tween.finished
-
-	await get_tree().create_timer(3).timeout
-	queue_free()
+	
+	# if you want to stop the rag doll after a few seconds, uncomment this code.
+	#await get_tree().create_timer(2).timeout
+	#var bone_transforms = []
+	#var bone_count = general_skeleton.get_bone_count()
+	#for i in bone_count:
+		#bone_transforms.append(general_skeleton.get_bone_global_pose(i))
+	#general_skeleton.physical_bones_stop_simulation()
+	#for i in bone_count:
+		#general_skeleton.set_bone_global_pose_override(i, bone_transforms[i],1,true)

@@ -1,4 +1,5 @@
 extends Node
+class_name HealthSystem
 
 @export var total_health : int = 5
 @onready var current_health = total_health
@@ -8,6 +9,7 @@ extends Node
 @export var heal_reporting_node : Node
 @export var heal_signal : String = "health_received"
 
+signal health_updated
 signal died
 
 func _ready():
@@ -22,6 +24,7 @@ func _ready():
 func _on_damage_signal(_by_what : EquipmentResource):
 	var damage_power = _by_what.power
 	current_health -= damage_power
+	health_updated.emit(current_health)
 	if current_health <= 0:
 		died.emit()
 
@@ -30,3 +33,4 @@ func _on_health_signal(_by_what : ItemResource):
 	current_health += healing_power
 	if current_health > total_health:
 		current_health = total_health
+	health_updated.emit(current_health)

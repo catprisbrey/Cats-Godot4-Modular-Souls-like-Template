@@ -18,6 +18,8 @@ func _ready():
 		signaling_node.connect(change_item_signal,_on_change_item_signal)
 		signaling_node.connect(use_item_signal, _on_item_used_signal)
 	
+	# I'm giving the player some stuff to start with, but you can see here
+	# how obtaining items in game can be as simple as appendingg to the inventory array.
 	inventory.append(starter_item)
 	inventory.append(starter_item)
 	inventory.append(starter_item2)
@@ -33,7 +35,6 @@ func _on_change_item_signal():
 	if inventory.size() > 0:
 		change_item(0,inventory.size()-1)
 		
-
 func add_item(_new_item: ItemResource):
 	inventory.append(_new_item)
 	restack_inventory()
@@ -58,24 +59,25 @@ func change_item(_start_index,_destination_index):
 	#inventory_updated.emit(inventory)
 	#return former_item
 	
-func restack_inventory():
+func restack_inventory(): ## Will stack same type items.
 	var inventory_refresh = []
-	print(inventory)
-	await get_tree().process_frame
+	await get_tree().process_frame # arrays are slow, give it a frame
+	
 	for item in range(inventory.size()):
 		var this_item = inventory[item]
 		var found = false
-
-		for others in range(inventory_refresh.size()):
-			if this_item.name == inventory_refresh[others].name:
-				print(this_item.name)
-				this_item.count += inventory_refresh[others].count
+		for item_check in range(inventory_refresh.size()):
+			## check each item, and flag if already found in our new inventory 
+			## being refreshed. If it's already found, just increment the count.
+			if this_item.name == inventory_refresh[item_check].name:
+				this_item.count += inventory_refresh[item_check].count
 				found = true
+
 		if not found:
 			inventory_refresh.append(this_item)
 			
 	inventory = inventory_refresh
-	print(inventory)
+
 	if inventory[0]:
 		current_item = inventory[0]
 	inventory_updated.emit(inventory)

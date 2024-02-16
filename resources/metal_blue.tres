@@ -1,0 +1,29 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bqecby27hsm6w"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vrk0s"]
+noise_type = 2
+seed = 55
+frequency = 0.012
+fractal_octaves = 3
+fractal_lacunarity = 2.03
+fractal_gain = -0.645
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k0716"]
+width = 1024
+height = 1024
+in_3d_space = true
+seamless = true
+as_normal_map = true
+bump_strength = 2.0
+noise = SubResource("FastNoiseLite_vrk0s")
+
+[resource]
+resource_name = "Armor"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.278431, 0.54902, 0.74902, 1)
+metallic = 1.0
+roughness = 0.3
+normal_enabled = true
+normal_scale = 1.28
+normal_texture = SubResource("NoiseTexture2D_k0716")
