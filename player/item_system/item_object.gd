@@ -6,14 +6,17 @@ class_name ItemObject
 @export_enum("DRINK","THROWN","OTHER") var object_type : String= "DRINK"
 @export var power : int = 1
 @export var time_to_live : float = 2
+@onready var area3d : Area3D = $Area3D
 var player_node
 var use_item = false
 signal touched_target
 
 func _ready():
 	freeze = true
-
+	area3d.monitoring = false
+	
 func activate():
+	area3d.monitoring = true
 	top_level = true
 	freeze = false
 	use_item = true

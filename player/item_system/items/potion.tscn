@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhiuvwatv8m07"]
+[gd_scene load_steps=17 format=3 uid="uid://dhiuvwatv8m07"]
 
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_yt1vo"]
+[ext_resource type="Script" path="res://player/trigger_switch.gd" id="2_a6g3i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o7hv0"]
 size = Vector3(0.15, 0.15, 0.15)
@@ -26,6 +27,54 @@ rings = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_xc6p0"]
 size = Vector3(0.2, 0.2, 0.2)
 
+[sub_resource type="Gradient" id="Gradient_nijdr"]
+offsets = PackedFloat32Array(0.389571, 0.819018, 1)
+colors = PackedColorArray(0.435294, 0.0784314, 0.0705882, 0.992157, 0.887082, 0.235288, 0.211695, 0.992157, 1, 0.543101, 0.379672, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4eul2"]
+gradient = SubResource("Gradient_nijdr")
+
+[sub_resource type="Curve" id="Curve_qdgel"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443077, 1), 0.0418739, 0.0418739, 0, 0, Vector2(0.966851, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6oj6n"]
+curve = SubResource("Curve_qdgel")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uo2ag"]
+emission_shape_scale = Vector3(0.5, 0.5, 0.5)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(1, 0, 1)
+gravity = Vector3(0, -1, 0)
+radial_accel_max = 10.0
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_6oj6n")
+color_ramp = SubResource("GradientTexture1D_4eul2")
+
+[sub_resource type="Gradient" id="Gradient_y5nj0"]
+offsets = PackedFloat32Array(0.218182, 0.392982, 0.690909)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sb3x7"]
+gradient = SubResource("Gradient_y5nj0")
+fill = 1
+fill_from = Vector2(0.495726, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m1sb2"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("GradientTexture2D_sb3x7")
+disable_receive_shadows = true
+billboard_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rbqce"]
+material = SubResource("StandardMaterial3D_m1sb2")
+size = Vector2(0.6, 0.6)
+orientation = 2
+
 [node name="Potion" type="RigidBody3D"]
 collision_layer = 0
 collision_mask = 3
@@ -47,5 +96,18 @@ collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_xc6p0")
+
+[node name="Explosion" type="GPUParticles3D" parent="."]
+emitting = false
+lifetime = 0.5
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_uo2ag")
+draw_pass_1 = SubResource("PlaneMesh_rbqce")
+
+[node name="SignalSwitch" type="Node" parent="Explosion" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("2_a6g3i")
+lifetime = 0.1
+signaling_node = NodePath("../..")
+start_signal = "touched_target"
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

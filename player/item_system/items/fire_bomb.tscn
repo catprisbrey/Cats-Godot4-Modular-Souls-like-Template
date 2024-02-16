@@ -37,14 +37,14 @@ size = Vector3(0.4, 0.4, 0.4)
 offsets = PackedFloat32Array(0, 0.0740741, 0.599327, 0.814815, 1)
 colors = PackedColorArray(0.195322, 0.61755, 0.946868, 1, 0.947033, 0.237647, 0, 1, 0.970825, 0.589525, 6.16074e-06, 1, 0.778233, 0.2822, 0, 1, 1, 0.543101, 0.379672, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_4eul2"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fiadj"]
 gradient = SubResource("Gradient_dp3qt")
 
 [sub_resource type="Curve" id="Curve_kase7"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443077, 1), 0.0418739, 0.0418739, 0, 0, Vector2(0.966851, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_6oj6n"]
+[sub_resource type="CurveTexture" id="CurveTexture_qv6rs"]
 curve = SubResource("Curve_kase7")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ohoi1"]
@@ -55,20 +55,20 @@ direction = Vector3(1, 0, 1)
 gravity = Vector3(0, -1, 0)
 radial_accel_max = 10.0
 scale_min = 0.0
-scale_curve = SubResource("CurveTexture_6oj6n")
-color_ramp = SubResource("GradientTexture1D_4eul2")
+scale_curve = SubResource("CurveTexture_qv6rs")
+color_ramp = SubResource("GradientTexture1D_fiadj")
 
-[sub_resource type="Gradient" id="Gradient_y5nj0"]
+[sub_resource type="Gradient" id="Gradient_gd3bv"]
 offsets = PackedFloat32Array(0.392982, 0.757895)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xy6jg"]
-gradient = SubResource("Gradient_y5nj0")
+gradient = SubResource("Gradient_gd3bv")
 fill = 1
 fill_from = Vector2(0.495726, 0.5)
 fill_to = Vector2(0, 0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m1sb2"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y1u2x"]
 transparency = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
@@ -77,7 +77,7 @@ disable_receive_shadows = true
 billboard_mode = 1
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sxqcm"]
-material = SubResource("StandardMaterial3D_m1sb2")
+material = SubResource("StandardMaterial3D_y1u2x")
 size = Vector2(0.2, 0.2)
 orientation = 2
 
