@@ -16,6 +16,9 @@ class_name ItemSystem
 @export var use_item_signal : String = "item_used"
 @export var throw_strength = 15
 
+signal item_thrown
+signal item_drunk
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if signaling_node:
@@ -56,7 +59,10 @@ func _on_item_used_signal(_current_item : ItemResource):
 			await get_tree().create_timer(.8).timeout
 			new_item.activate()
 			if new_item.object_type == "THROWN":
+				item_thrown.emit()
 				var force_dir = player_node.global_transform.basis.z
-				force_dir.y += .1
+				#force_dir.y += .1
 				new_item.apply_impulse(force_dir * throw_strength, mount_point.global_position)
-	
+			elif new_item.object_type == "DRINK":
+				item_drunk.emit()
+			
