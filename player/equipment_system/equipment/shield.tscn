@@ -145,7 +145,7 @@ script = ExtResource("1_jnnne")
 equipment_info = SubResource("Resource_ldg7y")
 
 [node name="ShieldMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -6.94983e-10, -0.0158994)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.57274e-09, -0.0359801)
 mesh = SubResource("ArrayMesh_1tg65")
 skeleton = NodePath("")
 

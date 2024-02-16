@@ -10,7 +10,7 @@ step_sound = ExtResource("2_tfol7")
 pant_sound = ExtResource("3_4wlbn")
 
 [node name="Footsteps" type="AudioStreamPlayer" parent="."]
-volume_db = -5.0
+volume_db = -10.0
 
 [node name="Pantswish" type="AudioStreamPlayer" parent="."]
-volume_db = -10.0
+volume_db = -15.0
