@@ -8,6 +8,7 @@ class_name ItemObject
 @export var time_to_live : float = 2
 var player_node
 var use_item = false
+signal touched_target
 
 func _ready():
 	freeze = true
@@ -21,6 +22,7 @@ func activate():
 
 func _on_area_3d_body_entered(body):
 	if body.is_in_group(target_group):
+		touched_target.emit()
 		if effect_type == "HEAL":
 			if body.has_method("heal"):
 				body.heal(self)

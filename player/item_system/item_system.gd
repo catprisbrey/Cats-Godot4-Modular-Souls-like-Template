@@ -1,6 +1,10 @@
 extends Node3D
 class_name ItemSystem
 
+## This class is tied very closely to the Inventory system. It's purpose is to 
+## place the current inventory item on the player's hip whenever items are changed
+## it also manages throwing objects when the item used is a throwable.
+
 @export var player_node : CharacterBody3D
 @onready var hand_bone = $HandBone
 @onready var mount_point = $HandBone/HandPivot

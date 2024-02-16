@@ -3,16 +3,16 @@
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_jvy25"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6ut2s"]
-radius = 0.0905
-height = 0.181
+radius = 0.115
+height = 0.23
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr6c3"]
 albedo_color = Color(0.258824, 0.254902, 0.262745, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_q552e"]
 material = SubResource("StandardMaterial3D_hr6c3")
-radius = 0.05
-height = 0.1
+radius = 0.07
+height = 0.14
 radial_segments = 12
 rings = 4
 
@@ -45,7 +45,7 @@ shape = SubResource("CapsuleShape3D_6ut2s")
 mesh = SubResource("SphereMesh_q552e")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0501423, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0715696, 0)
 mesh = SubResource("CylinderMesh_om8gq")
 
 [node name="Area3D" type="Area3D" parent="."]
