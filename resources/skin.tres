@@ -7,7 +7,8 @@
 resource_name = "Skin"
 cull_mode = 2
 albedo_texture = ExtResource("1_6v2ml")
-roughness = 0.5
+roughness = 0.77
+roughness_texture = ExtResource("1_6v2ml")
 normal_enabled = true
 normal_scale = 0.3
 normal_texture = ExtResource("2_n32lr")

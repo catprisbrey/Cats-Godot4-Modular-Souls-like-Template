@@ -413,7 +413,8 @@ func jump():
 func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
 	# burst of speed toward indicated direction, or forward by default
 	speed = dodge_speed
-	direction = (global_position - to_global(_new_direction)).normalized()
+	if _new_direction:
+		direction = (global_position - to_global(_new_direction)).normalized()
 	#speed = default_speed
 	await get_tree().create_timer(_duration).timeout
 	direction = Vector3.ZERO
