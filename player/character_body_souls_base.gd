@@ -83,7 +83,7 @@ signal health_received
 signal death_started
 var is_dead :bool = false
 
-@export var item_system : InventorySystem
+@export var inventory_system : InventorySystem
 var current_item : ItemResource
 signal item_change_started
 signal item_changed
@@ -145,8 +145,8 @@ func _ready():
 		gadget_system.equipment_changed.connect(_on_gadget_equipment_changed)
 		_on_gadget_equipment_changed(gadget_system.current_equipment)
 	
-	if item_system:
-		item_system.item_used.connect(_on_inventory_item_used)
+	if inventory_system:
+		inventory_system.item_used.connect(_on_inventory_item_used)
 			
 	if health_system:
 		health_system.died.connect(death)

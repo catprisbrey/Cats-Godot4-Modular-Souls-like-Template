@@ -88,6 +88,7 @@ script = ExtResource("1_jvy25")
 target_group = "Targets"
 effect_type = "HURT"
 object_type = "THROWN"
+power = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_6ut2s")

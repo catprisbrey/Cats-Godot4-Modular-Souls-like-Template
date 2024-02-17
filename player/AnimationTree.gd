@@ -223,7 +223,7 @@ func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
 	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
-		new_blend *= .5 # force a walk speed
+		new_blend *= .4 # force a walk speed
 	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
 	set("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position",lerp_movement)

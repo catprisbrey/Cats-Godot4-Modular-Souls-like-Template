@@ -13,6 +13,8 @@ class_name PlayerTargetingSystem
 
 ## Targetting is activated via signals currently. Typically a bool value is passed
 ## to this nodes 'set_targeting(bool)' method
+@export_range(1,10) var joystick_retarget_sensitivity :float = 5
+@export_range(1,10) var mouse_retarget_sensitivity :float = 3
 
 @onready var left_eye : Area3D= $LeftEye
 @onready var right_eye : Area3D = $RightEye
@@ -50,12 +52,12 @@ func _input(_event:InputEvent):
 	# and calls to change target to the left or right.
 	if targeting:
 		if _event is InputEventMouseMotion:
-			if abs(_event.relative.x) > 300: 
+			if abs(_event.relative.x) > mouse_retarget_sensitivity * 100: 
 				var target_dir = sign(_event.relative.x)
 				select_new_target(target_dir, .6)
 
 		elif _event is InputEventJoypadMotion:
-			if _event.axis == 2 && abs(_event.axis_value) > .3:
+			if _event.axis == 2 && abs(_event.axis_value) > joystick_retarget_sensitivity * .1:
 				var target_dir = sign(_event.axis_value)
 				select_new_target(target_dir, .5)
 	

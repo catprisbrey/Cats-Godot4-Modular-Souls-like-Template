@@ -172,3 +172,6 @@ transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, 
 [node name="LeverObject" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_sq3wn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19806, 4.76837e-07, -4.05574)
 node_to_control = NodePath("../DoorObject2")
+
+[node name="CharacterBodyEnemyBase2" parent="." instance=ExtResource("8_6u132")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28937, 0, -0.188309)

@@ -9,6 +9,11 @@ class_name HealthSystem
 @export var heal_reporting_node : Node
 @export var heal_signal : String = "health_received"
 
+
+@export var health_bar_control : Node
+@export var show_time : float = 2
+var show_timer : Timer
+
 signal health_updated
 signal died
 
@@ -21,7 +26,22 @@ func _ready():
 		if heal_reporting_node.has_signal(heal_signal):
 			heal_reporting_node.connect(heal_signal,_on_health_signal)
 			
+	if health_bar_control:
+		health_bar_control.hide()
+		show_timer = Timer.new()
+		show_timer.one_shot = true
+		show_timer.wait_time = show_time
+		show_timer.timeout.connect(_on_show_timer_timeout)
+		add_child(show_timer)
+		
+func _physics_process(_delta):
+	if show_timer:
+		if show_timer.time_left:
+			show_health()
+		
 func _on_damage_signal(_by_what):
+	if health_bar_control:
+		show_timer.start()
 	var damage_power = _by_what.power
 	current_health -= damage_power
 	health_updated.emit(current_health)
@@ -29,8 +49,19 @@ func _on_damage_signal(_by_what):
 		died.emit()
 
 func _on_health_signal(_by_what):
+	if health_bar_control:
+		show_timer.start()
 	var healing_power = _by_what.power
 	current_health += healing_power
 	if current_health > total_health:
 		current_health = total_health
 	health_updated.emit(current_health)
+	
+func show_health():
+	var current_camera = get_viewport().get_camera_3d()
+	var screenspace = current_camera.unproject_position(hit_reporting_node.global_position)
+	health_bar_control.position = screenspace 
+	health_bar_control.show()
+
+func _on_show_timer_timeout():
+	health_bar_control.hide()
