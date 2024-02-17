@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_jvy25"]
 [ext_resource type="Script" path="res://player/trigger_switch.gd" id="2_at7g0"]
-[ext_resource type="AudioStream" uid="uid://dwewi6cxbh3do" path="res://audio/SoundFX/hit/hit_blunt_06.wav" id="3_ik1x2"]
+[ext_resource type="AudioStream" uid="uid://bxqrf0y1eflh6" path="res://audio/SoundFX/hit/hit_blunt_03.wav" id="3_1sqhw"]
 [ext_resource type="Script" path="res://audio/SoundFXSystem.gd" id="4_dcvce"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6ut2s"]
@@ -122,8 +122,9 @@ lifetime = 0.1
 signaling_node = NodePath("../..")
 start_signal = "touched_target"
 
-[node name="SoundFXTrigger" type="AudioStreamPlayer3D" parent="Explosion" node_paths=PackedStringArray("triggering_node")]
-stream = ExtResource("3_ik1x2")
+[node name="Pop" type="AudioStreamPlayer3D" parent="Explosion" node_paths=PackedStringArray("triggering_node")]
+stream = ExtResource("3_1sqhw")
+pitch_scale = 0.65
 script = ExtResource("4_dcvce")
 triggering_node = NodePath("../..")
 sound_trigger_signal = "touched_target"

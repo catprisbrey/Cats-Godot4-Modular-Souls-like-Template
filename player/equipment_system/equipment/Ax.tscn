@@ -7,7 +7,7 @@
 script = ExtResource("2_7ffab")
 name = "Hammer"
 object_type = "HEAVY"
-power = 1
+power = 2
 weight = 1
 value = 1
 
@@ -111,17 +111,17 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ef12s")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ogvqq"]
-size = Vector3(0.265, 0.892, 0.335)
+size = Vector3(0.265, 0.991044, 0.442026)
 
-[node name="WeaponObject" type="Area3D"]
+[node name="Ax" type="Area3D"]
 collision_mask = 5
 script = ExtResource("1_g41uq")
 equipment_info = SubResource("Resource_g4dft")
 
-[node name="Ax" type="MeshInstance3D" parent="."]
+[node name="AxMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000354216, 0)
 mesh = SubResource("ArrayMesh_pl6a8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53652, -0.0339938)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.586042, -0.135071)
 shape = SubResource("BoxShape3D_ogvqq")
