@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bbwrvilne1py1"]
+[gd_scene load_steps=20 format=3 uid="uid://dwi6wppkvd4nl"]
 
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_5qfvl"]
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_shnyh"]

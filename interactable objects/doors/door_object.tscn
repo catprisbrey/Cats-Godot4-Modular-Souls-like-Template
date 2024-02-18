@@ -8,21 +8,17 @@
 size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m7ulv"]
-size = Vector3(1.5, 2, 0.2)
+size = Vector3(2.01514, 3, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_33t20"]
 albedo_color = Color(0.109804, 0.141176, 0.380392, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_emm8w"]
 material = SubResource("StandardMaterial3D_33t20")
-size = Vector3(1.2, 2, 0.2)
+size = Vector3(2, 4, 0.4)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_dmkrk"]
-top_radius = 0.075
-bottom_radius = 0.075
-height = 0.4
-radial_segments = 8
-rings = 1
+[sub_resource type="BoxMesh" id="BoxMesh_np2tf"]
+size = Vector3(0.11, 0.675, 0.93)
 
 [sub_resource type="Animation" id="Animation_dtdft"]
 resource_name = "Locked"
@@ -160,26 +156,27 @@ script = ExtResource("1_6re5x")
 interact_type = "DOOR"
 
 [node name="InteractShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0124028, 0.724543, 0)
 shape = SubResource("BoxShape3D_qwogy")
 
 [node name="Pivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 
 [node name="DoorStaticBody" type="StaticBody3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/DoorStaticBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.257568, 1.43402, 0)
 shape = SubResource("BoxShape3D_m7ulv")
 
 [node name="Door" type="MeshInstance3D" parent="Pivot/DoorStaticBody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.230594, 2, 0)
 mesh = SubResource("BoxMesh_emm8w")
 skeleton = NodePath("../../..")
 
 [node name="knob" type="MeshInstance3D" parent="Pivot/DoorStaticBody/Door"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.336712, 0, 0)
-mesh = SubResource("CylinderMesh_dmkrk")
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.743754, -0.620332, -0.0135839)
+mesh = SubResource("BoxMesh_np2tf")
 
 [node name="DoorAnimPlayer" type="AnimationPlayer" parent="."]
 libraries = {

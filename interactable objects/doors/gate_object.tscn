@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bp5aql2ip2qwi"]
+[gd_scene load_steps=14 format=3 uid="uid://bp5aql2ip2qwi"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jmheh"]
 [ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
@@ -9,14 +9,17 @@
 size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ytu87"]
-size = Vector3(1.25, 2.25, 0.2)
+size = Vector3(1.975, 4.071, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sumh4"]
 albedo_color = Color(0.435294, 0.270588, 0.137255, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_tunpv"]
 material = SubResource("StandardMaterial3D_sumh4")
-size = Vector3(0.1, 2.25, 0.2)
+size = Vector3(0.1, 4, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_01yin"]
+size = Vector3(2.295, 0.125, 0.3)
 
 [sub_resource type="Animation" id="Animation_atpco"]
 resource_name = "Locked"
@@ -182,26 +185,26 @@ shape = SubResource("BoxShape3D_1xq5w")
 [node name="GateInteract" type="StaticBody3D" parent="Pivot"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/GateInteract"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.125, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03564, 0)
 shape = SubResource("BoxShape3D_ytu87")
 
 [node name="Gate" type="MeshInstance3D" parent="Pivot/GateInteract"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.630215, 1.1264, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.630215, 2.0264, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../..")
 
 [node name="Gate2" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.404148, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295852, 0, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
 
 [node name="Gate3" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17829, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57829, 0, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
 
 [node name="Gate4" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.844142, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.328043, 0, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
 
@@ -211,14 +214,22 @@ mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
 
 [node name="Gate6" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.29622, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.916735, 0, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
 
 [node name="Gate7" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.07036, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24569, 0, 0)
 mesh = SubResource("BoxMesh_tunpv")
 skeleton = NodePath("../../../..")
+
+[node name="Crossbar" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, -1.51803, 0)
+mesh = SubResource("BoxMesh_01yin")
+
+[node name="Crossbar" type="MeshInstance3D" parent="Pivot/GateInteract/Gate/Crossbar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.78197, 0)
+mesh = SubResource("BoxMesh_01yin")
 
 [node name="GateAnimPlayer" type="AnimationPlayer" parent="."]
 libraries = {

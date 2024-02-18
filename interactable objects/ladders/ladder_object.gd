@@ -21,7 +21,9 @@ func activate(_requestor: Node3D,sensor_location = "BOTTOM"):
 		 + _requestor.global_position.y,-.4))
 	else:
 		top_or_bottom = "BOTTOM"
-		mount_transform = newTranslation.translated_local(Vector3(0,.5,-.4))
+		mount_transform = newTranslation.translated_local(Vector3(0,0,-.4))
+		mount_transform.origin.y = _requestor.transform.origin.y + .5
+		
 	if _requestor.has_method("start_ladder"):
 		_requestor.start_ladder(top_or_bottom,mount_transform)
 	

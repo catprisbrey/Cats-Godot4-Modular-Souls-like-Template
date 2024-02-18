@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cgoha54aqf2sv"]
+
+[ext_resource type="Texture2D" uid="uid://d1u18kqxnl32y" path="res://resources/world_materials/TinyWood01_normal.png" id="1_cvqy3"]
+
+[resource]
+albedo_color = Color(0.615686, 0.298039, 0.133333, 1)
+normal_enabled = true
+normal_texture = ExtResource("1_cvqy3")
+uv1_scale = Vector3(2.815, 2.815, 2.815)

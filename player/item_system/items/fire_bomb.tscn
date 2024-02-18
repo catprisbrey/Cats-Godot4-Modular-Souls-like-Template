@@ -11,6 +11,7 @@ height = 0.23
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr6c3"]
 albedo_color = Color(0.258824, 0.254902, 0.262745, 1)
+roughness = 0.23
 
 [sub_resource type="SphereMesh" id="SphereMesh_q552e"]
 material = SubResource("StandardMaterial3D_hr6c3")

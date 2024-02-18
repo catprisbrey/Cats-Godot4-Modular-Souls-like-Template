@@ -5,7 +5,7 @@
 [resource]
 resource_name = "BakedHair"
 cull_mode = 2
-albedo_color = Color(0.435294, 0.0784314, 0.0705882, 0.992157)
+albedo_color = Color(0.278431, 0.54902, 0.74902, 1)
 roughness = 0.59
 normal_enabled = true
 normal_scale = 7.44

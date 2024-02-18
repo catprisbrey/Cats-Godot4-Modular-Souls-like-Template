@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ccuwa5g83o4ev"]
+[gd_scene load_steps=24 format=3 uid="uid://ccuwa5g83o4ev"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="1_k2mnc"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="5_w3y0b"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="8_30vqq"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="8_q06xa"]
 [ext_resource type="PackedScene" uid="uid://cwxpu4en7wpi6" path="res://cameras/area_cam/area_cam.tscn" id="8_tgyg3"]
+[ext_resource type="PackedScene" uid="uid://daae7mgofoegu" path="res://interactable objects/spawn_site/spawn_site.tscn" id="9_4ffu4"]
 [ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="9_7y6wk"]
 [ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="10_sq3wn"]
 
@@ -175,3 +176,6 @@ node_to_control = NodePath("../DoorObject2")
 
 [node name="CharacterBodyEnemyBase2" parent="." instance=ExtResource("8_6u132")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28937, 0, -0.188309)
+
+[node name="SpawnSite" parent="." instance=ExtResource("9_4ffu4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.35037, 0, -0.500871)

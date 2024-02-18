@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dhiuvwatv8m07"]
+[gd_scene load_steps=18 format=3 uid="uid://dhiuvwatv8m07"]
 
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_yt1vo"]
 [ext_resource type="Script" path="res://player/trigger_switch.gd" id="2_a6g3i"]
@@ -7,7 +7,8 @@
 size = Vector3(0.15, 0.15, 0.15)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd6lb"]
-albedo_color = Color(0.776471, 0.34902, 0.305882, 1)
+albedo_color = Color(0.760244, 0.175128, 0.159848, 0.992157)
+roughness = 0.05
 
 [sub_resource type="SphereMesh" id="SphereMesh_b6btr"]
 material = SubResource("StandardMaterial3D_sd6lb")
@@ -16,8 +17,11 @@ height = 0.1
 radial_segments = 12
 rings = 4
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u61ev"]
+albedo_color = Color(0.666667, 0.447059, 0.184314, 1)
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_nwi5a"]
-material = SubResource("StandardMaterial3D_sd6lb")
+material = SubResource("StandardMaterial3D_u61ev")
 top_radius = 0.02
 bottom_radius = 0.005
 height = 0.05

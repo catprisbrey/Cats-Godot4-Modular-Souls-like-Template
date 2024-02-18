@@ -82,6 +82,7 @@ signal damage_taken
 signal health_received
 signal death_started
 var is_dead :bool = false
+signal respawn_started
 
 @export var inventory_system : InventorySystem
 var current_item : ItemResource
@@ -529,6 +530,8 @@ func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = 
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
+
+
 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
