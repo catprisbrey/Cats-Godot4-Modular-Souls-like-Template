@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b5nk1tsswudcm"]
 
-[ext_resource type="Script" path="res://player_targeting_system/player_targeting_system.gd" id="1_c6g4r"]
-[ext_resource type="Script" path="res://player_targeting_system/gui_reticle.gd" id="2_f0thc"]
+[ext_resource type="Script" path="res://player/player_targeting_system/player_targeting_system.gd" id="1_c6g4r"]
+[ext_resource type="Script" path="res://player/player_targeting_system/gui_reticle.gd" id="2_f0thc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dfo1h"]
 size = Vector3(8, 10, 12)
