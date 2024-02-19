@@ -102,8 +102,9 @@ signal landed_hard
 signal jump_started
 
 ## Dodge and Sprint Mechanics.
-@export var dodge_speed = 8.0
-@onready var sprint_timer = Timer.new()
+@export var dodge_speed = 10.0
+@onready var dodge_timer :Timer = Timer.new()
+@onready var sprint_timer :Timer = Timer.new()
 @export var sprint_speed = 7.0
 signal dodge_started
 signal dodge_ended
@@ -156,6 +157,10 @@ func _ready():
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
+	
+	add_child(dodge_timer)
+	dodge_timer.one_shot = true
+	dodge_timer.connect("timeout",_on_dodge_timer_timeout)
 	
 	add_child(attack_combo_timer)
 	attack_combo_timer.one_shot = true
@@ -446,9 +451,10 @@ func end_sprint():
 		current_state = state.FREE
 		
 func dash_movement():
-
+	var rate = .1
+	velocity.x = move_toward(velocity.x, direction.x * speed, rate)
+	velocity.z = move_toward(velocity.z, direction.z * speed, rate)
 	# required in the process function states for dodges/dashes
-	velocity = direction * speed
 	move_and_slide()
 	
 func dodge(): 
@@ -466,7 +472,10 @@ func dodge():
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	# After timer finishes, return to pre-dodge state
-	await get_tree().create_timer(anim_length *.7).timeout
+	dodge_timer.start(anim_length * .7)
+	
+func _on_dodge_timer_timeout():
+	#await get_tree().create_timer(anim_length *.7).timeout
 	dodge_ended.emit()
 	speed = default_speed
 	current_state = state.FREE
