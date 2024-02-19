@@ -375,7 +375,7 @@ func attack(_is_special_attack : bool = false):
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.1) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
@@ -615,7 +615,7 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 		await anim_state_tree.animation_started
 	await get_tree().create_timer(anim_length  *.3).timeout
 	gadget_activated.emit()
-	dash()
+	dash(Vector3.FORWARD,.3)
 	await get_tree().create_timer(anim_length  *.7).timeout
 	if current_state == state.STATIC_ACTION:
 		current_state = state.FREE
