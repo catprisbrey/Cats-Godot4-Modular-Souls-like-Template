@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://c3yajhej5laa7"]
+[gd_scene load_steps=13 format=3 uid="uid://c3yajhej5laa7"]
 
 [ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_pdewx"]
+[ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://resources/metal_blue.tres" id="2_5dulj"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
 [ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://resources/world_materials/wood01.tres" id="2_uf1fe"]
 
@@ -128,7 +129,7 @@ shape = SubResource("BoxShape3D_f1ssk")
 [node name="MeshInstance3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.273737, 0)
 size = Vector3(1, 0.5, 0.75)
-material = ExtResource("2_uf1fe")
+material = ExtResource("2_5dulj")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00653297, 0)
@@ -139,7 +140,7 @@ material = ExtResource("2_uf1fe")
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563078, 0)
 size = Vector3(1, 0.1, 0.75)
-material = ExtResource("2_uf1fe")
+material = ExtResource("2_5dulj")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.125226, 0.412655)

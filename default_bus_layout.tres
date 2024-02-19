@@ -3,7 +3,7 @@
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_hsmq2"]
 resource_name = "Reverb"
 room_size = 0.67
-wet = 0.23
+wet = 0.15
 
 [sub_resource type="AudioEffectDelay" id="AudioEffectDelay_16rfd"]
 resource_name = "Delay"

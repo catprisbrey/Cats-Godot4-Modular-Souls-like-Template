@@ -20,8 +20,8 @@ var checking_active = false
 # Called whe@n the node enters the scene tree for the first time.
 
 func _ready():
-	set_collision_mask_value(dectection_layer_mask,true)
-	eyeline.set_collision_mask_value(dectection_layer_mask,true)
+	collision_mask = dectection_layer_mask
+	eyeline.collision_mask = dectection_layer_mask
 
 	if player_node:
 		if player_node.has_signal("chase_ended"):

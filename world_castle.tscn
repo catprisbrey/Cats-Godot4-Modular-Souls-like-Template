@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=21 format=3 uid="uid://uiw1spc0mevb"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="1_0mtmk"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_qx8ba"]
@@ -10,13 +10,15 @@
 [ext_resource type="PackedScene" uid="uid://dydcpd450p5ig" path="res://enemy/CharacterBodyEnemyBase.tscn" id="8_nfvvu"]
 [ext_resource type="PackedScene" uid="uid://daae7mgofoegu" path="res://interactable objects/spawn_site/spawn_site.tscn" id="9_tvnnx"]
 [ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="10_5mbou"]
+[ext_resource type="Script" path="res://ui/contol_card.gd" id="11_o76yj"]
+[ext_resource type="Texture2D" uid="uid://c46nfvbeeb3pr" path="res://ui/panel-border-027.png" id="12_xo5ps"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wiiwu"]
-sky_top_color = Color(0.423529, 0.529412, 0.705882, 1)
-sky_horizon_color = Color(0.696078, 0.719608, 0.764706, 1)
+sky_top_color = Color(0.192157, 0.219608, 0.305882, 1)
+sky_horizon_color = Color(0.615686, 0.752941, 0.839216, 1)
 sky_energy_multiplier = 1.05
-ground_bottom_color = Color(0.360784, 0.34902, 0.352941, 1)
-ground_horizon_color = Color(0.696078, 0.719608, 0.764706, 1)
+ground_bottom_color = Color(0.192157, 0.219608, 0.305882, 1)
+ground_horizon_color = Color(0.580392, 0.580392, 0.580392, 1)
 
 [sub_resource type="Sky" id="Sky_fjpyn"]
 sky_material = SubResource("ProceduralSkyMaterial_wiiwu")
@@ -25,11 +27,11 @@ sky_material = SubResource("ProceduralSkyMaterial_wiiwu")
 background_mode = 2
 sky = SubResource("Sky_fjpyn")
 fog_enabled = true
-fog_light_color = Color(0.54524, 0.503054, 0.582763, 1)
-fog_light_energy = 0.45
+fog_light_color = Color(0.352687, 0.544337, 0.67476, 1)
+fog_light_energy = 0.5
 fog_density = 0.0
-fog_height = 0.95
-fog_height_density = 0.4232
+fog_height = 1.3
+fog_height_density = 0.3146
 
 [sub_resource type="Curve3D" id="Curve3D_2c2rs"]
 _data = {
@@ -49,15 +51,30 @@ _data = {
 }
 point_count = 5
 
+[sub_resource type="Gradient" id="Gradient_f4sec"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.670588)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6jfgq"]
+gradient = SubResource("Gradient_f4sec")
+width = 8
+
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_eed6x")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.872069, -0.388253, 0.297917, 0, 0.608761, 0.793353, -0.489382, -0.691859, 0.530882, 0, 0, 0)
-light_color = Color(0.713726, 0.67451, 0.596078, 1)
+transform = Transform3D(-0.94088, 0.275772, -0.196706, 0, 0.580703, 0.814115, 0.338738, 0.765985, -0.546372, 0, 0, 0)
+light_energy = 0.09
 shadow_enabled = true
+sky_mode = 1
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.267238, 0.337471, -0.902606, 0, 0.936672, 0.350207, 0.96363, -0.0935888, 0.250315, -2.974, 0.187, 4.334)
+light_color = Color(0.345098, 0.160784, 0.0784314, 1)
+light_energy = 5.356
+light_angular_distance = 2.0
 
 [node name="PlayerCharacterBodySoulsBase" parent="." node_paths=PackedStringArray("last_spawn_site") instance=ExtResource("1_0mtmk")]
 transform = Transform3D(-0.800146, 0, -0.599806, 0, 1, 0, 0.599806, 0, -0.800146, -9.61981, 2.38419e-07, -0.909899)
@@ -73,13 +90,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.03717, 0, 12.3254)
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -30.634, -0.1, 15.4212)
 
 [node name="ChestObject" parent="." instance=ExtResource("5_f6ekr")]
-transform = Transform3D(-0.236482, 0, 0.971636, 0, 1, 0, -0.971636, 0, -0.236482, -45.9909, 3.8271, 19.2007)
+transform = Transform3D(-0.617585, 0, 0.786504, 0, 1, 0, -0.786504, 0, -0.617585, -45.2577, 3.8271, 19.2007)
 
 [node name="ChestObject2" parent="." instance=ExtResource("5_f6ekr")]
-transform = Transform3D(0.713532, 0, 0.700623, 0, 1, 0, -0.700623, 0, 0.713532, -39.4515, 3.8271, 12.1895)
+transform = Transform3D(0.999631, 0, -0.0271716, 0, 1, 0, 0.0271716, 0, 0.999631, -38.9396, 3.8271, 6.05781)
 
 [node name="ChestObject3" parent="." instance=ExtResource("5_f6ekr")]
-transform = Transform3D(-0.996763, 0, -0.0803905, 0, 1, 0, 0.0803905, 0, -0.996763, -38.6898, 3.8271, 21.0111)
+transform = Transform3D(-0.998275, 0, 0.0586963, 0, 1, 0, -0.0586963, 0, -0.998275, -40.0676, 3.81445, 24.3613)
 
 [node name="Ladder2" parent="." instance=ExtResource("4_ur1kg")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14.6634, -0.477839, 30.7756)
@@ -89,7 +106,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.999745, 0, -0.0225167, 0, 1, 0, 0.0225167, 0, 0.999745, -0.43294, 0, -0.97773)
+transform = Transform3D(0.999744, 0, -0.0225167, 0, 1, 0, 0.0225167, 0, 0.999744, -0.43294, 0, -0.97773)
 script = ExtResource("6_gcwju")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -105,10 +122,10 @@ default_target = NodePath("../PatrolPath/EnemyPatrolPoint")
 transform = Transform3D(2.98023e-08, 0, 1, 0, 1, 0, -1, 0, 2.98023e-08, -1.23949, -4.76837e-07, 23.9472)
 
 [node name="CharacterBodyEnemyBase2" parent="." instance=ExtResource("8_nfvvu")]
-transform = Transform3D(-0.83207, 0, 0.55467, 0, 1, 0, -0.55467, 0, -0.83207, -35.1732, 3.8271, 15.764)
+transform = Transform3D(-0.518131, 0, 0.855301, 0, 1, 0, -0.855301, 0, -0.518131, -35.9215, 3.8271, 16.6378)
 
 [node name="CharacterBodyEnemyBase3" parent="." instance=ExtResource("8_nfvvu")]
-transform = Transform3D(0.82972, 0, 0.55818, 0, 1, 0, -0.55818, 0, 0.82972, -35.5053, 3.8271, 13.8961)
+transform = Transform3D(0.566751, 0, 0.823889, 0, 1, 0, -0.823889, 0, 0.566751, -36.0567, 3.8271, 14.7454)
 
 [node name="SpawnSite" parent="." instance=ExtResource("9_tvnnx")]
 transform = Transform3D(0.996195, 0, 0.0871556, 0, 1, 0, -0.0871556, 0, 0.996195, -5.55901, 0, 4.05321)
@@ -132,3 +149,88 @@ curve = SubResource("Curve3D_h7gp6")
 [node name="PatrolPoint2" type="PathFollow3D" parent="PatrolArea2"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.53429, 2.81334e-05, 6.36466)
 script = ExtResource("6_gcwju")
+
+[node name="ControlCard" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_o76yj")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="ControlCard"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_xo5ps")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="TextureRect" type="TextureRect" parent="ControlCard/NinePatchRect"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_6jfgq")
+
+[node name="MarginContainer" type="MarginContainer" parent="ControlCard"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -201.5
+offset_right = 234.5
+offset_bottom = 201.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ControlCardLabel" type="Label" parent="ControlCard/MarginContainer"]
+custom_minimum_size = Vector2(21.07, 17.23)
+layout_mode = 2
+text = "WASD / L Joystick = Movement
+Mouse / R Joystick = Camera control, change lock-on target
+
+Q = Lock onto target / strafe mode
+E = Interact (doors, levers, ladders, etc)
+R = Use Item
+1,2, Mousewheel, D-Pad Down = Change Item
+
+X = Change Right Hand / Weapon
+Left Click / Gamepad R1 = Light Attack
+Shift + Left Click / Gamepad R2 = Heavy Attack
+
+Z = Change Left Hand / Gadget
+Right Click / Gamepad L1 = Gadget Gaurding
+Shift + Right Click / Gamepad L2 = Gadget Attack
+
+F / Circle = X
+
+SpaceBar / Circle = Dodge
+Hold SpaceBar/Circle = Sprint"
+
+[node name="WorldEnvironment2" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eed6x")

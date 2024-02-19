@@ -21,8 +21,8 @@ signal interact_updated
 @onready var interactable_bottom
 
 func _ready():
-	top_sensor.set_collision_mask_value(detection_mask,true)
-	bottom_sensor.set_collision_layer_value(detection_mask,true)
+	top_sensor.collision_layer = detection_mask
+	bottom_sensor.collision_mask = detection_mask
 	
 	top_sensor.body_entered.connect(_top_body_entered)
 	top_sensor.body_exited.connect(_top_body_exited)
