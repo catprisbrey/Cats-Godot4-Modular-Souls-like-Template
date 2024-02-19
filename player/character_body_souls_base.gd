@@ -83,6 +83,7 @@ signal health_received
 signal death_started
 var is_dead :bool = false
 signal respawn_started
+@export var last_spawn_site : SpawnSite
 
 @export var inventory_system : InventorySystem
 var current_item : ItemResource
@@ -671,3 +672,5 @@ func death():
 	is_dead = true
 	death_started.emit()
 	await get_tree().create_timer(3).timeout
+	get_tree().reload_current_scene()
+		

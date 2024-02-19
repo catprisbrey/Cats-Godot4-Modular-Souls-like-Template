@@ -57,7 +57,7 @@ scale_curve = SubResource("CurveTexture_6oj6n")
 color_ramp = SubResource("GradientTexture1D_4eul2")
 
 [sub_resource type="Gradient" id="Gradient_y5nj0"]
-offsets = PackedFloat32Array(0.218182, 0.392982, 0.690909)
+offsets = PackedFloat32Array(0.169355, 0.669355, 0.697581)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_sb3x7"]
@@ -76,7 +76,7 @@ billboard_mode = 1
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_rbqce"]
 material = SubResource("StandardMaterial3D_m1sb2")
-size = Vector2(0.6, 0.6)
+size = Vector2(0.2, 0.2)
 orientation = 2
 
 [node name="Potion" type="RigidBody3D"]
@@ -101,14 +101,17 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_xc6p0")
 
-[node name="Explosion" type="GPUParticles3D" parent="."]
+[node name="Aura" type="GPUParticles3D" parent="."]
 emitting = false
+amount = 10
 lifetime = 0.5
 one_shot = true
+explosiveness = 1.0
+randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_uo2ag")
 draw_pass_1 = SubResource("PlaneMesh_rbqce")
 
-[node name="SignalSwitch" type="Node" parent="Explosion" node_paths=PackedStringArray("signaling_node")]
+[node name="SignalSwitch" type="Node" parent="Aura" node_paths=PackedStringArray("signaling_node")]
 script = ExtResource("2_a6g3i")
 lifetime = 0.1
 signaling_node = NodePath("../..")

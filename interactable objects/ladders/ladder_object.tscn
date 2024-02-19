@@ -1,18 +1,17 @@
 [gd_scene load_steps=6 format=3 uid="uid://cda0r3gahfvhp"]
 
 [ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="1_4e1ny"]
+[ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://resources/metal_blue.tres" id="2_lbkyc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gdpnd"]
 size = Vector3(1, 3.98516, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwy3a"]
-albedo_color = Color(0.756863, 0.176471, 1, 1)
-
 [sub_resource type="BoxMesh" id="BoxMesh_t6jw6"]
-material = SubResource("StandardMaterial3D_fwy3a")
+material = ExtResource("2_lbkyc")
 size = Vector3(0.7, 0.05, 0.05)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hei5g"]
+material = ExtResource("2_lbkyc")
 size = Vector3(0.1, 4.015, 0.1)
 
 [node name="Ladder" type="StaticBody3D" groups=["Interactable"]]

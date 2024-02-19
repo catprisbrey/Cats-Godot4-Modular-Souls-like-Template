@@ -80,15 +80,15 @@ func _ready() -> void:
 	add_to_group(group_name,true)
 	set_default_target()
 	
-	add_child(combat_timer)
 	combat_timer.one_shot = true
 	combat_timer.wait_time = attack_cooldown_time
 	combat_timer.timeout.connect(_on_combat_timer_timeout)
-
-	add_child(chase_timer)
+	add_child(combat_timer)
+	
 	chase_timer.one_shot = true
 	chase_timer.timeout.connect(_on_chase_timer_timeout)
 	chase_timer.wait_time = chase_time
+	add_child(chase_timer)
 	
 	if target_sensor:
 		target_sensor.target_spotted.connect(_on_target_spotted)
@@ -139,7 +139,8 @@ func _on_target_spotted(_spotted_target): # Updates from a TargetSensor if a tar
 
 func _on_target_lost():
 	if !is_queued_for_deletion():
-		chase_timer.start()
+		if chase_timer:
+			chase_timer.start()
 
 func _on_chase_timer_timeout():
 	give_up()
@@ -181,11 +182,12 @@ func set_default_target(): ## Creates a node to return to after patrolling if
 	target = default_target
 
 func chase_or_fight(): ## depending on distance to target, run or walk
-	var current_distance = global_position.distance_to(target.global_position)
-	if current_distance > combat_range && current_state != state.CHASE:
-		current_state = state.CHASE
-	elif current_distance <= combat_range && current_state != state.COMBAT:
-		current_state = state.COMBAT
+	if target:
+		var current_distance = global_position.distance_to(target.global_position)
+		if current_distance > combat_range && current_state != state.CHASE:
+			current_state = state.CHASE
+		elif current_distance <= combat_range && current_state != state.COMBAT:
+			current_state = state.COMBAT
 
 func _on_combat_timer_timeout():
 	combat_randomizer()

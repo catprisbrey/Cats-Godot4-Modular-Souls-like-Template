@@ -1,6 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://cnv210lnfdoan"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/door_object.gd" id="1_6re5x"]
+[ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://resources/world_materials/wood01.tres" id="2_3rd0r"]
 [ext_resource type="AudioStream" uid="uid://dmbreupif03hc" path="res://audio/SoundFX/creak/creak_4.wav" id="2_sslvw"]
 [ext_resource type="AudioStream" uid="uid://twq1ywacwc88" path="res://audio/SoundFX/hit/hit_blunt_04.wav" id="3_4d5yu"]
 
@@ -8,13 +9,10 @@
 size = Vector3(2, 2, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m7ulv"]
-size = Vector3(2.01514, 3, 0.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_33t20"]
-albedo_color = Color(0.109804, 0.141176, 0.380392, 1)
+size = Vector3(1.85986, 3.86804, 0.2)
 
 [sub_resource type="BoxMesh" id="BoxMesh_emm8w"]
-material = SubResource("StandardMaterial3D_33t20")
+material = ExtResource("2_3rd0r")
 size = Vector3(2, 4, 0.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_np2tf"]
@@ -96,7 +94,7 @@ tracks/1/path = NodePath("Creak:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(-0.1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -175,7 +173,7 @@ mesh = SubResource("BoxMesh_emm8w")
 skeleton = NodePath("../../..")
 
 [node name="knob" type="MeshInstance3D" parent="Pivot/DoorStaticBody/Door"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.743754, -0.620332, -0.0135839)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.743754, -0.020332, -0.0135839)
 mesh = SubResource("BoxMesh_np2tf")
 
 [node name="DoorAnimPlayer" type="AnimationPlayer" parent="."]
@@ -185,7 +183,7 @@ libraries = {
 
 [node name="Creak" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("2_sslvw")
-pitch_scale = 0.6
+pitch_scale = 0.4
 
 [node name="Shake" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3_4d5yu")

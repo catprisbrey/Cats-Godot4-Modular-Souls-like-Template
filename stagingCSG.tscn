@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://bensj7wrago0n" path="res://resources/world_materials/citybrick01.tres" id="1_cuay2"]
 [ext_resource type="Material" uid="uid://dyslq07h33yci" path="res://resources/world_materials/citybrick02.tres" id="2_pn36w"]
 [ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://resources/world_materials/wood01.tres" id="3_gacsr"]
-[ext_resource type="PackedScene" path="res://player/equipment_system/equipment/torch.tscn" id="4_32otp"]
+[ext_resource type="PackedScene" uid="uid://dwi6wppkvd4nl" path="res://player/equipment_system/equipment/torch.tscn" id="4_32otp"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_r7ysm"]
 frequency = 0.0806
@@ -267,7 +267,7 @@ size = Vector3(3, 8, 3)
 material = ExtResource("1_cuay2")
 
 [node name="CSGBox3D8" type="CSGBox3D" parent="Arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.613601, 5.22031, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.613601, 5.92031, 0)
 operation = 2
 size = Vector3(3.39734, 7.46143, 19)
 material = ExtResource("1_cuay2")
@@ -330,7 +330,7 @@ operation = 2
 size = Vector3(2, 2, 10)
 
 [node name="Doorway4" type="CSGBox3D" parent="Arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419881, 0.333949, -0.520042)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419881, 0.983949, -0.520042)
 operation = 2
 size = Vector3(1, 2, 1)
 
@@ -791,10 +791,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.54404, 32.0213)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.26881, 15.9134)
 
 [node name="Torch5" parent="Lighting" instance=ExtResource("4_32otp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5586, 1.21154, 16.1005)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5586, 1.72631, 12.4812)
 
 [node name="Torch6" parent="Lighting" instance=ExtResource("4_32otp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5586, 1.25173, 12.8326)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.3923, 2.15445, 3.46719)
 
 [node name="Torch7" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.0053, 4.74777, 18.5255)
@@ -810,3 +810,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.2744, 4.90159, 15.815)
 
 [node name="Torch11" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.1874, 4.70349, 25.5255)
+
+[node name="Torch12" parent="Lighting" instance=ExtResource("4_32otp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4739, 1.72631, 16.2988)

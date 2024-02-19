@@ -1,0 +1,22 @@
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://do4dfd4nxvapc"]
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_hsmq2"]
+resource_name = "Reverb"
+room_size = 0.67
+wet = 0.23
+
+[sub_resource type="AudioEffectDelay" id="AudioEffectDelay_16rfd"]
+resource_name = "Delay"
+dry = 0.38
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectReverb_hsmq2")
+bus/0/effect/0/enabled = true
+bus/1/name = &"Echo"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectDelay_16rfd")
+bus/1/effect/0/enabled = true

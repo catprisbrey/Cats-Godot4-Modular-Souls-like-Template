@@ -1,16 +1,36 @@
-[gd_scene load_steps=9 format=3 uid="uid://c3yajhej5laa7"]
+[gd_scene load_steps=12 format=3 uid="uid://c3yajhej5laa7"]
 
 [ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_pdewx"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
+[ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://resources/world_materials/wood01.tres" id="2_uf1fe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1ssk"]
 size = Vector3(1.5, 0.75, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uicmg"]
-albedo_color = Color(0.47451, 0.760784, 0.258824, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fowan"]
+albedo_color = Color(0.890196, 0.647059, 0, 1)
+metallic = 1.0
+roughness = 0.12
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tydx3"]
-albedo_color = Color(0.47451, 0.760784, 0.258824, 1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_qdxlc"]
+material = SubResource("StandardMaterial3D_fowan")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.05
+radial_segments = 6
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ff60"]
+albedo_color = Color(0.890196, 0.647059, 0, 1)
+metallic = 1.0
+roughness = 0.12
+
+[sub_resource type="TorusMesh" id="TorusMesh_qys0k"]
+material = SubResource("StandardMaterial3D_7ff60")
+inner_radius = 0.041
+outer_radius = 0.073
+rings = 8
+ring_segments = 8
 
 [sub_resource type="Animation" id="Animation_qofnw"]
 length = 0.001
@@ -108,17 +128,26 @@ shape = SubResource("BoxShape3D_f1ssk")
 [node name="MeshInstance3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.273737, 0)
 size = Vector3(1, 0.5, 0.75)
-material = SubResource("StandardMaterial3D_uicmg")
+material = ExtResource("2_uf1fe")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00653297, 0)
 operation = 2
 size = Vector3(0.8, 0.5, 0.4)
+material = ExtResource("2_uf1fe")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563078, 0)
 size = Vector3(1, 0.1, 0.75)
-material = SubResource("StandardMaterial3D_tydx3")
+material = ExtResource("2_uf1fe")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.125226, 0.412655)
+mesh = SubResource("CylinderMesh_qdxlc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGBox3D/MeshInstance3D"]
+transform = Transform3D(-1, 1.77636e-15, 1.19209e-07, -1.65809e-15, 1, -8.74228e-08, -1.19209e-07, -8.74228e-08, -1, 0, 0, -0.103057)
+mesh = SubResource("TorusMesh_qys0k")
 
 [node name="ChestAnimPlayer" type="AnimationPlayer" parent="."]
 libraries = {

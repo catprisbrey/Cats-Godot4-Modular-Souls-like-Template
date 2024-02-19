@@ -5,6 +5,6 @@ class_name InteractableObject
 @export var group_name :String = "Interactable"
 @export_flags_3d_physics var physical_layer = 8
 
-func _init():
+func _ready():
 	add_to_group(group_name,true)
-	set_collision_layer_value(physical_layer,true)
+	collision_layer = physical_layer
