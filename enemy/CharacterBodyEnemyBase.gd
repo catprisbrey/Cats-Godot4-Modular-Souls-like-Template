@@ -105,24 +105,25 @@ func _physics_process(_delta):
 	apply_gravity(_delta)
 	if is_on_floor():
 		match current_state:
-				state.FREE:
-					navigation()
-					rotate_character()
-					free_movement()
-				state.CHASE:
-					navigation()
-					rotate_character()
-					free_movement()
-					chase_or_fight()
-				state.COMBAT:
-					rotate_character()
-					free_movement()
-					reset_attack_clock()
-					chase_or_fight()
-				state.ATTACK:
-					free_movement()
-		
+			state.FREE:
+				navigation()
+				rotate_character()
+				free_movement()
+			state.CHASE:
+				navigation()
+				rotate_character()
+				free_movement()
+				chase_or_fight()
+			state.COMBAT:
+				rotate_character()
+				free_movement()
+				reset_attack_clock()
+				chase_or_fight()
+			state.ATTACK:
+				free_movement()
 			
+			state.DYNAMIC_ACTION:
+				pass
 
 func set_target(_new_target): 
 	target = _new_target
@@ -165,7 +166,10 @@ func navigation():
 		direction = new_dir
 		
 func free_movement():
-	velocity = direction * speed
+	var rate = .1
+	velocity.x = move_toward(velocity.x, direction.x * speed, rate)
+	velocity.z = move_toward(velocity.z, direction.z * speed, rate)
+	# required in the process function states for dodges/dashes
 	move_and_slide()
 	
 func rotate_character():
@@ -214,7 +218,8 @@ func attack():
 	attack_activated.emit()
 	dash() ## delayed dash to move forward during attack animation
 	await get_tree().create_timer(anim_length *.4).timeout
-	current_state = state.CHASE
+	if current_state == state.ATTACK:
+		current_state = state.CHASE
 	
 	
 func retreat(): # Back away for a period of time
@@ -224,16 +229,28 @@ func retreat(): # Back away for a period of time
 	direction = -global_transform.basis.z.normalized()
 	await get_tree().create_timer(retreat_duration).timeout
 	retreating = false
-	current_state = state.CHASE
+	if current_state == current_state.ATTACK:
+		current_state = state.CHASE
 	
-func dash(_new_direction : Vector3 = Vector3.FORWARD): 
+#func dash(_new_direction : Vector3 = Vector3.FORWARD): 
+	## burst of speed toward indicated direction, or forward by default
+	#speed = dash_speed
+	#direction = (global_position - to_global(_new_direction)).normalized()
+	#var dash_duration = .1
+	#await get_tree().create_timer(dash_duration).timeout
+	#speed = 0.0
+	#velocity = direction * speed
+	
+func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
 	# burst of speed toward indicated direction, or forward by default
 	speed = dash_speed
-	direction = (global_position - to_global(_new_direction)).normalized()
-	var dash_duration = .1
-	await get_tree().create_timer(dash_duration).timeout
+	if _new_direction:
+		direction = (global_position - to_global(_new_direction)).normalized()
+	#speed = default_speed
+	await get_tree().create_timer(_duration).timeout
 	speed = 0.0
-	velocity = direction * speed
+	direction = Vector3.ZERO
+	
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
@@ -241,6 +258,7 @@ func _on_animation_measured(_new_length):
 func hit(_by_who, _by_what):
 	target = _by_who
 	if can_be_hurt == true:
+		combat_timer.stop()
 		can_be_hurt = false
 		current_state = state.DYNAMIC_ACTION
 		hurt_started.emit()
@@ -250,17 +268,24 @@ func hit(_by_who, _by_what):
 		await get_tree().create_timer(anim_length*.5).timeout
 		can_be_hurt = true
 		await get_tree().create_timer(anim_length*.5).timeout
-		current_state = state.CHASE
+		combat_timer.start()
+		if current_state == state.DYNAMIC_ACTION:
+			current_state = state.CHASE
+		combat_timer.start()
 
 	
 func parried():
+	combat_timer.stop()
 	current_state = state.DYNAMIC_ACTION
+	velocity = Vector3.ZERO
 	parried_started.emit()
 	anim_length = 2.0
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length +1.0).timeout
-	current_state = state.CHASE
+	await get_tree().create_timer(anim_length).timeout
+	combat_timer.start()
+	if current_state == state.DYNAMIC_ACTION:
+		current_state = state.CHASE
 
 func death():
 	current_state = state.DEAD
