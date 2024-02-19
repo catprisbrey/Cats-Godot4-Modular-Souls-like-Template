@@ -11,9 +11,9 @@ class_name EquipmentObject
 
 signal equipped_changed
 	
-func _ready():
-	if wall_decor:
-		update_equipped(true)
+#func _ready():
+	#if wall_decor:
+		#update_equipped(true)
 	
 func update_equipped(_new_value):
 	equipped = _new_value

@@ -1,17 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://dwi6wppkvd4nl"]
+[gd_scene load_steps=17 format=3 uid="uid://dwi6wppkvd4nl"]
 
-[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_5qfvl"]
-[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_shnyh"]
-[ext_resource type="Script" path="res://player/equipment_system/equipment/TorchFlame.gd" id="3_itn8w"]
 [ext_resource type="AudioStream" uid="uid://bd7r1x1qj66kq" path="res://audio/SoundFX/fire/fire_01_loop.wav" id="4_31jex"]
-
-[sub_resource type="Resource" id="Resource_wyl03"]
-script = ExtResource("2_shnyh")
-name = "Torch"
-object_type = "OTHER"
-power = 1
-weight = 1
-value = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ergnq"]
 resource_name = "Hilt"
@@ -162,8 +151,6 @@ orientation = 2
 
 [node name="Torch" type="Area3D"]
 collision_mask = 5
-script = ExtResource("1_5qfvl")
-equipment_info = SubResource("Resource_wyl03")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0285143, 0)
@@ -180,7 +167,6 @@ lifetime = 0.6
 explosiveness = 0.17
 process_material = SubResource("ParticleProcessMaterial_s0sxy")
 draw_pass_1 = SubResource("PlaneMesh_cum78")
-script = ExtResource("3_itn8w")
 
 [node name="TorchLight" type="OmniLight3D" parent="TorchFlame2"]
 light_color = Color(1, 0.752941, 0.4, 1)

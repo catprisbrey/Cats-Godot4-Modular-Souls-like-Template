@@ -4,13 +4,13 @@
 [ext_resource type="Script" path="res://player/player_targeting_system/gui_reticle.gd" id="2_f0thc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dfo1h"]
-size = Vector3(8, 10, 12)
+size = Vector3(8, 10, 14)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ini2b"]
-size = Vector3(8, 10, 12)
+size = Vector3(8, 10, 14)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5ry60"]
-size = Vector3(2, 10, 12)
+size = Vector3(2, 10, 14)
 
 [sub_resource type="Gradient" id="Gradient_p83y2"]
 offsets = PackedFloat32Array(0.967742, 1)
@@ -33,7 +33,7 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LeftEye"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2)
 shape = SubResource("BoxShape3D_dfo1h")
 
 [node name="RightEye" type="Area3D" parent="."]
@@ -42,7 +42,7 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RightEye"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -2)
 shape = SubResource("BoxShape3D_ini2b")
 
 [node name="CenterEye" type="Area3D" parent="."]
@@ -51,12 +51,14 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CenterEye"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 shape = SubResource("BoxShape3D_5ry60")
 
 [node name="Eyeline" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -15)
+target_position = Vector3(0, 0, -17.515)
 collision_mask = 13
+debug_shape_custom_color = Color(0.913725, 0.388235, 0.145098, 1)
+debug_shape_thickness = 4
 
 [node name="ReticleControl" type="Control" parent="." node_paths=PackedStringArray("targeting_system")]
 layout_mode = 3
