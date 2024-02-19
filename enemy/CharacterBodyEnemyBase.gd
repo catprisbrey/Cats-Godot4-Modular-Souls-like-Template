@@ -229,7 +229,7 @@ func retreat(): # Back away for a period of time
 	direction = -global_transform.basis.z.normalized()
 	await get_tree().create_timer(retreat_duration).timeout
 	retreating = false
-	if current_state == current_state.ATTACK:
+	if current_state == state.ATTACK:
 		current_state = state.CHASE
 	
 #func dash(_new_direction : Vector3 = Vector3.FORWARD): 
