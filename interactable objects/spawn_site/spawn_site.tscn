@@ -26,7 +26,7 @@ inner_radius = 0.2
 outer_radius = 0.14
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8k66n"]
-size = Vector3(0.5, 1, 0.5)
+size = Vector3(0.97, 1, 0.86)
 
 [sub_resource type="Gradient" id="Gradient_l4urp"]
 offsets = PackedFloat32Array(1)

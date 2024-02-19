@@ -152,7 +152,6 @@ collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_6re5x")
 interact_type = "DOOR"
-physical_layer = 9
 
 [node name="InteractShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0124028, 0.724543, 0)
