@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.999743, 0, -0.0225166, 0, 1, 0, 0.0225166, 0, 0.999743, -0.43294, 0, -0.97773)
+transform = Transform3D(0.999742, 0, -0.0225166, 0, 1, 0, 0.0225166, 0, 0.999742, -0.43294, 0, -0.97773)
 script = ExtResource("6_gcwju")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -133,6 +133,7 @@ transform = Transform3D(0.566751, 0, 0.823889, 0, 1, 0, -0.823889, 0, 0.566751, 
 
 [node name="SpawnSite" parent="." instance=ExtResource("9_tvnnx")]
 transform = Transform3D(0.996195, 0, 0.0871556, 0, 1, 0, -0.0871556, 0, 0.996195, -5.55901, 0, 4.05321)
+reset_level = true
 
 [node name="DoorObject2" parent="." instance=ExtResource("2_qx8ba")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23.9496, 0.0296541, 17.6477)

@@ -378,10 +378,14 @@ func attack(_is_special_attack : bool = false):
 		
 func air_attack():
 	air_attack_started.emit()
+	current_state = state.DYNAMIC_ACTION
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(.3).timeout
+	await get_tree().create_timer(anim_length *.5).timeout
 	attack_activated.emit()
+	await get_tree().create_timer(anim_length *.5).timeout
+	current_state = state.FREE
+	
 		
 
 

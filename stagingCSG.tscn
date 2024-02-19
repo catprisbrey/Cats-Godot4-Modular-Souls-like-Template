@@ -628,9 +628,9 @@ height = 1.619
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.235566, 0, 0.971858, 0, 1, 0, -0.971858, 0, 0.235566, -6.39812, 0.685154, 9.29439)
+transform = Transform3D(0.235566, 0, 0.971858, 0, 1, 0, -0.971858, 0, 0.235566, -6.398, 0.495, 9.294)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate"]
@@ -639,20 +639,20 @@ size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate3" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.896757, 0, -0.442523, 0, 1, 0, 0.442523, 0, -0.896757, -13.8573, 0.784156, 21.7398)
+transform = Transform3D(-0.896757, 0, -0.442523, 0, 1, 0, 0.442523, 0, -0.896757, -13.857, 0.459, 21.74)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate3"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -2.57104, 0, 4.92828)
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate2" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.707884, 0, 0.706329, 0, 1, 0, -0.706329, 0, 0.707884, -0.509607, 0.721445, 26.4021)
+transform = Transform3D(0.707884, 0, 0.706329, 0, 1, 0, -0.706329, 0, 0.707884, -0.509607, 0.468941, 26.4021)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate2"]
@@ -661,25 +661,25 @@ size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate4" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.519698, 0, 0.85435, 0, 1, 0, -0.85435, 0, -0.519698, -21.0124, 0.72612, 23.7352)
+transform = Transform3D(-0.519698, 0, 0.85435, 0, 1, 0, -0.85435, 0, -0.519698, -21.0124, 0.466587, 23.7352)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate4"]
-transform = Transform3D(0.937984, -0.000811059, 0.346682, 0.000436642, 0.999999, 0.00115814, -0.346682, -0.00093495, 0.937983, 13.5227, 0, 10.1354)
-size = Vector3(1.5, 1.5, 1.5)
+transform = Transform3D(0.937984, -0.000811059, 0.346682, 0.000436642, 0.999999, 0.00115814, -0.346682, -0.00093495, 0.937983, 13.5227, 0.0228121, 10.1354)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate5" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.786903, 0, -0.617077, 0, 1, 0, 0.617077, 0, -0.786903, -21.3177, 0.747267, 22.1039)
+transform = Transform3D(-0.786903, 0, -0.617077, 0, 1, 0, 0.617077, 0, -0.786903, -21.3177, 0.471605, 22.1039)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate5"]
 transform = Transform3D(0.972419, 0, -0.233242, 0, 1, 0, 0.233242, 0, 0.972419, -10.2873, 0, 12.4423)
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props"]
@@ -824,36 +824,36 @@ height = 1.619
 material = ExtResource("3_gacsr")
 
 [node name="Crate6" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.612714, 0, -0.790305, 0, 1, 0, 0.790305, 0, 0.612714, -46.6436, 4.54844, 20.1294)
+transform = Transform3D(0.612714, 0, -0.790305, 0, 1, 0, 0.790305, 0, 0.612714, -46.6436, 4.31912, 20.1294)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate6"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate7" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.712308, 0, 0.701867, 0, 1, 0, -0.701867, 0, 0.712308, -46.1563, 4.56959, 21.7159)
+transform = Transform3D(0.712308, 0, 0.701867, 0, 1, 0, -0.701867, 0, 0.712308, -46.1563, 4.32348, 21.7159)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate7"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate8" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.000313076, 1, -0.000154494, 0.997876, 0.000302347, -0.0651419, -0.0651418, -0.00017456, -0.997876, -13.8573, 2.27739, 16.0306)
+transform = Transform3D(-0.997876, -0.000302391, 0.0651419, -0.00031312, 1, -0.000154491, -0.0651418, -0.00017456, -0.997876, -13.8573, 1.47279, 15.7981)
 use_collision = true
-size = Vector3(1.5, 1.5, 1.5)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate8"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1.5, 1.5)
+transform = Transform3D(0.0646102, 0.452712, -0.889311, -0.997909, 0.029325, -0.0575742, 1.55577e-05, 0.891172, 0.453661, 0.17815, -0.750267, 1.4889)
+size = Vector3(1.5, 1, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Lighting" type="Node3D" parent="."]
@@ -871,7 +871,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.54404, 32.0213)
 wall_decor = true
 
 [node name="Torch4" parent="Lighting" instance=ExtResource("4_32otp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.26881, 15.9134)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.26881, 19.5643)
 wall_decor = true
 
 [node name="Torch5" parent="Lighting" instance=ExtResource("4_32otp")]
