@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5nk1tsswudcm"]
+[gd_scene load_steps=8 format=3 uid="uid://b5nk1tsswudcm"]
 
 [ext_resource type="Script" path="res://player_targeting_system/player_targeting_system.gd" id="1_c6g4r"]
+[ext_resource type="Script" path="res://player_targeting_system/gui_reticle.gd" id="2_f0thc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dfo1h"]
 size = Vector3(8, 10, 12)
@@ -10,6 +11,17 @@ size = Vector3(8, 10, 12)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5ry60"]
 size = Vector3(2, 10, 12)
+
+[sub_resource type="Gradient" id="Gradient_p83y2"]
+offsets = PackedFloat32Array(0.967742, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dhr5k"]
+gradient = SubResource("Gradient_p83y2")
+width = 16
+height = 16
+fill_from = Vector2(0.529915, 0.529915)
+fill_to = Vector2(0.508547, 0.508547)
 
 [node name="PlayerTargetingSystem" type="Node3D"]
 script = ExtResource("1_c6g4r")
@@ -45,3 +57,19 @@ shape = SubResource("BoxShape3D_5ry60")
 [node name="Eyeline" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -15)
 collision_mask = 5
+
+[node name="ReticleControl" type="Control" parent="." node_paths=PackedStringArray("targeting_system")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_f0thc")
+targeting_system = NodePath("..")
+
+[node name="ReticleImage" type="TextureRect" parent="ReticleControl"]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 16.0
+offset_bottom = 24.0
+rotation = -2.35619
+texture = SubResource("GradientTexture2D_dhr5k")

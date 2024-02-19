@@ -31,8 +31,11 @@ var current_target : Node3D = null
 @export var targeting = false
 
 signal targeting_changed
+signal targeting_activated
 signal targets_updated
 signal target_found
+
+@onready var reticle_control = $ReticleControl
 
 ## The group name of targetable objects if using groups
 @export var target_group_name : String = "Targets"
@@ -40,10 +43,10 @@ signal target_found
 @export_flags_3d_physics var target_detection_layer_mask = 3
 
 func _ready():
-	center_eye.set_collision_mask_value(target_detection_layer_mask,true)
-	left_eye.set_collision_mask_value(target_detection_layer_mask, true)
-	right_eye.set_collision_mask_value(target_detection_layer_mask, true)
-	eyeline.set_collision_mask_value(target_detection_layer_mask,true)
+	center_eye.collision_mask = target_detection_layer_mask
+	left_eye.collision_mask = target_detection_layer_mask
+	right_eye.collision_mask = target_detection_layer_mask
+	eyeline.collision_mask = target_detection_layer_mask
 
 	targeting_changed.connect(_on_targeting_changed)
 	
@@ -61,12 +64,9 @@ func _input(_event:InputEvent):
 				var target_dir = sign(_event.axis_value)
 				select_new_target(target_dir, .5)
 	
-	## targeting is activated by ouside influences. Typically a follow cam
+	## targeting is activated by outside influences. Typically a follow cam
 	## or player will signal it's targeting status to this node for it to begin
 	## scanning and reporting back targets.
-	
-	#if _event.is_action_pressed("strafe_target"):
-		#targeting = !targeting
 		
 	
 func _on_targeting_changed(_toggle):

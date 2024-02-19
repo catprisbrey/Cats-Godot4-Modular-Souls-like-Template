@@ -5,7 +5,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6vf8"]
 size = Vector3(15, 3, 15)
 
-[node name="AreaCam" type="Area3D"]
+[node name="AreaCam (MakeMeLocal)" type="Area3D"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_5xaaf")

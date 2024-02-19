@@ -399,7 +399,7 @@ size = Vector3(2, 2, 10)
 material = ExtResource("2_pn36w")
 
 [node name="Doorway4" type="CSGBox3D" parent="Arena"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419881, 0.983949, -0.520042)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.419881, 0.983949, 1.02307)
 operation = 2
 size = Vector3(1, 2, 1)
 
@@ -667,7 +667,7 @@ size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate4"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
+transform = Transform3D(0.937984, -0.000811059, 0.346682, 0.000436642, 0.999999, 0.00115814, -0.346682, -0.00093495, 0.937983, 13.5227, 0, 10.1354)
 size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
@@ -678,7 +678,7 @@ size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate5"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
+transform = Transform3D(0.972419, 0, -0.233242, 0, 1, 0, 0.233242, 0, 0.972419, -10.2873, 0, 12.4423)
 size = Vector3(1.5, 1.5, 1.5)
 material = ExtResource("3_gacsr")
 
@@ -860,36 +860,48 @@ material = ExtResource("3_gacsr")
 
 [node name="Torch" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.955192, 2.2205, 11.872)
+wall_decor = true
 
 [node name="Torch2" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.543, 2.1463, 25.3313)
+wall_decor = true
 
 [node name="Torch3" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.54404, 32.0213)
+wall_decor = true
 
 [node name="Torch4" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7076, 1.26881, 15.9134)
+wall_decor = true
 
 [node name="Torch5" parent="Lighting" instance=ExtResource("4_32otp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5586, 1.72631, 12.4812)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5586, 1.72631, 20.0186)
+wall_decor = true
 
 [node name="Torch6" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.3923, 2.15445, 3.46719)
+wall_decor = true
 
 [node name="Torch7" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.0053, 4.74777, 18.5255)
+wall_decor = true
 
 [node name="Torch8" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.9437, 4.75267, 12.5255)
+wall_decor = true
 
 [node name="Torch9" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.2845, 4.85644, 5.52547)
+wall_decor = true
 
 [node name="Torch10" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.2744, 4.90159, 15.815)
+wall_decor = true
 
 [node name="Torch11" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.1874, 4.70349, 25.5255)
+wall_decor = true
 
 [node name="Torch12" parent="Lighting" instance=ExtResource("4_32otp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4739, 1.72631, 16.2988)
+transform = Transform3D(0.999986, 0.00520106, 0, -0.00520106, 0.999986, 0, 0, 0, 1, -23.4739, 1.72631, 14.9011)
+wall_decor = true

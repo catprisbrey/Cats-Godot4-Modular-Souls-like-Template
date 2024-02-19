@@ -19,8 +19,7 @@ noise = SubResource("FastNoiseLite_r7ysm")
 [resource]
 albedo_color = Color(0.94902, 0.968627, 0.980392, 1)
 albedo_texture = SubResource("NoiseTexture2D_uka7b")
-roughness = 0.59
 normal_enabled = true
-normal_scale = 6.31
+normal_scale = 6.01
 normal_texture = SubResource("NoiseTexture2D_akg2j")
 uv1_triplanar = true
