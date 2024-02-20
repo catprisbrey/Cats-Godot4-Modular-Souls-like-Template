@@ -75,3 +75,7 @@ offset_right = 16.0
 offset_bottom = 24.0
 rotation = -2.35619
 texture = SubResource("GradientTexture2D_dhr5k")
+
+[node name="RefreshTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true

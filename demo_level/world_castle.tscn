@@ -110,7 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.999742, 0, -0.0225166, 0, 1, 0, 0.0225166, 0, 0.999742, -0.43294, 0, -0.97773)
+transform = Transform3D(0.999741, 0, -0.0225166, 0, 1, 0, 0.0225166, 0, 0.999741, -0.43294, 0, -0.97773)
 script = ExtResource("6_i73lt")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]

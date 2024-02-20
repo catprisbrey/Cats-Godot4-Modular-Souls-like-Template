@@ -16,10 +16,13 @@ class_name PlayerTargetingSystem
 @export_range(1,10) var joystick_retarget_sensitivity :float = 5
 @export_range(1,10) var mouse_retarget_sensitivity :float = 3
 
+@onready var refresh_timer = $RefreshTimer
+
 @onready var left_eye : Area3D= $LeftEye
 @onready var right_eye : Area3D = $RightEye
 @onready var center_eye : Area3D = $CenterEye
 @onready var eyeline = $Eyeline
+
 
 var left_list : Array = []
 var right_list : Array = []
@@ -76,7 +79,7 @@ func _on_targeting_changed(_toggle):
 	else:
 		get_closest()
 	
-func select_new_target(_new_direction,_delay):
+func select_new_target(_new_direction = -1,_delay = .5):
 	_update_targets()
 	await targets_updated
 	
@@ -148,7 +151,6 @@ func get_closest():
 			target_found.emit(new_target)
 	print(new_target)
 	# and then a small delay to prevent cycling too fast through targets
-	await get_tree().create_timer(.3).timeout
 
 func get_target(target_list:Array):
 	if !target_list.is_empty():
