@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://ubep5t2j71nn"]
+
+[ext_resource type="Texture2D" uid="uid://byremwqrwblx2" path="res://assets/characters/hair_normals.png" id="1_b5y8l"]
+
+[resource]
+resource_name = "BakedHair"
+cull_mode = 2
+albedo_color = Color(0, 0, 0, 1)
+roughness = 0.59
+normal_enabled = true
+normal_scale = 7.44
+normal_texture = ExtResource("1_b5y8l")
+anisotropy_enabled = true
+anisotropy = 0.2

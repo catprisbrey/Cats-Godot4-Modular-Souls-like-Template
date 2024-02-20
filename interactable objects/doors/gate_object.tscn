@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://bp5aql2ip2qwi"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jmheh"]
-[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://resources/metal_black.tres" id="2_1tfmp"]
+[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="2_1tfmp"]
 [ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
 [ext_resource type="AudioStream" uid="uid://b7mejiv87ktbl" path="res://audio/SoundFX/clack/clack_1.wav" id="3_0j2dh"]
 [ext_resource type="AudioStream" uid="uid://bc1pbogw28uc4" path="res://audio/SoundFX/creak/creak_3.wav" id="4_ohgwa"]
@@ -200,11 +200,6 @@ skeleton = NodePath("../../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295852, 0, 0)
 mesh = SubResource("CylinderMesh_xidkn")
 skeleton = NodePath("../../../..")
-
-[node name="Gate8" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00468558, 0.00238395, 0)
-mesh = SubResource("CylinderMesh_xidkn")
-skeleton = NodePath("../../../../../../..")
 
 [node name="Gate3" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57829, 0, 0)

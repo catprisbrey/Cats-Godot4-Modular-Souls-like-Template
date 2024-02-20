@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_g41uq"]
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_7ffab"]
-[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://resources/metal_black.tres" id="3_8vg6i"]
+[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="3_8vg6i"]
 
 [sub_resource type="Resource" id="Resource_g4dft"]
 script = ExtResource("2_7ffab")

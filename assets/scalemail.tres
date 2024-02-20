@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bowx43bo6q316"]
+
+[ext_resource type="Texture2D" uid="uid://dlhwm14x037at" path="res://assets/TinyScalemail_albedo.png" id="1_d1fk0"]
+[ext_resource type="Texture2D" uid="uid://cmccilnblkgd3" path="res://assets/TinyScalemail_normal.png" id="3_o5ulq"]
+
+[resource]
+albedo_color = Color(0.352687, 0.544337, 0.67476, 1)
+albedo_texture = ExtResource("1_d1fk0")
+metallic = 1.0
+metallic_texture_channel = 2
+roughness = 0.21
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_o5ulq")
+uv1_scale = Vector3(75, 75, 75)

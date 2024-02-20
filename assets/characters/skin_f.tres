@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cb6ni8agv3svk"]
+
+[ext_resource type="Texture2D" uid="uid://cpdvaje7ykg3o" path="res://assets/characters/feminine_albedo.png" id="1_6v2ml"]
+[ext_resource type="Texture2D" uid="uid://by0f51206ho3s" path="res://assets/characters/feminine_normals.png" id="2_n32lr"]
+
+[resource]
+resource_name = "Skin"
+cull_mode = 2
+albedo_texture = ExtResource("1_6v2ml")
+roughness = 0.77
+roughness_texture = ExtResource("1_6v2ml")
+normal_enabled = true
+normal_scale = 0.3
+normal_texture = ExtResource("2_n32lr")

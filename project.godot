@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SoulsGameTemplate"
-run/main_scene="res://world_castle.tscn"
+run/main_scene="res://demo_level/world_castle.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 

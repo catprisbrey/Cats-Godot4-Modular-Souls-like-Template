@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dxgq525aixvs1"]
+
+[ext_resource type="Texture2D" uid="uid://d1tpu73cwscp3" path="res://assets/TinyKnit_normal.png" id="1_d4phu"]
+
+[resource]
+resource_name = "Shirt"
+cull_mode = 2
+albedo_color = Color(0.254924, 0.250975, 0.258814, 1)
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("1_d4phu")
+uv1_scale = Vector3(130, 130, 130)

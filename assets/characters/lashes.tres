@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://y50pnhuky8lj"]
+
+[ext_resource type="Texture2D" uid="uid://cg703iv8alcwh" path="res://assets/characters/haircard_albedo.png" id="1_3vcvs"]
+[ext_resource type="Texture2D" uid="uid://byremwqrwblx2" path="res://assets/characters/hair_normals.png" id="1_uk0mf"]
+
+[resource]
+resource_name = "BakedHair"
+transparency = 1
+diffuse_mode = 2
+albedo_color = Color(0, 0, 0, 0.992157)
+albedo_texture = ExtResource("1_3vcvs")
+roughness = 0.59
+normal_enabled = true
+normal_scale = 3.33
+normal_texture = ExtResource("1_uk0mf")
+anisotropy_enabled = true
+anisotropy = 0.19

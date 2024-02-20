@@ -15,16 +15,13 @@ func _ready():
 
 	
 func _process(_delta):
-	if targeting_system.targeting:
+	if targeting_system.targeting && target:
 		show_reticle()
 	else:
 		hide()
 
-
 func _on_player_targeting_system_target_found(_new_target):
 	target = _new_target
-	print(target)
-	print("reticle got a target")
 	
 func show_reticle():
 	if is_instance_valid(target):
