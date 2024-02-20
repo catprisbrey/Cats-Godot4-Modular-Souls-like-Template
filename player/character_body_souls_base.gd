@@ -325,12 +325,32 @@ func free_movement():
 	move_and_slide()
 	
 func rotate_player():
+	var freelook
+	match strafing:
+		true:
+			## since during dodges we want the player to look where they roll...
+			if current_state == state.DODGE:
+				freelook = true
+			## otherwise just strafe about.
+			else:
+				freelook = false
+		false:
+			freelook = true
+	
 	var target_rotation
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
 	
-	# StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
-	if strafing == true: 
-	# alternative option: if strafing == true && current_state != state.DODGE: # Strafing looks at enemy
+
+	if freelook: 
+		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
+		if input_dir:
+			var new_direction = calc_direction().normalized()
+			# Rotate the player per the perspective of the camera
+			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.2)
+			global_transform.basis = Basis(target_rotation)
+		
+	else: 
+		# StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
 		global_transform.basis = Basis(target_rotation)
 
@@ -341,14 +361,7 @@ func rotate_player():
 		move_dot_product = forward_vector.dot(new_direction)
 
 	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
-	else: 
-	# alternative option: if elif (strafing == false and current_state != state.DODGE) or (strafing == true and current_state == state.DODGE): # .... else:
-		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
-		if input_dir:
-			var new_direction = calc_direction().normalized()
-			# Rotate the player per the perspective of the camera
-			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.2)
-			global_transform.basis = Basis(target_rotation)
+
 	# move_and_slide() unused here. Controlled by States and free_movement().
 
 func set_strafe_targeting():
@@ -462,12 +475,13 @@ func dodge():
 	current_state = state.DODGE
 	can_be_hurt = false
 	sprint_timer.stop()
-	
+	## uses timer rather than 'await' because 'await' stops processes like gravity affecting velocity.
 	if input_dir: # Dodge toward direction of input_dir 
 		direction = calc_direction()
 		dodge_started.emit()
 	else: # Dodge toward the 'BACK' of your global position
-		direction = (global_position - to_global(Vector3.BACK)).normalized()
+		var backward_dir =(global_position - to_global(Vector3.BACK)).normalized()
+		velocity = backward_dir * (dodge_speed * .75)
 		dodge_started.emit()
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
@@ -475,13 +489,11 @@ func dodge():
 	dodge_timer.start(anim_length * .7)
 	
 func _on_dodge_timer_timeout():
-	#await get_tree().create_timer(anim_length *.7).timeout
 	dodge_ended.emit()
 	speed = default_speed
 	current_state = state.FREE
 	can_be_hurt = true
 
-	
 func ladder_movement():
 	# move up and down ladders per the indicated direction
 	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
