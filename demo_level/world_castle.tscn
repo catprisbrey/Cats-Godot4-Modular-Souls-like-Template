@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=24 format=3 uid="uid://uiw1spc0mevb"]
 
 [ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://ui/contol_card.gd" id="11_4norq"]
 [ext_resource type="Texture2D" uid="uid://c46nfvbeeb3pr" path="res://ui/panel-border-027.png" id="12_1f7l8"]
 [ext_resource type="Script" path="res://cameras/area_cam/area_cam.gd" id="13_2aall"]
+[ext_resource type="AudioStream" uid="uid://ddfdcmyfdq6fi" path="res://audio/bone_in_the_walls__level_loop_session.ogg" id="14_wsft0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wiiwu"]
 sky_top_color = Color(0.192157, 0.219608, 0.305882, 1)
@@ -254,3 +255,8 @@ shape = SubResource("BoxShape3D_m6vf8")
 
 [node name="Camera3D" type="Camera3D" parent="AreaCam/Pivot"]
 transform = Transform3D(-0.894935, -0.0116801, 0.446045, 0, 0.999658, 0.0261769, -0.446198, 0.0234267, -0.894627, 0.39, 2.64, -2.37)
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_wsft0")
+volume_db = -18.0
+autoplay = true
