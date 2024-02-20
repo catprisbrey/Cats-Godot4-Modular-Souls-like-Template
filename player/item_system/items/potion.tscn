@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://dhiuvwatv8m07"]
 
 [ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_yt1vo"]
-[ext_resource type="Script" path="res://player/trigger_switch.gd" id="2_a6g3i"]
+[ext_resource type="Script" path="res://player/signal_switch.gd" id="2_a6g3i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o7hv0"]
 size = Vector3(0.15, 0.15, 0.15)
@@ -83,6 +83,7 @@ orientation = 2
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_yt1vo")
+power = 2
 time_to_live = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

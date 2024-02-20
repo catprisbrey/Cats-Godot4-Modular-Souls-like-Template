@@ -139,7 +139,7 @@ func _on_target_spotted(_spotted_target): # Updates from a TargetSensor if a tar
 	chase_timer.start()
 
 func _on_target_lost():
-	if !is_queued_for_deletion():
+	if is_instance_valid(target):
 		if chase_timer:
 			chase_timer.start()
 

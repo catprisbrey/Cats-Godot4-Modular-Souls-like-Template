@@ -1,4 +1,8 @@
 extends Control
+class_name LifeDeathCard
+
+## A very basic node that waits for a signal from a node, and queues an 
+## animation to play. 
 
 @export var signaling_node : Node
 @export var dead_signal_string : String = "death_started"

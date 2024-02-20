@@ -1,5 +1,10 @@
 extends Control
 
+## A very crude inventory system UI. It waits for a signal from whatever node 
+## you choose, that signal should pass the currently held inventory. This node
+## looks at the first item in that inventory array, hecks the item count, and 
+## texture and updates it on screen.
+
 @export var signaling_node : Node
 @export var update_signal : String = "inventory_updated"
 

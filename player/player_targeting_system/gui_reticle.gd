@@ -27,11 +27,11 @@ func _on_player_targeting_system_target_found(_new_target):
 	print("reticle got a target")
 	
 func show_reticle():
-	if !is_instance_valid(target):
-		target = null
-	else:
+	if is_instance_valid(target):
 		show()
 		var current_camera = get_viewport().get_camera_3d()
 		var screenspace = current_camera.unproject_position(target.global_position)
 		position = screenspace
-
+	else:
+		target = null
+		hide()

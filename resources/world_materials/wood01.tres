@@ -1,12 +1,14 @@
 [gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cgoha54aqf2sv"]
 
-[ext_resource type="Texture2D" uid="uid://d1u18kqxnl32y" path="res://resources/world_materials/TinyWood01_normal.png" id="1_cvqy3"]
-[ext_resource type="Texture2D" uid="uid://v0u4l2r14rdn" path="res://resources/world_materials/TinyWood01_albedo.png" id="1_tlug0"]
+[ext_resource type="Texture2D" uid="uid://bin6vove8d32y" path="res://resources/world_materials/TinyWood03_albedo.png" id="1_56sws"]
+[ext_resource type="Texture2D" uid="uid://btju70lva1flx" path="res://resources/world_materials/TinyWood03_normal.png" id="2_7hy46"]
 
 [resource]
-albedo_color = Color(0.580392, 0.580392, 0.580392, 1)
-albedo_texture = ExtResource("1_tlug0")
-roughness = 0.6
+albedo_color = Color(0.390619, 0.224493, 0.0692388, 1)
+albedo_texture = ExtResource("1_56sws")
+roughness = 0.78
 normal_enabled = true
-normal_texture = ExtResource("1_cvqy3")
-uv1_scale = Vector3(7, 7, 7)
+normal_scale = 1.5
+normal_texture = ExtResource("2_7hy46")
+uv1_scale = Vector3(11, 11, 11)
+uv1_offset = Vector3(1.045, 0, 0)

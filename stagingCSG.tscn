@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bbhrq4snasi1i"]
+[gd_scene load_steps=17 format=3 uid="uid://bbhrq4snasi1i"]
 
 [ext_resource type="Texture2D" uid="uid://b3myc8ugf1j4i" path="res://resources/world_materials/TinyCobble01_albedo.png" id="1_33i31"]
 [ext_resource type="Material" uid="uid://bensj7wrago0n" path="res://resources/world_materials/citybrick01.tres" id="1_cuay2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dlp7ouuwdr66" path="res://resources/world_materials/TinyCobble01_orm.png" id="3_gp5j0"]
 [ext_resource type="PackedScene" uid="uid://dwi6wppkvd4nl" path="res://player/equipment_system/equipment/torch.tscn" id="4_32otp"]
 [ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://resources/metal_black.tres" id="8_2mpt3"]
+[ext_resource type="Material" uid="uid://bu351ebqnnb6x" path="res://resources/crate01.tres" id="9_ajn22"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_n8eyr"]
 size = Vector3(37.155, 0.1, 40.145)
@@ -27,7 +28,7 @@ mesh = SubResource("SphereMesh_f5aub")
 buffer = PackedFloat32Array(2.46114, 0, 0, 7.25148, 0, -2.46114, 0, 0.53017, 0, 0, -2.46114, -11.495, 0, 0, -2.21179, 22.6149, 0, 2.21179, 0, 0.63017, 2.21179, 0, 0, -1.22927, 0, 0, -2.30498, 14.314, 0, 2.30498, 0, 0.63017, 2.30498, 0, 0, 15.0822, 0, 0, -2.57394, 11.3024, 0, 2.57394, 0, 0.63017, 2.57394, 0, 0, 5.86766, 1.74171, 0, 0, 13.2373, 0, -1.74171, 0, 0.53017, 0, 0, -1.74171, -8.73627, 0, 0, -1.98096, 23.6044, 0, 1.98096, 0, 0.63017, 1.98096, 0, 0, 13.5287, 1.45309, 0, 0, 28.5039, 0, -1.45309, 0, 0.53017, 0, 0, -1.45309, -1.74882, 0, 0, -1.7424, 26.304, 0, 1.7424, 0, 0.63017, 1.7424, 0, 0, 6.60499, -2.06668, 0, 0, -2.62435, 0, 2.06668, 0, 0.63017, 0, 0, -2.06668, -6.11364, -1.02626, 0, 0, -2.64788, 0, 1.02626, 0, 0.63017, 0, 0, -1.02626, 15.3892, 0, 0, 1.55293, 4.18883, 0, -1.55293, 0, 0.53017, 1.55293, 0, 0, 9.1778, 0, 0, -2.54505, 17.329, 0, 2.54505, 0, 0.63017, 2.54505, 0, 0, -0.201463, 0, 0, -2.23847, 22.5135, 0, 2.23847, 0, 0.63017, 2.23847, 0, 0, -4.21351, 0, 0, 1.31596, 2.51258, 0, -1.31596, 0, 0.53017, 1.31596, 0, 0, 6.53376, 0, 0, 1.67334, 16.2347, 0, -1.67334, 0, 0.53017, 1.67334, 0, 0, 14.3918, 0, 0, 1.71077, 0.912626, 0, -1.71077, 0, 0.53017, 1.71077, 0, 0, -7.56102, 0, 0, -1.80651, 25.0457, 0, 1.80651, 0, 0.63017, 1.80651, 0, 0, -4.85747, 0, 0, 1.81235, 2.10478, 0, -1.81235, 0, 0.53017, 1.81235, 0, 0, 11.5372, 0, 0, 2.23431, 7.53053, 0, -2.23431, 0, 0.53017, 2.23431, 0, 0, 7.83355, 0, 0, -2.87366, 15.8915, 0, 2.87366, 0, 0.63017, 2.87366, 0, 0, 1.99074, 1.55401, 0, 0, 24.8689, 0, -1.55401, 0, 0.53017, 0, 0, -1.55401, -16.4418, 2.73813, 0, 0, 15.2936, 0, -2.73813, 0, 0.53017, 0, 0, -2.73813, -8.60669, -2.31538, 0, 0, 27.3811, 0, 2.31538, 0, 0.63017, 0, 0, -2.31538, -18.9706, 0, 0, -2.12404, 27.1443, 0, 2.12404, 0, 0.63017, 2.12404, 0, 0, 5.25554, 2.39458, 0, 0, 26.6365, 0, -2.39458, 0, 0.53017, 0, 0, -2.39458, 5.77294, 0, 0, 1.0882, -4.54128, 0, -1.0882, 0, 0.53017, 1.0882, 0, 0, -1.04148, 0, 0, -1.66611, 27.746, 0, 1.66611, 0, 0.63017, 1.66611, 0, 0, -4.44036, -1.41737, 0, 0, 6.65822, 0, 1.41737, 0, 0.63017, 0, 0, -1.41737, 3.25338, -1.24297, 0, 0, 20.6143, 0, 1.24297, 0, 0.63017, 0, 0, -1.24297, -16.3711, 0, 0, 2.50834, -1.33827, 0, -2.50834, 0, 0.53017, 2.50834, 0, 0, 7.96475, 1.28687, 0, 0, 14.2696, 0, -1.28687, 0, 0.53017, 0, 0, -1.28687, -3.35082, -2.12366, 0, 0, 6.41858, 0, 2.12366, 0, 0.63017, 0, 0, -2.12366, -1.29748, 0, 0, -1.83807, 27.1336, 0, 1.83807, 0, 0.63017, 1.83807, 0, 0, -15.6456, 0, 0, 2.77119, -5.56979, 0, -2.77119, 0, 0.53017, 2.77119, 0, 0, -7.95661, 0, 0, 2.63845, -5.77514, 0, -2.63845, 0, 0.53017, 2.63845, 0, 0, -9.66679, 0, 0, -2.55192, 26.7359, 0, 2.55192, 0, 0.63017, 2.55192, 0, 0, -14.5716, -2.922, 0, 0, 23.1245, 0, 2.922, 0, 0.63017, 0, 0, -2.922, -12.4185, 0, 0, -2.89841, 29.0113, 0, 2.89841, 0, 0.63017, 2.89841, 0, 0, 10.9125, 2.27742, 0, 0, 27.9999, 0, -2.27742, 0, 0.53017, 0, 0, -2.27742, -0.612053, -1.78002, 0, 0, 6.74659, 0, 1.78002, 0, 0.63017, 0, 0, -1.78002, -6.55007, -1.30168, 0, 0, 5.38892, 0, 1.30168, 0, 0.63017, 0, 0, -1.30168, -18.5607, -1.04205, 0, 0, 9.42453, 0, 1.04205, 0, 0.63017, 0, 0, -1.04205, -18.7059, 0, 0, 1.63117, 0.342685, 0, -1.63117, 0, 0.53017, 1.63117, 0, 0, 17.7402, 1.72216, 0, 0, 15.234, 0, -1.72216, 0, 0.53017, 0, 0, -1.72216, -17.6289, 0, 0, 2.97225, 16.4329, 0, -2.97225, 0, 0.53017, 2.97225, 0, 0, 6.72869, 1.18385, 0, 0, 22.8149, 0, -1.18385, 0, 0.53017, 0, 0, -1.18385, -19.633, 0, 0, 2.20106, -5.38906, 0, -2.20106, 0, 0.53017, 2.20106, 0, 0, -9.66432, 0, 0, -2.08807, 20.4179, 0, 2.08807, 0, 0.63017, 2.08807, 0, 0, 10.335, 0, 0, -2.66016, 1.95443, 0, 2.66016, 0, 0.63017, 2.66016, 0, 0, 15.8392, 0, 0, -1.31645, 29.6228, 0, 1.31645, 0, 0.63017, 1.31645, 0, 0, 9.56191, -1.79414, 0, 0, 12.1669, 0, 1.79414, 0, 0.63017, 0, 0, -1.79414, -5.28919, 2.5555, 0, 0, 12.4949, 0, -2.5555, 0, 0.53017, 0, 0, -2.5555, -5.05575, 1.27232, 0, 0, 15.4051, 0, -1.27232, 0, 0.53017, 0, 0, -1.27232, -2.46543, 1.57177, 0, 0, -2.62189, 0, -1.57177, 0, 0.53017, 0, 0, -1.57177, -18.5172, 0, 0, 1.92597, 6.08649, 0, -1.92597, 0, 0.53017, 1.92597, 0, 0, 14.6725, 0, 0, -2.08901, 24.1254, 0, 2.08901, 0, 0.63017, 2.08901, 0, 0, -12.5751, 2.19247, 0, 0, 20.5305, 0, -2.19247, 0, 0.53017, 0, 0, -2.19247, -17.4212, 1.00321, 0, 0, 18.4635, 0, -1.00321, 0, 0.53017, 0, 0, -1.00321, -6.64411, -1.2726, 0, 0, 4.06123, 0, 1.2726, 0, 0.63017, 0, 0, -1.2726, -12.4932, 0, 0, 2.7266, 4.17882, 0, -2.7266, 0, 0.53017, 2.7266, 0, 0, 11.1912, 0, 0, -2.33385, 23.4429, 0, 2.33385, 0, 0.63017, 2.33385, 0, 0, -8.97638, 0, 0, -1.5216, 22.4729, 0, 1.5216, 0, 0.63017, 1.5216, 0, 0, 13.3014, -1.46748, 0, 0, -1.89131, 0, 1.46748, 0, 0.63017, 0, 0, -1.46748, -11.667, -1.18297, 0, 0, 16.7807, 0, 1.18297, 0, 0.63017, 0, 0, -1.18297, -14.3105, 0, 0, 2.79377, 14.3195, 0, -2.79377, 0, 0.53017, 2.79377, 0, 0, 4.68357, 0, 0, 1.06237, -1.4072, 0, -1.06237, 0, 0.53017, 1.06237, 0, 0, 14.6601, 0, 0, -2.14824, 27.6213, 0, 2.14824, 0, 0.63017, 2.14824, 0, 0, 3.76333, 0, 0, 1.45842, 5.7597, 0, -1.45842, 0, 0.53017, 1.45842, 0, 0, -4.55586, -2.35043, 0, 0, -0.98333, 0, 2.35043, 0, 0.63017, 0, 0, -2.35043, -12.8571, 1.69281, 0, 0, 21.6892, 0, -1.69281, 0, 0.53017, 0, 0, -1.69281, -5.29935, 2.54131, 0, 0, 24.4998, 0, -2.54131, 0, 0.53017, 0, 0, -2.54131, -18.2362, 0, 0, -2.27333, 27.1733, 0, 2.27333, 0, 0.63017, 2.27333, 0, 0, -12.2088, 0, 0, 1.84475, 8.60799, 0, -1.84475, 0, 0.53017, 1.84475, 0, 0, 0.893683, 0, 0, 2.83427, -4.56424, 0, -2.83427, 0, 0.53017, 2.83427, 0, 0, 4.63595, 0, 0, -2.87629, 19.548, 0, 2.87629, 0, 0.63017, 2.87629, 0, 0, 14.7987, 0, 0, 1.9828, -5.50328, 0, -1.9828, 0, 0.53017, 1.9828, 0, 0, -16.1925, 0, 0, 1.16176, -5.43043, 0, -1.16176, 0, 0.53017, 1.16176, 0, 0, 1.315, -1.33443, 0, 0, 22.8709, 0, 1.33443, 0, 0.63017, 0, 0, -1.33443, -13.2397, 0, 0, 2.20397, 7.84034, 0, -2.20397, 0, 0.53017, 2.20397, 0, 0, 13.3619, 2.86118, 0, 0, 24.2317, 0, -2.86118, 0, 0.53017, 0, 0, -2.86118, 9.44356, -2.843, 0, 0, -1.19753, 0, 2.843, 0, 0.63017, 0, 0, -2.843, -20.0232, 0, 0, -1.43811, 26.5277, 0, 1.43811, 0, 0.63017, 1.43811, 0, 0, -8.34714, 2.37424, 0, 0, 13.8573, 0, -2.37424, 0, 0.53017, 0, 0, -2.37424, -1.24865, 1.61288, 0, 0, 24.4819, 0, -1.61288, 0, 0.53017, 0, 0, -1.61288, -5.23945, 0, 0, -1.86234, 19.0021, 0, 1.86234, 0, 0.63017, 1.86234, 0, 0, 1.1294, 0, 0, 1.53543, 7.88599, 0, -1.53543, 0, 0.53017, 1.53543, 0, 0, -0.0805893, 0, 0, 1.88618, 18.6902, 0, -1.88618, 0, 0.53017, 1.88618, 0, 0, 18.4404, 0, 0, -1.03064, 19.2939, 0, 1.03064, 0, 0.63017, 1.03064, 0, 0, 1.48811, -1.15263, 0, 0, -3.77556, 0, 1.15263, 0, 0.63017, 0, 0, -1.15263, 6.20376, 0, 0, 2.83911, 11.6573, 0, -2.83911, 0, 0.53017, 2.83911, 0, 0, 7.17569, 0, 0, -2.96927, 13.8536, 0, 2.96927, 0, 0.63017, 2.96927, 0, 0, 9.65985, 1.66461, 0, 0, 25.9842, 0, -1.66461, 0, 0.53017, 0, 0, -1.66461, -0.438215, 0, 0, 2.14194, 21.0895, 0, -2.14194, 0, 0.53017, 2.14194, 0, 0, 18.2895, 0, 0, 1.57361, -6.41864, 0, -1.57361, 0, 0.53017, 1.57361, 0, 0, -9.78683, 0, 0, -1.85814, 22.8871, 0, 1.85814, 0, 0.63017, 1.85814, 0, 0, 14.6964, 1.08784, 0, 0, 24.8963, 0, -1.08784, 0, 0.53017, 0, 0, -1.08784, 8.873, -2.5287, 0, 0, 1.62269, 0, 2.5287, 0, 0.63017, 0, 0, -2.5287, -8.3326, 0, 0, -2.87156, 28.101, 0, 2.87156, 0, 0.63017, 2.87156, 0, 0, 17.9135, 0, 0, 2.20576, 12.9833, 0, -2.20576, 0, 0.53017, 2.20576, 0, 0, 10.5323, 0, 0, 1.93971, 1.45468, 0, -1.93971, 0, 0.53017, 1.93971, 0, 0, 1.18239, 1.45894, 0, 0, 11.2298, 0, -1.45894, 0, 0.53017, 0, 0, -1.45894, -5.27074, 0, 0, -1.63206, 24.7488, 0, 1.63206, 0, 0.63017, 1.63206, 0, 0, 8.8773, 0, 0, 2.75433, -0.428438, 0, -2.75433, 0, 0.53017, 2.75433, 0, 0, -2.22394, 2.90632, 0, 0, 30.4958, 0, -2.90632, 0, 0.53017, 0, 0, -2.90632, -2.53274, 0, 0, -1.03312, 17.8207, 0, 1.03312, 0, 0.63017, 1.03312, 0, 0, -1.04641, -2.36901, 0, 0, -4.2323, 0, 2.36901, 0, 0.63017, 0, 0, -2.36901, 7.08728, 1.01492, 0, 0, 27.7091, 0, -1.01492, 0, 0.53017, 0, 0, -1.01492, -5.07375, 2.87529, 0, 0, 21.2485, 0, -2.87529, 0, 0.53017, 0, 0, -2.87529, 9.19131, 0, 0, -2.96335, 26.0932, 0, 2.96335, 0, 0.63017, 2.96335, 0, 0, -14.7165, 0, 0, -1.18453, 23.8289, 0, 1.18453, 0, 0.63017, 1.18453, 0, 0, -12.4822, -1.15972, 0, 0, 3.63698, 0, 1.15972, 0, 0.63017, 0, 0, -1.15972, -16.0705, 0, 0, -2.50531, 10.9838, 0, 2.50531, 0, 0.63017, 2.50531, 0, 0, 19.3932, 0, 0, -2.29322, 30.2573, 0, 2.29322, 0, 0.63017, 2.29322, 0, 0, -18.4578, -1.1546, 0, 0, 4.95513, 0, 1.1546, 0, 0.63017, 0, 0, -1.1546, 2.32143, -2.992, 0, 0, 4.64204, 0, 2.992, 0, 0.63017, 0, 0, -2.992, -3.84612, 0, 0, 2.39066, 8.69781, 0, -2.39066, 0, 0.53017, 2.39066, 0, 0, 19.7717, 0, 0, -1.72171, 28.3583, 0, 1.72171, 0, 0.63017, 1.72171, 0, 0, 12.6566, 0, 0, 2.43815, -0.755676, 0, -2.43815, 0, 0.53017, 2.43815, 0, 0, -4.29573, 0, 0, -1.35151, 26.8782, 0, 1.35151, 0, 0.63017, 1.35151, 0, 0, -12.4535, 0, 0, 2.14027, -1.16532, 0, -2.14027, 0, 0.53017, 2.14027, 0, 0, 1.18669, -1.87404, 0, 0, 21.3279, 0, 1.87404, 0, 0.63017, 0, 0, -1.87404, -12.5772, 0, 0, -1.10816, 16.8074, 0, 1.10816, 0, 0.63017, 1.10816, 0, 0, -1.75249, -1.03077, 0, 0, 3.73585, 0, 1.03077, 0, 0.63017, 0, 0, -1.03077, 6.52466, -2.8723, 0, 0, -3.40432, 0, 2.8723, 0, 0.63017, 0, 0, -2.8723, 2.06841, -1.71671, 0, 0, 7.22067, 0, 1.71671, 0, 0.63017, 0, 0, -1.71671, 1.18087, 0, 0, -2.56547, 27.7792, 0, 2.56547, 0, 0.63017, 2.56547, 0, 0, 14.369, 0, 0, 2.98247, 2.80923, 0, -2.98247, 0, 0.53017, 2.98247, 0, 0, 18.5051, 0, 0, 1.56024, 15.1668, 0, -1.56024, 0, 0.53017, 1.56024, 0, 0, 13.1684, -2.69798, 0, 0, 2.48371, 0, 2.69798, 0, 0.63017, 0, 0, -2.69798, -9.15077, -1.35152, 0, 0, 1.18216, 0, 1.35152, 0, 0.63017, 0, 0, -1.35152, -8.46608, 0, 0, 2.3931, 2.59348, 0, -2.3931, 0, 0.53017, 2.3931, 0, 0, 16.4987, 2.70887, 0, 0, 17.223, 0, -2.70887, 0, 0.53017, 0, 0, -2.70887, -8.88037, -2.26693, 0, 0, 18.0711, 0, 2.26693, 0, 0.63017, 0, 0, -2.26693, -10.0803, 0, 0, 1.14358, -0.144739, 0, -1.14358, 0, 0.53017, 1.14358, 0, 0, 6.82096, 0, 0, 2.51234, 9.585, 0, -2.51234, 0, 0.53017, 2.51234, 0, 0, 13.9381, -2.2757, 0, 0, 3.33555, 0, 2.2757, 0, 0.63017, 0, 0, -2.2757, -17.1754, 0, 0, -1.58667, 10.0074, 0, 1.58667, 0, 0.63017, 1.58667, 0, 0, 14.5161, 0, 0, -2.35588, 0.597114, 0, 2.35588, 0, 0.63017, 2.35588, 0, 0, 19.2842, 2.1745, 0, 0, 28.4138, 0, -2.1745, 0, 0.53017, 0, 0, -2.1745, -4.01491, 0, 0, 1.83612, -0.521903, 0, -1.83612, 0, 0.53017, 1.83612, 0, 0, -11.1271, 0, 0, -2.67761, 24.0498, 0, 2.67761, 0, 0.63017, 2.67761, 0, 0, -6.28873, 1.9367, 0, 0, -2.63903, 0, -1.9367, 0, 0.53017, 0, 0, -1.9367, -17.637, 2.14052, 0, 0, 8.25842, 0, -2.14052, 0, 0.53017, 0, 0, -2.14052, -17.5357, 0, 0, -1.3439, 30.433, 0, 1.3439, 0, 0.63017, 1.3439, 0, 0, 16.3182, 0, 0, -1.04876, 3.44206, 0, 1.04876, 0, 0.63017, 1.04876, 0, 0, 19.8668, 0, 0, -2.52125, 11.3361, 0, 2.52125, 0, 0.63017, 2.52125, 0, 0, 19.408, 0, 0, 2.67683, 4.53984, 0, -2.67683, 0, 0.53017, 2.67683, 0, 0, 19.2171, -1.93513, 0, 0, 3.83058, 0, 1.93513, 0, 0.63017, 0, 0, -1.93513, -16.9881, 0, 0, 1.89403, 0.31297, 0, -1.89403, 0, 0.53017, 1.89403, 0, 0, -10.4447, 0, 0, -2.7553, 15.6808, 0, 2.7553, 0, 0.63017, 2.7553, 0, 0, 18.978, 0, 0, 1.84356, -3.33396, 0, -1.84356, 0, 0.53017, 1.84356, 0, 0, -13.7444, -1.26513, 0, 0, 22.4152, 0, 1.26513, 0, 0.63017, 0, 0, -1.26513, -14.8606, 0, 0, 1.00405, 1.8869, 0, -1.00405, 0, 0.53017, 1.00405, 0, 0, 4.35643, -2.24369, 0, 0, -6.48755, 0, 2.24369, 0, 0.63017, 0, 0, -2.24369, -18.2439, -2.76985, 0, 0, -1.54118, 0, 2.76985, 0, 0.63017, 0, 0, -2.76985, 3.81025, 2.92778, 0, 0, -0.5571, 0, -2.92778, 0, 0.53017, 0, 0, -2.92778, -19.52, 2.46448, 0, 0, 25.0315, 0, -2.46448, 0, 0.53017, 0, 0, -2.46448, -14.1978, 2.67001, 0, 0, 20.9739, 0, -2.67001, 0, 0.53017, 0, 0, -2.67001, -10.4538, 0, 0, 1.36048, 3.64087, 0, -1.36048, 0, 0.53017, 1.36048, 0, 0, 9.55963, 0, 0, 2.90662, 14.3114, 0, -2.90662, 0, 0.53017, 2.90662, 0, 0, 4.40951, -1.63058, 0, 0, 5.30929, 0, 1.63058, 0, 0.63017, 0, 0, -1.63058, -12.4068, 0, 0, 1.93402, -5.35152, 0, -1.93402, 0, 0.53017, 1.93402, 0, 0, -1.74097, 0, 0, 1.00402, -5.58088, 0, -1.00402, 0, 0.53017, 1.00402, 0, 0, 2.81896, 0, 0, 1.05605, 8.52567, 0, -1.05605, 0, 0.53017, 1.05605, 0, 0, 18.262, 2.27664, 0, 0, 27.7764, 0, -2.27664, 0, 0.53017, 0, 0, -2.27664, -10.8171, 0, 0, -1.52412, 19.4557, 0, 1.52412, 0, 0.63017, 1.52412, 0, 0, -0.0188217, 0, 0, 2.41237, 2.39548, 0, -2.41237, 0, 0.53017, 2.41237, 0, 0, 15.2097, 1.28024, 0, 0, 25.6385, 0, -1.28024, 0, 0.53017, 0, 0, -1.28024, -18.5055, -2.28326, 0, 0, 7.10056, 0, 2.28326, 0, 0.63017, 0, 0, -2.28326, 2.79113, 2.60015, 0, 0, 17.9321, 0, -2.60015, 0, 0.53017, 0, 0, -2.60015, -12.267, 2.32017, 0, 0, 14.2777, 0, -2.32017, 0, 0.53017, 0, 0, -2.32017, -12.9967, 0, 0, 2.27802, 9.13387, 0, -2.27802, 0, 0.53017, 2.27802, 0, 0, 19.3485, 2.33486, 0, 0, 3.28474, 0, -2.33486, 0, 0.53017, 0, 0, -2.33486, -13.4169, 0, 0, -2.71908, 14.408, 0, 2.71908, 0, 0.63017, 2.71908, 0, 0, 4.39165, 0, 0, 1.72677, 4.49545, 0, -1.72677, 0, 0.53017, 1.72677, 0, 0, 0.610559, 2.94489, 0, 0, 26.4174, 0, -2.94489, 0, 0.53017, 0, 0, -2.94489, 0.422703, 0, 0, -1.60957, 5.71998, 0, 1.60957, 0, 0.63017, 1.60957, 0, 0, 14.2524, 0, 0, -1.57001, 23.9272, 0, 1.57001, 0, 0.63017, 1.57001, 0, 0, -10.4667, 0, 0, -1.21062, 25.5325, 0, 1.21062, 0, 0.63017, 1.21062, 0, 0, 3.69661, -2.07102, 0, 0, -5.7398, 0, 2.07102, 0, 0.63017, 0, 0, -2.07102, -19.1719, 0, 0, -2.34211, 25.7395, 0, 2.34211, 0, 0.63017, 2.34211, 0, 0, 19.8598, 0, 0, 2.79153, -3.12556, 0, -2.79153, 0, 0.53017, 2.79153, 0, 0, -7.29152, 0, 0, -2.02376, 11.7863, 0, 2.02376, 0, 0.63017, 2.02376, 0, 0, 10.7015, 0, 0, -1.88282, 12.976, 0, 1.88282, 0, 0.63017, 1.88282, 0, 0, 4.73906, 0, 0, 1.74117, -1.33213, 0, -1.74117, 0, 0.53017, 1.74117, 0, 0, 3.07484, 0, 0, 1.72013, 9.04265, 0, -1.72013, 0, 0.53017, 1.72013, 0, 0, -0.115481, 1.23723, 0, 0, 2.45948, 0, -1.23723, 0, 0.53017, 0, 0, -1.23723, -18.462, -1.46821, 0, 0, 25.9291, 0, 1.46821, 0, 0.63017, 0, 0, -1.46821, -18.4623, -1.94115, 0, 0, 2.69394, 0, 1.94115, 0, 0.63017, 0, 0, -1.94115, 3.48684, 2.26501, 0, 0, 9.37806, 0, -2.26501, 0, 0.53017, 0, 0, -2.26501, -19.7074, 1.07678, 0, 0, 21.2214, 0, -1.07678, 0, 0.53017, 0, 0, -1.07678, -19.5365, 0, 0, -2.79969, 23.4565, 0, 2.79969, 0, 0.63017, 2.79969, 0, 0, 12.5474, 0, 0, -1.13227, 25.6231, 0, 1.13227, 0, 0.63017, 1.13227, 0, 0, 15.9574, 0, 0, 1.84788, 3.98578, 0, -1.84788, 0, 0.53017, 1.84788, 0, 0, 15.7203, -2.27058, 0, 0, 9.32853, 0, 2.27058, 0, 0.63017, 0, 0, -2.27058, -9.66403, 2.17447, 0, 0, 25.9436, 0, -2.17447, 0, 0.53017, 0, 0, -2.17447, -11.015, 1.95067, 0, 0, 16.4079, 0, -1.95067, 0, 0.53017, 0, 0, -1.95067, 4.40032, 0, 0, 1.60043, -5.16098, 0, -1.60043, 0, 0.53017, 1.60043, 0, 0, 13.8876, 1.94668, 0, 0, 30.265, 0, -1.94668, 0, 0.53017, 0, 0, -1.94668, 3.76622, 0, 0, 1.40058, -1.78049, 0, -1.40058, 0, 0.53017, 1.40058, 0, 0, 11.7307)
 
 [sub_resource type="BoxMesh" id="BoxMesh_5gey0"]
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 size = Vector3(1, 0.05, 0.2)
 
 [sub_resource type="MultiMesh" id="MultiMesh_ccqcl"]
@@ -410,451 +411,451 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.21722, 0.8, -2.466)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.21722, 0.8, 2.50494)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel2"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel2"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel2"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel2"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -13.3416, 0.8, 2.50494)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel3"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel3"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel3"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel3"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -10.7291, 0.8, 32.9936)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel4"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-0.95317, 0, -0.302436, 0, 1, 0, 0.302436, 0, -0.95317, -0.313085, 0.8, 32.3249)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel5"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-0.863765, 0, -0.503895, 0, 1, 0, 0.503895, 0, -0.863765, -21.7537, 0.8, -0.124868)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel6"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel6"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel6"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel6"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props"]
 transform = Transform3D(0.235566, 0, 0.971858, 0, 1, 0, -0.971858, 0, 0.235566, -6.398, 0.495, 9.294)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
 size = Vector3(1.5, 1.5, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate3" type="CSGBox3D" parent="Props"]
 transform = Transform3D(-0.896757, 0, -0.442523, 0, 1, 0, 0.442523, 0, -0.896757, -13.857, 0.459, 21.74)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate3"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -2.57104, 0, 4.92828)
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate2" type="CSGBox3D" parent="Props"]
 transform = Transform3D(0.707884, 0, 0.706329, 0, 1, 0, -0.706329, 0, 0.707884, -0.509607, 0.468941, 26.4021)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate2"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
 size = Vector3(1.5, 1.5, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate4" type="CSGBox3D" parent="Props"]
 transform = Transform3D(-0.519698, 0, 0.85435, 0, 1, 0, -0.85435, 0, -0.519698, -21.0124, 0.466587, 23.7352)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate4"]
 transform = Transform3D(0.937984, -0.000811059, 0.346682, 0.000436642, 0.999999, 0.00115814, -0.346682, -0.00093495, 0.937983, 13.5227, 0.0228121, 10.1354)
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate5" type="CSGBox3D" parent="Props"]
 transform = Transform3D(-0.786903, 0, -0.617077, 0, 1, 0, 0.617077, 0, -0.786903, -21.3177, 0.471605, 22.1039)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate5"]
 transform = Transform3D(0.972419, 0, -0.233242, 0, 1, 0, 0.233242, 0, 0.972419, -10.2873, 0, 12.4423)
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -28.9002, 0.8, 32.1597)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel7"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel8" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(0.639681, 0, 0.768641, 0, 1, 0, -0.768641, 0, 0.639681, -47.6768, 4.54634, 9.98329)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel8"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel9" type="CSGCylinder3D" parent="Props"]
 transform = Transform3D(-0.985449, 0, -0.169969, 0, 1, 0, 0.169969, 0, -0.985449, -34.7794, 4.54634, 23.4635)
 use_collision = true
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel9"]
 transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
 radius = 0.75
 height = 1.619
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate6" type="CSGBox3D" parent="Props"]
 transform = Transform3D(0.612714, 0, -0.790305, 0, 1, 0, 0.790305, 0, 0.612714, -46.6436, 4.31912, 20.1294)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate6"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate7" type="CSGBox3D" parent="Props"]
 transform = Transform3D(0.712308, 0, 0.701867, 0, 1, 0, -0.701867, 0, 0.712308, -46.1563, 4.32348, 21.7159)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate7"]
 transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
 size = Vector3(1, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate8" type="CSGBox3D" parent="Props"]
 transform = Transform3D(-0.997876, -0.000302391, 0.0651419, -0.00031312, 1, -0.000154491, -0.0651418, -0.00017456, -0.997876, -13.8573, 1.47279, 15.7981)
 use_collision = true
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Crate" type="CSGBox3D" parent="Props/Crate8"]
 transform = Transform3D(0.0646102, 0.452712, -0.889311, -0.997909, 0.029325, -0.0575742, 1.55577e-05, 0.891172, 0.453661, 0.17815, -0.750267, 1.4889)
 size = Vector3(1.5, 1, 1.5)
-material = ExtResource("3_gacsr")
+material = ExtResource("9_ajn22")
 
 [node name="Lighting" type="Node3D" parent="."]
 

@@ -1,6 +1,14 @@
 extends Node
 class_name InventorySystem
 
+## A Very crude and simple inventory system. This inventory is refreshed
+## at each spawn, so it's not currently useable for a full game inventory.
+## It's intention is to give ideas for how to work with invetory resource
+## objects. But it could be adjusted to tie into a singleton based system
+## or fuller inventory node, and this one would only pass out signals
+## for currently equipped gear, fetching current inventory from a 
+## centralized system, or some other nonsense.
+
 @export var signaling_node : Node3D 
 @export var change_item_signal : String = "item_changed"
 @export var use_item_signal  : String = "item_used"
