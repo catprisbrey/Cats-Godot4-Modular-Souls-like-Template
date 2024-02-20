@@ -1,41 +1,33 @@
 extends Node3D
 class_name PlayerTargetingSystem
 
+
 ## A set of eyes detect potential targets. And a raycast 
 ## confirms they are in the eyeline (to not target through walls).
-## A center_eye finds the most center target. If the eyeline collides, that 
-## body is emitted in a signal "target_found". Connect that wherever is useful.
+## Each eye manages their own list of targets they see. When targeting
+## is enabled (usually via a signaling node/signal to match when strafe
+## or a lock on cam is enabled), this system will emit a signal of the current
+## target.
 
-## Eyes update only when targetting mode is on/togged. Keeping performance high.
-## When actively tareting, both the left and right eyes are active.
-## Both groups and mask layers determine if targets will be found.
-## This works best when added as a child to the player, or a following camera.
+## The initial target will prioritize the center eye's targets first,
+## then right, then left (since the camera is over the right shoulder).
+## Retargeting to left or right list targets can happen by motioning with
+## the mouse or joystick in those directions.
 
-## Targetting is activated via signals currently. Typically a bool value is passed
-## to this nodes 'set_targeting(bool)' method
+@export var signaling_node : Node
+@export var targeting_toggle_signal :String = "targeting_changed"
+
 @export_range(1,10) var joystick_retarget_sensitivity :float = 5
 @export_range(1,10) var mouse_retarget_sensitivity :float = 3
-
-@onready var refresh_timer = $RefreshTimer
 
 @onready var left_eye : Area3D= $LeftEye
 @onready var right_eye : Area3D = $RightEye
 @onready var center_eye : Area3D = $CenterEye
 @onready var eyeline = $Eyeline
 
+var target_list : Array = []
+@onready var targeting = false 
 
-var left_list : Array = []
-var right_list : Array = []
-var center_list : Array = []
-var current_target : Node3D = null
-## if enabled, sensors will actively report and signal out targets. It's more 
-## performant to only enable this as needed. (such as if your player enters a
-## targeting or strafing mode). 
-@export var targeting = false
-
-signal targeting_changed
-signal targeting_activated
-signal targets_updated
 signal target_found
 
 @onready var reticle_control = $ReticleControl
@@ -50,9 +42,20 @@ func _ready():
 	left_eye.collision_mask = target_detection_layer_mask
 	right_eye.collision_mask = target_detection_layer_mask
 	eyeline.collision_mask = target_detection_layer_mask
-
-	targeting_changed.connect(_on_targeting_changed)
 	
+	center_eye.connect("target_list_updated",_update_lists)
+	left_eye.connect("target_list_updated",_update_lists)
+	right_eye.connect("target_list_updated",_update_lists)
+	
+	if signaling_node:
+		if signaling_node.has_signal(targeting_toggle_signal):
+			signaling_node.connect(targeting_toggle_signal,_on_targeting_toggled)
+			
+func _update_lists():
+	target_list = center_eye.target_list
+	target_list += right_eye.target_list
+	target_list += left_eye.target_list
+
 func _input(_event:InputEvent): 
 	# Senses input left or right on mouse or joypad
 	# and calls to change target to the left or right.
@@ -72,42 +75,21 @@ func _input(_event:InputEvent):
 	## scanning and reporting back targets.
 		
 	
-func _on_targeting_changed(_toggle):
+func _on_targeting_toggled(_toggle):
+	print("targeting toggled: " + str(_toggle))
 	targeting = _toggle
 	if targeting == false:
-		_clear_lists()
+		target_list.clear()
 	else:
-		get_closest()
+		get_target()
 	
 func select_new_target(_new_direction = -1,_delay = .5):
-	_update_targets()
-	await targets_updated
-	
-	var new_target
 	if _new_direction == -1:
-		new_target = get_target(left_list)
+		get_target(left_eye.target_list)
 	elif _new_direction == 1:
-		new_target = get_target(right_list)
-	# Once a target is found in those areas, an eyeline check is done to see
-	# if we can actually SEE the enemy (so we don't target hidden enemies
-	# through walls)
-	if new_target:
-		if await eyeline_check(new_target):
-			target_found.emit(new_target)
-	# and then a small delay to prevent cycling too fast through targets
+		get_target(right_eye.target_list)
 	await get_tree().create_timer(_delay).timeout
-
-func _update_targets():
-	left_list = left_eye.get_overlapping_bodies()
-	right_list = right_eye.get_overlapping_bodies()
-	center_list = center_eye.get_overlapping_bodies()
-	# Filters the arrays to only bodies in the target group
-	left_list = left_list.filter(_filter_body)
-	right_list = right_list.filter(_filter_body)
-	center_list = center_list.filter(_filter_body)
 	
-	targets_updated.emit()
-
 func _filter_body(body):
 	# returns true of the bodies are in the target group.
 	if body.is_in_group(target_group_name):
@@ -121,44 +103,12 @@ func eyeline_check(_new_target):
 			if eyeline.get_collider() == _new_target:
 				return true
 
-func get_closest():
+func get_target(_list = target_list):
 	# prioritize the center eye, but if no target found, check the next eyes for 
-	# a target to assign.
-	_update_targets()
-	await targets_updated
-	
-	# if an input direction is indicated, a new target
-	# will be selected from the left or right eye's list 
-	var center_target
-	var right_target
-	var left_target
-	var new_target
-	center_target = get_target(center_list)
-	left_target = get_target(left_list)
-	right_target = get_target(right_list)
-	if center_target:
-		new_target = center_target
-	else:
-		if right_target:
-			new_target = right_target
-		else:
-			if left_target:
-				new_target = left_target
-			else:
-				new_target = null
-	if new_target:
+	# a target to assign
+	for new_target in _list:
 		if await eyeline_check(new_target):
 			target_found.emit(new_target)
-	print(new_target)
-	# and then a small delay to prevent cycling too fast through targets
-
-func get_target(target_list:Array):
-	if !target_list.is_empty():
-			return target_list[0]
+			break
 	
-func _clear_lists():
-	# can be called to clean the arrays (like if targeting mode is exited)
-	right_list.clear()
-	left_list.clear()
-	center_list.clear()
 	

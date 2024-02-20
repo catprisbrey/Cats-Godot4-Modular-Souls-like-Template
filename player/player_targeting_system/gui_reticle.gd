@@ -3,7 +3,7 @@ extends Control
 @onready var reticle_image = $ReticleImage
 
 
-@export var targeting_system : PlayerTargetingSystem
+@export var targeting_system : Node
 @export var targeting_singal_string : String = "target_found"
 var targeting = false
 var target : Node = null

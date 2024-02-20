@@ -46,7 +46,6 @@ func _on_body_entered(_body):
 		checking_active = true
 		eyeline_check()
 
-
 func _on_body_exited(_body):
 	if _body.is_in_group(target_group_name):
 		target_lost.emit()

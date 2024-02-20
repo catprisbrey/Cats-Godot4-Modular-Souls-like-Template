@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b5nk1tsswudcm"]
+[gd_scene load_steps=9 format=3 uid="uid://b5nk1tsswudcm"]
 
-[ext_resource type="Script" path="res://player/player_targeting_system/player_targeting_system.gd" id="1_c6g4r"]
+[ext_resource type="Script" path="res://player/player_targeting_system/player_targeting_system.gd" id="1_b78qp"]
 [ext_resource type="Script" path="res://player/player_targeting_system/gui_reticle.gd" id="2_f0thc"]
+[ext_resource type="Script" path="res://player/player_targeting_system/eye_list.gd" id="2_y87dp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dfo1h"]
 size = Vector3(8, 10, 14)
@@ -24,13 +25,14 @@ fill_from = Vector2(0.529915, 0.529915)
 fill_to = Vector2(0.508547, 0.508547)
 
 [node name="PlayerTargetingSystem" type="Node3D"]
-script = ExtResource("1_c6g4r")
+script = ExtResource("1_b78qp")
 target_detection_layer_mask = 13
 
 [node name="LeftEye" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("2_y87dp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LeftEye"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2)
@@ -40,6 +42,7 @@ shape = SubResource("BoxShape3D_dfo1h")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("2_y87dp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RightEye"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -2)
@@ -49,6 +52,7 @@ shape = SubResource("BoxShape3D_ini2b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("2_y87dp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CenterEye"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
@@ -75,7 +79,3 @@ offset_right = 16.0
 offset_bottom = 24.0
 rotation = -2.35619
 texture = SubResource("GradientTexture2D_dhr5k")
-
-[node name="RefreshTimer" type="Timer" parent="."]
-one_shot = true
-autostart = true

@@ -29,7 +29,7 @@ signal targeting_changed
 ## if no target is set, this node will attempt to find a CharacterBody3D to follow
 var look_target : Node3D 
 @onready var vertical_offset = global_position.y
-@export var optional_targeting_system : PlayerTargetingSystem
+@export var optional_targeting_system : Node
 
 @export var aim_spring_length :float = .7
 signal target_cleared
@@ -46,7 +46,6 @@ func _ready():
 		target_cleared.connect(follow_target._on_target_cleared)
 	#
 	if optional_targeting_system:
-		targeting_changed.connect(optional_targeting_system._on_targeting_changed)
 		optional_targeting_system.target_found.connect(_on_target_found)
 		
 	if camera_3d:
