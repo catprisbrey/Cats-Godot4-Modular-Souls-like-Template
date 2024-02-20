@@ -35,4 +35,5 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 ## License
 
 [Creative Commons, but be cool about it](https://choosealicense.com/licenses/unlicense)
+Consider donating me a coffee or crediting/thanking me in a game you make with it :)
 
