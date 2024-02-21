@@ -22,6 +22,7 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 - Lever activated intractables
 - Enemys with multiple states and pathfinding
 - Ragdoll death
+- Joystick and Keyboard controls based off Elden Ring/Bloodborne
 
 ## Assets:
 
