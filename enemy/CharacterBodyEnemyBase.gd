@@ -203,7 +203,8 @@ func chase_or_fight(): ## depending on distance to target, run or walk
 			current_state = state.COMBAT
 
 func _on_combat_timer_timeout():
-	combat_randomizer()
+	if current_state != state.DEAD:
+		combat_randomizer()
 
 func reset_attack_clock():
 	if current_state == state.COMBAT:
@@ -304,6 +305,7 @@ func death():
 	if ragdoll_death:
 		apply_ragdoll()
 	await get_tree().create_timer(4).timeout
+
 	queue_free()
 
 func apply_ragdoll():
