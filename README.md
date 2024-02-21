@@ -4,6 +4,8 @@ Version 1.0.1
 
 ![Controller Screenshot](https://raw.githubusercontent.com/catprisbrey/Cats-Godot4-Modular-Souls-like-Template/main/screenshots/combat.png)
 
+![YouTube Overview Video](https://www.youtube.com/watch?v=6WdAxzw8pnE)
+
 A highly modular, loosely coupled soulslike game template/asset pack for the Godot Engine. It's driven heavily using signals and loose code, and the tree uses an animation library to drive it's animations. This allows you to swap in your own compatible models and animations quickly and not break the logic of the code. All you need is  a  model with a standard Godot/Unity/Mixamo etc, skeleton mapped into Godot at import.
 
 All CC0 content free to be used as you wish without attribution. Although I'll very gratefully be attributed in credits and/or humbly accept your donations.
