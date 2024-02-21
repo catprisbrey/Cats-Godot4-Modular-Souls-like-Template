@@ -1,5 +1,5 @@
 
-# Cat's Godot Souls-Like Template & Asset Pack
+# Cat's Godot 4 Souls-Like Template & Asset Pack
 Version 1.0.1
 
 ![Controller Screenshot](https://raw.githubusercontent.com/catprisbrey/Cats-Godot4-Modular-Souls-like-Template/main/screenshots/combat.png)
