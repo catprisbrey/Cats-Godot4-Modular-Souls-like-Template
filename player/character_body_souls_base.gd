@@ -431,15 +431,16 @@ func hard_landing():
 			current_state = state.FREE
 	
 func jump():
-	if anim_state_tree:
-		jump_started.emit()
-		anim_length = .5
+	if is_on_floor():
 		if anim_state_tree:
-			await anim_state_tree.animation_measured
-		var jump_duration = anim_length
-	# After timer finishes, return to pre-dodge state
-		await get_tree().create_timer(jump_duration *.7).timeout
-	velocity.y = jump_velocity
+			jump_started.emit()
+			anim_length = .5
+			if anim_state_tree:
+				await anim_state_tree.animation_measured
+			var jump_duration = anim_length
+		# After timer finishes, return to pre-dodge state
+			await get_tree().create_timer(jump_duration *.7).timeout
+		velocity.y = jump_velocity
 
 func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
 	# burst of speed toward indicated direction, or forward by default

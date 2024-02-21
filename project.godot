@@ -13,7 +13,7 @@ config_version=5
 config/name="SoulsGameTemplate"
 run/main_scene="res://demo_level/world_castle.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [audio]
 

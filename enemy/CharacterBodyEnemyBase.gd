@@ -1,6 +1,7 @@
 extends CharacterBody3D
 class_name CharacterBodyEnemyBase
 
+## Group names are used to detect enemies (along with their physics layer)
 @export var group_name :String = "Targets"
 
 @export var anim_state_tree :AnimationTree 
@@ -8,8 +9,14 @@ class_name CharacterBodyEnemyBase
 
 @export var target_sensor : Area3D 
 @onready var target : set = set_target
+## Use for pathfinding, it will return to following this default target after
+## giving up a chase. Most commonly this is a pathfollow node, following a Path.
+## if left blank, then the default target is simply the same locationw here this
+## enemy spawns.
 @export var default_target : Node3D
 @onready var spawn_location : Marker3D = Marker3D.new()
+
+## how long to pursue the playerbefore giving up
 @onready var chase_timer :Timer = Timer.new()
 @export var chase_time : float = 3.0
 signal chase_ended
@@ -27,22 +34,24 @@ signal attack_started
 signal attack_activated
 signal attack_ended
 
-
 @export var combat_range : float = 3.0
 @onready var combat_timer = Timer.new()
 @export var attack_cooldown_time :float = 2.0
 signal parried_started
+@onready var retreating = false
 
+## Typically a HealthSystem class, whatever node emits a "died" signal, to let this
+## node know that hey are dead.
 @export var health_system :Node
 signal hurt_started
 signal damage_taken
 signal death_started
 var can_be_hurt = true
 
+## if disabled, then a normal death animation will play instead of ragdoll
 @export var ragdoll_death : bool = false
 @onready var general_skeleton = %GeneralSkeleton
 
-@onready var retreating = false
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper
 
@@ -100,7 +109,7 @@ func _ready() -> void:
 	if health_system:
 		health_system.died.connect(death)
 		
-	
+		
 func _physics_process(_delta):
 	apply_gravity(_delta)
 	if is_on_floor():
