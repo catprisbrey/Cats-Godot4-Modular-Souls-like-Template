@@ -11,6 +11,7 @@ class_name MeshStreak
 ## Will stop emitting after the lifetime. Set to 0 to never stop emitting.
 @export var lifetime = .5
 
+
 ## Node where the mesh will base its the offset origins vertext points. If left
 ## empty, then a get_parent() will be used, and offest will be based on that parent's
 ## origin.
@@ -40,6 +41,7 @@ func _set_emitting(_new_value):
 		emitting = !emitting
 
 func _ready():
+	global_transform = Transform3D.IDENTITY
 	top_level =  true # don't follow the parent, be independant
 	material_check() # if no material is set, create one and add it.
 	
@@ -75,11 +77,9 @@ func mesh_update():
 		mesh = surface_tool.commit()
 	
 func create_edge():
-	var new_top = origin_node.to_global(streak_top)
-	var new_bottom = origin_node.to_global(streak_bottom)
 	var new_edge = edge.new()
-	new_edge.bottom_p = new_bottom
-	new_edge.top_p =  new_top
+	new_edge.bottom_p = origin_node.to_global(streak_bottom)
+	new_edge.top_p = origin_node.to_global(streak_top)
 	## to avoid duplicates
 	if mesh_array.size() != 0:
 		if mesh_array[mesh_array.size() -1] != new_edge:
