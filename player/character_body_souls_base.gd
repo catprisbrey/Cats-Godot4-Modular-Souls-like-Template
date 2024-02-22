@@ -397,7 +397,7 @@ func attack(_is_special_attack : bool = false):
 		attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-		await get_tree().create_timer(anim_length *.3).timeout
+	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
 	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
 	if anim_state_tree: 
@@ -421,9 +421,9 @@ func sprint_attack():
 	sprint_attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-		await get_tree().create_timer(anim_length *.3).timeout
+	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.1) ## delayed dash to move forward during attack animation
 	if anim_state_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
@@ -468,6 +468,8 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1):
 	#speed = default_speed
 	await get_tree().create_timer(_duration).timeout
 	direction = Vector3.ZERO
+	velocity.x = 0
+	velocity.z = 0
 	
 func dodge_or_sprint():
 	if sprint_timer.is_stopped():
