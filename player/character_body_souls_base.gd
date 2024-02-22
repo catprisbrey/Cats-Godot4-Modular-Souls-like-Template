@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name CharacterBodySoulsBase
 
 ## A semi-smart character controller. Will detect the current camera in use
-## and update control orientation to match it. Strafing will lock rotation to
+## and update control orientation to match it. Strafing will lock rotation
 ## to face camera perspective, except for dodging actions.
 
 ## A LOT of actions here have signals delayed by timers. This is bad form.
@@ -13,83 +13,95 @@ class_name CharacterBodySoulsBase
 
 ## Manages all animations generally pulling info it needs from states and substates.
 @export var anim_state_tree : AnimationTreeSoulsBase
-#### When the anim_state_tree starts a new animatino, this variable updates with it's length
-@onready var anim_length = .5
 
+## When the anim_state_tree starts a new animatino, this variable updates with it's length
+## great for automatic updating of timer lengths to match the current animation length
+@onready var anim_length = .5
 
 ## default/1st camera is a follow cam.
 @onready var current_camera = get_viewport().get_camera_3d()
-## Aids strafe rotation when alternating between cameras
+
+## Aids strafe rotation when alternating between cameras. I found it best to keep
+## track of whatever the starting camera was, rather than update it if camera's change.
 @onready var orientation_target = current_camera
 
-## Sensing interactable objects, like ladders, doors, etc. 
-@export var interact_sensor : Node3D
-## The sensor that spotted the object, TOP sensor, or BOTTOM sensor.
+## Add here a PlayerInteractSensor. It will connect up the signals needed to identify
+## and interact with interactables in the world
+@export var interact_sensor : PlayerInteractSensors
+
+## A variablet that updates storing the info of which sensor spotted an interactable.
+## A string of "TOP", "BOTTOM, "BOTH" is stored here. Based one which sensors spotted an object 
+## aids identifying if the object is on the floor, head height, or both. 
 @onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
-## The newly sensed interactable node.
+
+## The newly sensed interactable node found by the interact sensor. One of the few itmes
+## this CharacterBody3D will talk directly to a node rather than with signals is when it
+## interacts with an interactable object.
 @onready var interactable : Node3D
-signal interact_started
-signal door_started
-signal gate_started
-signal chest_started
-signal lever_started
+signal interact_started(interact_type)
 
-
-## Weapons and attacking equipment system that manages moving nodes from the 
-## attacking hand, to their sheathed location
+## A generic EquipmentSystem class, used to manage moving Weapons 
+## between a hand and sheathed location as well as activating collision hitbox 
+## monitoring and reporting hits have happened. Very handy.
 @export var weapon_system : EquipmentSystem
+
 ## A helper variable, tracks the current weapon type for easier referencing from
-## the anim_state_tree
-@onready var attack_combo_timer = Timer.new()
+## the anim_state_tree and anywhere else that may want to know what weapon type is held.
 var weapon_type :String = "SLASH"
-signal weapon_change_started
-signal weapon_changed
-signal weapon_change_ended
-signal attack_started
-signal attack_activated
+signal weapon_change_started ## to start the animation
+signal weapon_changed ## the moment the weapon objects change hands.
+signal weapon_change_ended(weapon_type:String) ## informing the change is complete
+signal attack_started ## to start the animation
+signal attack_activated ## to activate collision detection, sound effects, etc.
 signal air_attack_started
 signal big_attack_started
+
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
+## there may be a better way to capture combo key presses across multiple device types,
+## but this worked for me in a pinch.
 var secondary_action
 
 ## Gadgets and guarding equipment system that manages moving nodes from the 
-## off-hand, to their hip location
+## off-hand, to their hip location, the same EquipmentSystem as the weapon system.
 @export var gadget_system : EquipmentSystem
 ## A helper variable, tracks the current gadget type for easier referencing from
-## the anim_state_tree
+## the AnimationStateTree or anywhere else that may need to know what gadget type is held.
 var gadget_type :String = "SHIELD"
-signal gadget_change_started
-signal gadget_changed
-signal gadget_change_ended
-signal gadget_started
-signal gadget_activated
+signal gadget_change_started ## to start the animation
+signal gadget_changed ## the moment the items swap hands
+signal gadget_change_ended(gadget_type:String) ## to end the animation
+signal gadget_started ## when the gadget attack starts
+signal gadget_activated ## when the collision hitbox shapes/sounds should activate, etc
 
-
-
-## When guarding this substate is true
-@onready var guarding = false
+## When guarding this substate is true. Drives animation and hitbox logic for blocking.
 ## The first moments of guarding, the parry window is active, allowing to parry()
 ## attacks and avoid damage
+@onready var guarding = false
+
+## To control invincibility frames and when the player can take damage. Helps also
+## to prevent a character from being hit mutliple process frames in a row before
+## the state properly changes.
 @onready var can_be_hurt = true
+## Turns on when the perfect parry window is active, making regular blocks turn into parries.
 @onready var parry_active = false
-var parry_window = .3
+## How brief the perfect parry window is in seconds.
+@export var parry_window = .3
 signal parry_started
 signal block_started
 
-@export var health_system :Node
-signal hurt_started
-signal damage_taken
-signal health_received
+## The HealthSystem node that will take in information about damage and healing received.
+@export var health_system : HealthSystem
+signal hurt_started # to start the animation
+signal damage_taken(by_what:EquipmentObject) # to indicate the damage value
+signal health_received(by_what:ItemObject)
 signal death_started
 var is_dead :bool = false
-signal respawn_started
-@export var last_spawn_site : SpawnSite
 
 @export var inventory_system : InventorySystem
 var current_item : ItemResource
 signal item_change_started
 signal item_changed
-signal item_change_ended
+signal item_change_ended(current_item:ItemObject)
 signal use_item_started
 signal item_used
 
@@ -121,17 +133,17 @@ var direction = Vector3.ZERO
 var strafing :bool = false
 @onready var strafe_cross_product = 0.0
 @onready var move_dot_product = 0.0
-signal strafe_toggled
+signal strafe_toggled(toggle:bool)
 
 # Laddering
 @export var ladder_climb_speed = 1.0
-signal ladder_started
-signal ladder_finished
+signal ladder_started(top_or_bottom:String)
+signal ladder_finished(top_or_bottom:String)
 
 # State management
 enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
 @onready var current_state = state.STATIC_ACTION : set = change_state
-signal changed_state
+signal changed_state(new_state: state)
 
 func _ready():
 	if anim_state_tree:
@@ -162,8 +174,6 @@ func _ready():
 	dodge_timer.one_shot = true
 	dodge_timer.connect("timeout",_on_dodge_timer_timeout)
 	
-	add_child(attack_combo_timer)
-	attack_combo_timer.one_shot = true
 	
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
