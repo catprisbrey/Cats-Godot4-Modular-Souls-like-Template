@@ -50,6 +50,7 @@ func _ready():
 	player_node.attack_started.connect(_on_attack_started)
 	player_node.big_attack_started.connect(_on_big_attack_started)
 	player_node.air_attack_started.connect(_on_air_attack_started)
+	player_node.sprint_attack_started.connect(_on_sprint_attack_started)
 	
 	player_node.gadget_change_started.connect(_on_gadget_change_started)
 	player_node.gadget_change_ended.connect(_on_gadget_change_ended)
@@ -117,6 +118,13 @@ func _on_big_attack_started():
 	await animation_measured
 	attack_timer.start(anim_length +.2)
 	attack_count = 2
+	
+func _on_sprint_attack_started():
+	attack_count = 5
+	request_oneshot("Attack")
+	await animation_measured
+	attack_timer.start(anim_length +.2)
+	attack_count = 1
 	
 func _on_air_attack_started():
 	attack_count = 4

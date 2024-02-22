@@ -55,6 +55,7 @@ signal attack_started ## to start the animation
 signal attack_activated ## to activate collision detection, sound effects, etc.
 signal air_attack_started
 signal big_attack_started
+signal sprint_attack_started
 
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 ## there may be a better way to capture combo key presses across multiple device types,
@@ -141,7 +142,7 @@ signal ladder_started(top_or_bottom:String)
 signal ladder_finished(top_or_bottom:String)
 
 # State management
-enum state {SPAWN,FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
+enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
 @onready var current_state = state.STATIC_ACTION : set = change_state
 signal changed_state(new_state: state)
 
@@ -173,7 +174,6 @@ func _ready():
 	add_child(dodge_timer)
 	dodge_timer.one_shot = true
 	dodge_timer.connect("timeout",_on_dodge_timer_timeout)
-	
 	
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
@@ -213,7 +213,6 @@ func _physics_process(_delta):
 		state.DODGE:
 			dash_movement()
 			rotate_player()
-			
 			
 		state.LADDER:
 			ladder_movement()
@@ -261,7 +260,6 @@ func _input(_event:InputEvent):
 				else:
 					attack()
 					
-					
 			elif _event.is_action_pressed("use_weapon_strong"):
 				attack(secondary_action) # big attack for joypad
 
@@ -299,8 +297,11 @@ func _input(_event:InputEvent):
 		if _event.is_action_released("dodge_dash"):
 			end_sprint()
 			
+		if _event.is_action_pressed("use_weapon_light"):
+			sprint_attack()
+			
 		elif _event.is_action_pressed("jump"):
-				jump()
+			jump()
 				
 	elif current_state == state.LADDER:
 		if _event.is_action_pressed("dodge_dash"):
@@ -309,7 +310,7 @@ func _input(_event:InputEvent):
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
 			end_guard()
-	
+
 func apply_gravity(_delta):
 	if !is_on_floor() \
 	&& current_state != state.LADDER:
@@ -396,10 +397,11 @@ func attack(_is_special_attack : bool = false):
 		attack_started.emit()
 	if anim_state_tree: 
 		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length *.3).timeout
+		await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
 	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
-	await get_tree().create_timer(anim_length *.7).timeout
+	if anim_state_tree: 
+		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
 
@@ -414,9 +416,19 @@ func air_attack():
 	await get_tree().create_timer(anim_length *.5).timeout
 	current_state = state.FREE
 	
-		
-
-
+func sprint_attack():
+	current_state = state.ATTACK
+	sprint_attack_started.emit()
+	if anim_state_tree: 
+		await anim_state_tree.animation_measured
+		await get_tree().create_timer(anim_length *.3).timeout
+	attack_activated.emit()
+	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+	if anim_state_tree: 
+		await get_tree().create_timer(anim_length *.7).timeout
+	if current_state == state.ATTACK:
+		current_state = state.FREE
+	
 func fall_check():
 	## If you leave the floor, store last position.
 	## When you land again, compare the distances of both location y values, if greater
@@ -433,7 +445,6 @@ func fall_check():
 func hard_landing():
 		current_state = state.STATIC_ACTION
 		landed_hard.emit()
-		anim_length = .4
 		if anim_state_tree:
 			await anim_state_tree.animation_measured
 		await get_tree().create_timer(anim_length).timeout
@@ -442,14 +453,11 @@ func hard_landing():
 	
 func jump():
 	if is_on_floor():
+		jump_started.emit()
 		if anim_state_tree:
-			jump_started.emit()
-			anim_length = .5
-			if anim_state_tree:
-				await anim_state_tree.animation_measured
-			var jump_duration = anim_length
+			await anim_state_tree.animation_measured
 		# After timer finishes, return to pre-dodge state
-			await get_tree().create_timer(jump_duration *.7).timeout
+			await get_tree().create_timer(anim_length *.7).timeout
 		velocity.y = jump_velocity
 
 func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
@@ -710,3 +718,4 @@ func death():
 	await get_tree().create_timer(3).timeout
 	get_tree().reload_current_scene()
 		
+
