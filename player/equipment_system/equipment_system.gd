@@ -15,19 +15,20 @@ class_name EquipmentSystem
 ## object receiving the hit.
 
 
-signal equipment_changed
+
 ## The node that will emit the weapon change signal
 @export var player_node : CharacterBody3D
 ## The object group to detect 
 @export var target_group : String = "Targets"
-## The signal name should be connected to trigger the equipment swap
-@export var change_signal : String = "weapon_changed"
+
 ## The signal name from player_node for when the item should be active.
 ## items themselves should manage what "active" means, but typically this is
 ## monitoring/collision shapes, emitters,sound FX, etc. 
 @export var activate_signal : String = "attack_started"
-
+## Signal to cancel if the collision monitoring of the held item.
 @export var deactivate_signal : String = "hurt_started"
+## The signal name should be connected to trigger the equipment swap
+@export var change_signal : String = "weapon_changed"
 ## The primary item location. Bone attachments or Marker3Ds work well for placement
 @export var held_mount_point : Node3D
 ## The secondary item location. Bone attachments or Marker3Ds work well for placement
@@ -39,6 +40,7 @@ signal equipment_changed
 
 signal hit_target
 signal hit_world
+signal equipment_changed(new_equipment : EquipmentObject)
 
 func _ready():
 	if player_node:
@@ -87,6 +89,7 @@ func _on_equipment_changed():
 		if current_equipment.has_signal("body_entered"):
 			current_equipment.body_entered.connect(_on_body_entered)
 		current_equipment.equipped = true
+		
 		equipment_changed.emit(current_equipment)
 		
 func _on_activated():
