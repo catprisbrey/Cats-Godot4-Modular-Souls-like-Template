@@ -423,7 +423,7 @@ func sprint_attack():
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.1) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
 	if anim_state_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
@@ -467,9 +467,12 @@ func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1):
 		direction = (global_position - to_global(_new_direction)).normalized()
 	#speed = default_speed
 	await get_tree().create_timer(_duration).timeout
-	direction = Vector3.ZERO
-	velocity.x = 0
-	velocity.z = 0
+	direction.x = 0
+	direction.z = 0
+	## for a more immediate stop, you can set velocity.x and .z to 0 instead
+	## doing direction allows velocty to slow in the dash_movement() move_toward methods.
+	#velocity.x = 0
+	#velocity.z = 0
 	
 func dodge_or_sprint():
 	if sprint_timer.is_stopped():

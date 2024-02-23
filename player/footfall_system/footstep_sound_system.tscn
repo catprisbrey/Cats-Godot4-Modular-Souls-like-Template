@@ -9,8 +9,10 @@ script = ExtResource("1_agdne")
 step_sound = ExtResource("2_tfol7")
 pant_sound = ExtResource("3_4wlbn")
 
-[node name="Footsteps" type="AudioStreamPlayer" parent="."]
+[node name="Footsteps" type="AudioStreamPlayer3D" parent="."]
 volume_db = -10.0
+max_distance = 5.0
 
-[node name="Pantswish" type="AudioStreamPlayer" parent="."]
+[node name="Pantswish" type="AudioStreamPlayer3D" parent="."]
 volume_db = -15.0
+max_distance = 5.0
