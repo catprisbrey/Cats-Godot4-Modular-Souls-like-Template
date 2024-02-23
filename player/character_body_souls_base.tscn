@@ -2127,8 +2127,7 @@ external_skeleton = NodePath("../../minnyquin/godot_rig/GeneralSkeleton")
 [node name="BackPivot" type="Marker3D" parent="WeaponSystem/BackBone"]
 transform = Transform3D(0.0014642, 0.00341032, -0.999993, -0.0666676, -0.997769, -0.00350057, -0.997774, 0.0666723, -0.00123349, -0.120301, 0.214743, -0.165111)
 
-[node name="Hammer" parent="WeaponSystem/BackBone/BackPivot" instance=ExtResource("6_iekbc")]
-transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0)
+[node name="Ax" parent="WeaponSystem/BackBone/BackPivot" instance=ExtResource("6_iekbc")]
 collision_layer = 0
 
 [node name="WeaponHitTarget" type="AudioStreamPlayer3D" parent="WeaponSystem" node_paths=PackedStringArray("triggering_node")]
@@ -2163,8 +2162,8 @@ end_signal = "hurt_started"
 [node name="GadgetSystem" type="Node3D" parent="." node_paths=PackedStringArray("player_node", "held_mount_point", "stored_mount_point")]
 script = ExtResource("4_bebk6")
 player_node = NodePath("..")
-change_signal = "gadget_changed"
 activate_signal = "gadget_activated"
+change_signal = "gadget_changed"
 held_mount_point = NodePath("LeftHand/HandPivot")
 stored_mount_point = NodePath("HipBone/HipPivot")
 

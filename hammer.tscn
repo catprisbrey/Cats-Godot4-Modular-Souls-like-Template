@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://p6j4nukiapcp"]
+
+[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_vyoqe"]
+[ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_resource.gd" id="2_5qg1x"]
+[ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://demo_level/world_materials/wood01.tres" id="3_7hgpu"]
+[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="4_0k3r7"]
+
+[sub_resource type="Resource" id="Resource_kfefu"]
+script = ExtResource("2_5qg1x")
+name = "Hammer"
+object_type = "HEAVY"
+power = 10
+weight = 5
+value = 1000
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a7gyp"]
+material = ExtResource("3_7hgpu")
+top_radius = 0.04
+bottom_radius = 0.01
+height = 1.0
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ghjb0"]
+material = ExtResource("4_0k3r7")
+top_radius = 0.095
+bottom_radius = 0.19
+height = 0.61
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dskm7"]
+size = Vector3(0.595, 0.705, 0.695)
+
+[node name="Hammer" type="Area3D"]
+collision_mask = 6
+script = ExtResource("1_vyoqe")
+equipment_info = SubResource("Resource_kfefu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.338511, 0)
+mesh = SubResource("CylinderMesh_a7gyp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.326773, 0.103531)
+mesh = SubResource("CylinderMesh_ghjb0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.605817, 0)
+shape = SubResource("BoxShape3D_dskm7")

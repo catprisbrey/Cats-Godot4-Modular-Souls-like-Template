@@ -67,7 +67,7 @@ func _ready():
 			stored_equipment = stored_mount_point.get_child(0)
 			stored_equipment.equipped = false
 			stored_equipment.monitoring = false
-	
+
 func _on_equipment_changed():
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
 		stored_equipment = stored_mount_point.get_child(0)

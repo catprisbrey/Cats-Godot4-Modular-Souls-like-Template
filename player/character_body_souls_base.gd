@@ -180,6 +180,8 @@ func _ready():
 	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 	
+	weapon_change_ended.emit(weapon_type)
+	
 ## Makes variable changes for each state, primiarily used for updating movement speeds
 func change_state(new_state):
 	current_state = new_state
@@ -580,8 +582,6 @@ func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = 
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
-
-
 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
