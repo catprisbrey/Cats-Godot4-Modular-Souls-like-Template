@@ -38,6 +38,8 @@ class_name EquipmentSystem
 ## The item currently under the stored/sheathed node
 @onready var stored_equipment : EquipmentObject
 
+@export_flags_3d_physics var collision_detect_layers = 15
+
 signal hit_target
 signal hit_world
 signal equipment_changed(new_equipment : EquipmentObject)
@@ -52,13 +54,14 @@ func _ready():
 		## needed to turn off monitoring if hurt mid-attack
 		if player_node.has_signal(deactivate_signal):
 			player_node.connect(deactivate_signal,_on_stop_signal)
-			 
+
 	## update what weapon we're starting with
 	if held_mount_point:
 		if held_mount_point.get_child(0):
 			current_equipment = held_mount_point.get_child(0)
 			current_equipment.equipped = true
 			current_equipment.monitoring = false
+			current_equipment.collision_layer = collision_detect_layers
 			if current_equipment.has_signal("body_entered"):
 				current_equipment.body_entered.connect(_on_body_entered)
 	## update what gadget we're holding
@@ -67,6 +70,7 @@ func _ready():
 			stored_equipment = stored_mount_point.get_child(0)
 			stored_equipment.equipped = false
 			stored_equipment.monitoring = false
+			current_equipment.collision_mask = collision_detect_layers
 
 func _on_equipment_changed():
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
@@ -89,7 +93,7 @@ func _on_equipment_changed():
 		if current_equipment.has_signal("body_entered"):
 			current_equipment.body_entered.connect(_on_body_entered)
 		current_equipment.equipped = true
-		
+		current_equipment.collision_mask = collision_detect_layers
 		equipment_changed.emit(current_equipment)
 		
 func _on_activated():
