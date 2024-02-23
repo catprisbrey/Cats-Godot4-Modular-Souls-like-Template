@@ -34,7 +34,7 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 - Rigged Low poly male and female model
 - Low resolution textures
 - Lots of sound effects and music
-- A bunch of animations
+- 75+ animations
 - Flexible nested animation state trees
 
 
