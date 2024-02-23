@@ -9,6 +9,7 @@ class_name SignalSwitch
 ## the property will return back to it's original value. Set to 0 to disable this
 ## feature. Great for temporary conditions you only need true/false for a period of time.
 ## eg. Cooldowns, activated periods, emitting particles, playing a sound. etc.
+
 @export var lifetime :float = 0
 
 ## Node that will emit the starting or ending signals.
@@ -29,7 +30,7 @@ func _ready():
 		signaling_node.connect(end_signal,_on_signal)
 	toggle = node_to_toggle.get(property)
 
-func _on_signal(_arg = null):
+func _on_signal(_arg = null,_arg2 = null):
 	toggle = !node_to_toggle.get(property)
 	node_to_toggle.set(property,toggle)
 	

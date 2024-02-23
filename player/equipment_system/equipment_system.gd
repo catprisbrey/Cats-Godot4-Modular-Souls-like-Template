@@ -33,9 +33,9 @@ signal equipment_changed
 ## The secondary item location. Bone attachments or Marker3Ds work well for placement
 @export var stored_mount_point : Node3D
 ## The item currently under the primary held mount node
-@onready var current_equipment : Node3D
+@onready var current_equipment : EquipmentObject
 ## The item currently under the stored/sheathed node
-@onready var stored_equipment : Node3D
+@onready var stored_equipment : EquipmentObject
 
 signal hit_target
 signal hit_world
@@ -77,7 +77,7 @@ func _on_equipment_changed():
 		held_mount_point.add_child(stored_equipment)
 		stored_mount_point.add_child(current_equipment)
 		
-		# Update to current equipment
+		# Update to current equipment, let them know they're equiped
 		current_equipment.equipped = false
 		if current_equipment.is_connected("body_entered", _on_body_entered):
 			current_equipment.disconnect("body_entered",_on_body_entered)

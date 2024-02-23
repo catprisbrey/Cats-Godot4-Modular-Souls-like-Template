@@ -1,8 +1,8 @@
 [gd_scene load_steps=19 format=3 uid="uid://dvs3icvtoe84r"]
 
 [ext_resource type="Script" path="res://player/equipment_system/equipment/equipment_object.gd" id="1_daoms"]
-[ext_resource type="Script" path="res://player/equipment_system/equipment/TorchFlame.gd" id="1_gt3u5"]
 [ext_resource type="AudioStream" uid="uid://bd7r1x1qj66kq" path="res://audio/SoundFX/fire/fire_01_loop.wav" id="2_1xq1v"]
+[ext_resource type="Script" path="res://player/signal_switch.gd" id="2_uorbh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ergnq"]
 resource_name = "Hilt"
@@ -163,21 +163,38 @@ mesh = SubResource("ArrayMesh_kps01")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00253296, 0.450897, 0)
 shape = SubResource("BoxShape3D_7pavc")
 
-[node name="TorchFlame2" type="GPUParticles3D" parent="."]
+[node name="FlameParticles" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510352, 0)
 amount = 100
 lifetime = 0.6
 explosiveness = 0.17
 process_material = SubResource("ParticleProcessMaterial_s0sxy")
 draw_pass_1 = SubResource("PlaneMesh_cum78")
-script = ExtResource("1_gt3u5")
 
-[node name="TorchLight" type="OmniLight3D" parent="TorchFlame2"]
+[node name="SignalSwitch" type="Node" parent="FlameParticles" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("2_uorbh")
+signaling_node = NodePath("../..")
+start_signal = "equipped_changed"
+
+[node name="TorchLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510352, 0)
 light_color = Color(1, 0.752941, 0.4, 1)
 light_volumetric_fog_energy = 0.0
 light_size = 0.5
 omni_attenuation = 1.86607
 
+[node name="SignalSwitch" type="Node" parent="TorchLight" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("2_uorbh")
+signaling_node = NodePath("../..")
+start_signal = "equipped_changed"
+property = "visible"
+
 [node name="FireSFX" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("2_1xq1v")
 max_distance = 3.65
+
+[node name="SignalSwitch" type="Node" parent="FireSFX" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("2_uorbh")
+signaling_node = NodePath("../..")
+start_signal = "equipped_changed"
+property = "playing"
