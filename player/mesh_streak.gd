@@ -59,12 +59,12 @@ func _process(_delta):
 			create_edge()
 			mesh_update()
 	else:
-		if mesh_array.size() != 0:
-			remove_edge()
-			mesh_update()
-
+		remove_edge()
+		mesh_update()
+			
+		
 func mesh_update():
-	if mesh_array.size() != 0:
+	if mesh_array.size() > 2 :
 		var surface_tool = SurfaceTool.new()
 		surface_tool.begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 		surface_tool.set_material(custom_material)
@@ -75,6 +75,8 @@ func mesh_update():
 			surface_tool.set_uv(Vector2.RIGHT)
 			surface_tool.add_vertex(each_edge.bottom_p)
 		mesh = surface_tool.commit()
+	elif mesh_array.size() < 2:
+		mesh =  null
 	
 func create_edge():
 	var new_edge = edge.new()

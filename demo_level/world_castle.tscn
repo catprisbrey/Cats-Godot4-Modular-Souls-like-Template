@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=3 uid="uid://uiw1spc0mevb"]
 
-[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
+[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="3_0mbes"]
 [ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="4_a4kod"]
@@ -81,9 +81,8 @@ light_color = Color(0.345098, 0.160784, 0.0784314, 1)
 light_energy = 5.356
 light_angular_distance = 2.0
 
-[node name="PlayerCharacterBodySoulsBase" parent="." node_paths=PackedStringArray("last_spawn_site") instance=ExtResource("1_70e33")]
+[node name="PlayerCharacterBodySoulsBase" parent="." instance=ExtResource("1_70e33")]
 transform = Transform3D(-0.800146, 0, -0.599806, 0, 1, 0, 0.599806, 0, -0.800146, -9.61981, 2.38419e-07, -0.909899)
-last_spawn_site = NodePath("../SpawnSite")
 
 [node name="DoorObject" parent="." instance=ExtResource("2_4fq4l")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.94139, 0, 23.7356)
@@ -131,10 +130,6 @@ transform = Transform3D(-0.518131, 0, 0.855301, 0, 1, 0, -0.855301, 0, -0.518131
 
 [node name="CharacterBodyEnemyBase3" parent="." instance=ExtResource("8_3w8s6")]
 transform = Transform3D(0.566751, 0, 0.823889, 0, 1, 0, -0.823889, 0, 0.566751, -36.0567, 3.8271, 14.7454)
-
-[node name="SpawnSite" parent="." instance=ExtResource("9_cpxbt")]
-transform = Transform3D(0.996195, 0, 0.0871556, 0, 1, 0, -0.0871556, 0, 0.996195, -5.55901, 0, 4.05321)
-reset_level = true
 
 [node name="DoorObject2" parent="." instance=ExtResource("2_4fq4l")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23.9496, 0.0296541, 17.5979)
@@ -260,3 +255,6 @@ transform = Transform3D(-0.894935, -0.0116801, 0.446045, 0, 0.999658, 0.0261769,
 stream = ExtResource("14_wsft0")
 volume_db = -18.0
 autoplay = true
+
+[node name="SpawnSite" parent="." instance=ExtResource("9_cpxbt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07785, 9.53674e-07, 5.67158)

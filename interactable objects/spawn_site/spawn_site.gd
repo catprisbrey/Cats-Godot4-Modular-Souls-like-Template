@@ -5,7 +5,7 @@ class_name SpawnSite
 @onready var anim_player :AnimationPlayer = $AnimationPlayer
 @onready var texture_rect = $TextureRect
 @export var spawn_scene : PackedScene
-@export var reset_level : bool = false
+@export var reset_level : bool = true
 @onready var ring = $MeshInstance3D/Ring
 @onready var audio_stream_player = $AudioStreamPlayer
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://daae7mgofoegu"]
 
 [ext_resource type="Script" path="res://interactable objects/spawn_site/spawn_site.gd" id="1_xc0h8"]
-[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="2_xqcjh"]
+[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="2_xqcjh"]
 [ext_resource type="AudioStream" uid="uid://dk0v3ug6sia4l" path="res://audio/SoundFX/special/Spawn01.wav" id="3_hjika"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4cg1t"]
