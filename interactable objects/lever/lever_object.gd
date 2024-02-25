@@ -14,11 +14,12 @@ class_name LeverObject
 
 var anim
 
-func activate(_requestor,_sensor_loc):
+func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
 	if locked:
 		shake_lever()
 		
 	else:
+		interactable_activated.emit()
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
 		var move_time = .3
 		

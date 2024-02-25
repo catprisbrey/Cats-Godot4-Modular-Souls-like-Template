@@ -14,11 +14,13 @@ class_name DoorObject
 @export var locked : bool = false
 var anim
 
-func activate(_requestor = self,_sensor_loc = Vector3.ZERO):
+func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
 	if locked:
 		shake_door()
 		
-	else: # detect where the requestor is, and pass them location info to know where to center up.
+	else:
+		interactable_activated.emit()
+		 # detect where the requestor is, and pass them location info to know where to center up.
 		var dist_to_front = to_global(Vector3.FORWARD).distance_to(_requestor.global_position)
 		var dist_to_back = to_global(Vector3.BACK).distance_to(_requestor.global_position)
 		

@@ -1,32 +1,100 @@
-[gd_scene load_steps=15 format=3 uid="uid://daae7mgofoegu"]
+[gd_scene load_steps=35 format=3 uid="uid://daae7mgofoegu"]
 
 [ext_resource type="Script" path="res://interactable objects/spawn_site/spawn_site.gd" id="1_xc0h8"]
 [ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="2_xqcjh"]
 [ext_resource type="AudioStream" uid="uid://dk0v3ug6sia4l" path="res://audio/SoundFX/special/Spawn01.wav" id="3_hjika"]
+[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="3_i7pdy"]
+[ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="4_vtr76"]
+[ext_resource type="Script" path="res://player/signal_switch.gd" id="5_ig8yx"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4cg1t"]
-albedo_color = Color(0.984314, 0.835294, 0.180392, 1)
-metallic = 1.0
-roughness = 0.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_8k66n"]
+size = Vector3(0.97, 1, 0.86)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_3847k"]
-material = SubResource("StandardMaterial3D_4cg1t")
-top_radius = 0.175
-bottom_radius = 0.3
-height = 0.595
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8x4w0"]
+radius = 0.443201
+height = 2.016
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vaxf7"]
+material = ExtResource("3_i7pdy")
+top_radius = 0.09
+bottom_radius = 0.15
+height = 0.245
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfunv"]
 albedo_color = Color(0.984314, 0.835294, 0.180392, 1)
 metallic = 1.0
 roughness = 0.0
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_7c4uj"]
+material = SubResource("StandardMaterial3D_gfunv")
+top_radius = 0.025
+bottom_radius = 0.025
+height = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1w5ut"]
+material = SubResource("StandardMaterial3D_gfunv")
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.3
+radial_segments = 8
+rings = 1
+
+[sub_resource type="TorusMesh" id="TorusMesh_e3ebr"]
+material = SubResource("StandardMaterial3D_gfunv")
+inner_radius = 0.045
+outer_radius = 0.081
+rings = 16
+ring_segments = 8
+
 [sub_resource type="TorusMesh" id="TorusMesh_miswj"]
 material = SubResource("StandardMaterial3D_gfunv")
-inner_radius = 0.2
-outer_radius = 0.14
+inner_radius = 0.045
+outer_radius = 0.081
+rings = 16
+ring_segments = 8
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_8k66n"]
-size = Vector3(0.97, 1, 0.86)
+[sub_resource type="Gradient" id="Gradient_rxetm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lhja2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_px6cx"]
+width = 128
+height = 128
+seamless = true
+color_ramp = SubResource("Gradient_rxetm")
+noise = SubResource("FastNoiseLite_lhja2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vrk0s"]
+noise_type = 2
+seed = 55
+frequency = 0.012
+fractal_octaves = 3
+fractal_lacunarity = 2.03
+fractal_gain = -0.645
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k0716"]
+width = 1024
+height = 1024
+in_3d_space = true
+seamless = true
+as_normal_map = true
+bump_strength = 2.0
+noise = SubResource("FastNoiseLite_vrk0s")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3hvfb"]
+resource_name = "Armor"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0, 0.694118, 0.992157, 1)
+metallic = 1.0
+roughness = 0.3
+emission_enabled = true
+emission = Color(0.278431, 0.54902, 0.74902, 1)
+emission_texture = SubResource("NoiseTexture2D_px6cx")
+normal_enabled = true
+normal_scale = 1.28
+normal_texture = SubResource("NoiseTexture2D_k0716")
+grow_amount = 0.105
 
 [sub_resource type="Gradient" id="Gradient_l4urp"]
 offsets = PackedFloat32Array(1)
@@ -49,71 +117,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D/Ring:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1.5708, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D/Ring:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 1, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MeshInstance3D/Ring:scale")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_q2e52"]
-resource_name = "idle"
-length = 4.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D/Ring:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1.5708, 0, 0), Vector3(1.5708, 6.28319, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D/Ring:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 2, 4),
-"transitions": PackedFloat32Array(2.82843, 0.297302, 2.82843),
-"update": 0,
-"values": [Vector3(0, 1, 0), Vector3(0, 0.5, 0), Vector3(0, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_71hhn"]
@@ -145,67 +148,157 @@ tracks/1/keys = {
 "method": &"respawn"
 }]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D/Ring:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1.5708, 0, 0), Vector3(1.5708, -35.7443, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MeshInstance3D/Ring:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0.5, 0), Vector3(0, 1.03, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("MeshInstance3D/Ring:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1, 1, 1), Vector3(2, 2, 2)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vy1e8"]
 _data = {
 "RESET": SubResource("Animation_q07lx"),
-"idle": SubResource("Animation_q2e52"),
 "respawn": SubResource("Animation_71hhn")
 }
+
+[sub_resource type="Gradient" id="Gradient_5nxka"]
+offsets = PackedFloat32Array(0, 0.0740741, 0.599327, 0.814815, 1)
+colors = PackedColorArray(0.195322, 0.61755, 0.946868, 1, 0.352687, 0.544337, 0.67476, 1, 0.278431, 0.54902, 0.74902, 1, 1, 1, 1, 1, 1, 0.543101, 0.379672, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2ia4i"]
+gradient = SubResource("Gradient_5nxka")
+
+[sub_resource type="Curve" id="Curve_qw02e"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443077, 1), 0.0418739, 0.0418739, 0, 0, Vector2(0.966851, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_d52au"]
+curve = SubResource("Curve_qw02e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_01w5w"]
+emission_shape = 1
+emission_sphere_radius = 0.4
+direction = Vector3(0, 0, 0)
+spread = 0.0
+radial_velocity_max = 0.5
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_d52au")
+color_ramp = SubResource("GradientTexture1D_2ia4i")
+
+[sub_resource type="Gradient" id="Gradient_y5nj0"]
+offsets = PackedFloat32Array(0.392982, 0.757895)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jed34"]
+gradient = SubResource("Gradient_y5nj0")
+fill = 1
+fill_from = Vector2(0.495726, 0.5)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m1sb2"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("GradientTexture2D_jed34")
+disable_receive_shadows = true
+billboard_mode = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_e5c8b"]
+material = SubResource("StandardMaterial3D_m1sb2")
+size = Vector2(0.03, 0.03)
+orientation = 2
 
 [node name="SpawnSite" type="StaticBody3D" groups=["Interactable"]]
 collision_layer = 9
 collision_mask = 9
 script = ExtResource("1_xc0h8")
 spawn_scene = ExtResource("2_xqcjh")
+physical_layer = 8
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-mesh = SubResource("CylinderMesh_3847k")
-
-[node name="Ring" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, -3.61999e-06, -1, 0, 1, -3.61999e-06, 0, 1, 0)
-mesh = SubResource("TorusMesh_miswj")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="DetectShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_8k66n")
+
+[node name="PhysicalShape" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PhysicalShape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.243864, 0)
+shape = SubResource("CapsuleShape3D_8x4w0")
+
+[node name="Base" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.244491, 0)
+radius = 0.229
+height = 0.527989
+material = ExtResource("3_i7pdy")
+
+[node name="BaseCoupling" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00253575, 0.343033, 0)
+mesh = SubResource("CylinderMesh_vaxf7")
+
+[node name="Pole" type="MeshInstance3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00355995, 0.931588, 0)
+mesh = SubResource("CylinderMesh_7c4uj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Base/Pole"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.046986, 0.431354, 0)
+mesh = SubResource("CylinderMesh_1w5ut")
+
+[node name="Ring" type="MeshInstance3D" parent="Base/Pole/MeshInstance3D"]
+transform = Transform3D(1, 8.74228e-08, -1.74846e-07, 1.74846e-07, 4.37114e-08, 1, 8.74228e-08, -1, 4.37114e-08, 0.0629805, 0.150519, -7.05642e-07)
+mesh = SubResource("TorusMesh_e3ebr")
+skeleton = NodePath("Ring/Ring")
+
+[node name="Ring" type="MeshInstance3D" parent="Base/Pole/MeshInstance3D/Ring"]
+transform = Transform3D(-0.00198965, 3.79509e-06, 0.999998, 0.999998, -8.0133e-08, 0.00198965, 8.76838e-08, 1, -3.79492e-06, 0.0908664, 1.7558e-08, 7.45058e-09)
+mesh = SubResource("TorusMesh_miswj")
+skeleton = NodePath("../../../..")
+
+[node name="Ring" type="MeshInstance3D" parent="Base/Pole/MeshInstance3D/Ring/Ring"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 1.64203e-15, -4.37114e-08, -1, -1, -4.37114e-08, 3.55271e-15, 4.01855e-09, 0, 0.0919337)
+mesh = SubResource("TorusMesh_miswj")
+
+[node name="Lantern" type="CSGCombiner3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0829159, 0.28722, 0)
+
+[node name="MeshInstance3D" type="CSGCylinder3D" parent="Base/Lantern"]
+transform = Transform3D(-2.11758e-22, 4.37114e-08, 1, 1.06581e-14, -1, 4.37114e-08, 1, 3.55271e-15, -1.17434e-23, 0.117581, 0.604949, -6.89652e-07)
+radius = 0.095
+height = 0.281
+sides = 4
+material = ExtResource("3_i7pdy")
+
+[node name="Connector" type="CSGBox3D" parent="Base/Lantern/MeshInstance3D"]
+transform = Transform3D(1, 0, 7.10543e-15, -1.69407e-21, 1, -7.10543e-15, -7.10543e-15, -9.02829e-37, 1, 0, -0.16161, 2.23517e-08)
+size = Vector3(0.05, 0.05, 0.05)
+material = ExtResource("3_i7pdy")
+
+[node name="Glass" type="CSGBox3D" parent="Base/Lantern/MeshInstance3D"]
+transform = Transform3D(0.707106, 0, -0.707106, -1.6482e-14, 1, -1.19398e-14, 0.707106, 3.10588e-22, 0.707106, 0.0458273, 0, -0.0445496)
+operation = 2
+size = Vector3(0.1, 0.24, 0.025)
+material = SubResource("StandardMaterial3D_3hvfb")
+
+[node name="Glass2" type="CSGBox3D" parent="Base/Lantern/MeshInstance3D"]
+transform = Transform3D(0.707106, 0, -0.707106, -2.00347e-14, 1, -1.54925e-14, 0.707106, 3.10588e-22, 0.707106, -0.0473348, 0, 0.0486125)
+operation = 2
+size = Vector3(0.1, 0.24, 0.025)
+material = SubResource("StandardMaterial3D_3hvfb")
+
+[node name="Glass3" type="CSGBox3D" parent="Base/Lantern/MeshInstance3D"]
+transform = Transform3D(-0.707106, 0, -0.707106, -2.25979e-14, 1, -1.28161e-15, 0.707106, 3.10588e-22, -0.707106, -0.0426201, 0, -0.0445496)
+operation = 2
+size = Vector3(0.1, 0.24, 0.025)
+material = SubResource("StandardMaterial3D_3hvfb")
+
+[node name="Glass4" type="CSGBox3D" parent="Base/Lantern/MeshInstance3D"]
+transform = Transform3D(-0.707106, 0, -0.707106, -2.25979e-14, 1, 2.27111e-15, 0.707106, 3.10588e-22, -0.707106, 0.0451792, 0, 0.0432497)
+operation = 2
+size = Vector3(0.1, 0.24, 0.025)
+material = SubResource("StandardMaterial3D_3hvfb")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0859959, 0)
+operation = 2
+inner_radius = 0.149
+outer_radius = 0.505
+ring_sides = 5
+material = ExtResource("4_vtr76")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -217,12 +310,34 @@ grow_vertical = 2
 texture = SubResource("GradientTexture1D_sataw")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-deterministic = true
 libraries = {
 "": SubResource("AnimationLibrary_vy1e8")
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_hjika")
-volume_db = -4.232
-pitch_scale = 3.11
+pitch_scale = 0.79
+
+[node name="SignalSwitch" type="Node" parent="AudioStreamPlayer" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("5_ig8yx")
+signaling_node = NodePath("../..")
+start_signal = "interactable_activated"
+property = "playing"
+
+[node name="FlameParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.201001, 1.16045, 0)
+amount = 20
+lifetime = 0.6
+speed_scale = 0.5
+explosiveness = 0.17
+process_material = SubResource("ParticleProcessMaterial_01w5w")
+draw_pass_1 = SubResource("PlaneMesh_e5c8b")
+
+[node name="TorchLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204915, 1.15195, 0)
+light_color = Color(0.615686, 0.831373, 1, 1)
+light_energy = 0.1
+light_volumetric_fog_energy = 0.0
+light_size = 0.3
+omni_range = 0.5
+omni_attenuation = 1.86607

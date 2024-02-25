@@ -14,11 +14,13 @@ class_name GateObject
 @export var locked : bool = false
 var anim
 
-func activate(_requestor,_sensor_loc):
+func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+	
 	if locked:
 		shake_gate()
 		
 	else:
+		interactable_activated.emit()
 		var dist_to_front = to_global(Vector3.FORWARD).distance_to(_requestor.global_position)
 		var dist_to_back = to_global(Vector3.BACK).distance_to(_requestor.global_position)
 		

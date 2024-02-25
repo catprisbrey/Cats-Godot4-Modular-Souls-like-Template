@@ -8,22 +8,24 @@ class_name LadderObject
 ## or the bottom of the ladder, and where to stand in order to mount the ladder.
 ## This way the requestor can run their own "start_ladder" logic and animations.
 
-var top_or_bottom
+var loc_at_ladder
 var mount_transform
 ## Distance from the rungs the player should move to.
 @export var ladder_offset : float = .4 
 
-func activate(_requestor: Node3D,sensor_location = "BOTTOM"):
+func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+	interactable_activated.emit()
+	
 	var newTranslation = global_transform.rotated_local(Vector3.UP,PI)
-	if sensor_location == "BOTTOM":
-		top_or_bottom = "TOP"
+	if _sensor_top_or_bottom == "BOTTOM":
+		loc_at_ladder = "TOP"
 		mount_transform = newTranslation.translated_local(Vector3(0,-1.4
 		 + _requestor.global_position.y,-.4))
 	else:
-		top_or_bottom = "BOTTOM"
+		loc_at_ladder = "BOTTOM"
 		mount_transform = newTranslation.translated_local(Vector3(0,0,-.4))
 		mount_transform.origin.y = _requestor.transform.origin.y + .5
 		
 	if _requestor.has_method("start_ladder"):
-		_requestor.start_ladder(top_or_bottom,mount_transform)
+		_requestor.start_ladder(loc_at_ladder,mount_transform)
 	

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cev0hfdkmno27"]
+[gd_scene load_steps=12 format=3 uid="uid://cev0hfdkmno27"]
 
 [ext_resource type="Script" path="res://interactable objects/lever/lever_object.gd" id="1_yoflx"]
 [ext_resource type="AudioStream" uid="uid://bqs6en2dxoi3x" path="res://audio/SoundFX/ratchet/ratchet_3.wav" id="2_kvfhg"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_r31s6"]
 [ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://demo_level/world_materials/wood01.tres" id="3_6pvo0"]
 [ext_resource type="AudioStream" uid="uid://bxgsmc1dwuooi" path="res://audio/SoundFX/clack/clack_4.wav" id="3_xhpgq"]
+[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="4_0ir80"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tlw3j"]
 size = Vector3(0.924, 1.406, 1.214)
@@ -140,6 +141,28 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.8, 3
 radius = 0.03
 height = 1.0
 material = ExtResource("3_6pvo0")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCylinder3D/CSGCylinder3D"]
+transform = Transform3D(1, -5.68434e-14, -1.13687e-13, 1.13687e-13, 1, 0, 0, 0, 1, 2.27374e-13, -0.375104, -8.9407e-08)
+radius = 0.049
+height = 0.37
+material = ExtResource("4_0ir80")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCylinder3D"]
+transform = Transform3D(1, -1.3074e-12, -1.19209e-07, 5.11591e-13, 1, -2.04636e-12, 1.19209e-07, -5.68434e-13, 1, -5.26451e-07, -0.145429, 6.95735e-13)
+operation = 2
+inner_radius = 0.29
+outer_radius = 0.44
+ring_sides = 4
+material = ExtResource("4_0ir80")
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="CSGCylinder3D"]
+transform = Transform3D(0.707106, -6.15709e-06, 0.707107, -6.22342e-06, -1, -2.48401e-06, 0.707107, -2.64417e-06, -0.707106, 5.62591e-07, 0.155412, -8.12539e-13)
+operation = 2
+inner_radius = 0.29
+outer_radius = 0.44
+ring_sides = 4
+material = ExtResource("4_0ir80")
 
 [node name="LeverAnimPlayer" type="AnimationPlayer" parent="."]
 libraries = {

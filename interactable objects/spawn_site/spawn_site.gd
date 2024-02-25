@@ -6,21 +6,18 @@ class_name SpawnSite
 @onready var texture_rect = $TextureRect
 @export var spawn_scene : PackedScene
 @export var reset_level : bool = true
-@onready var ring = $MeshInstance3D/Ring
 @onready var audio_stream_player = $AudioStreamPlayer
+@onready var flame_particles = $FlameParticles
 
-func _ready():
-	anim_player.play("idle",.2)
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_loc = null):
+func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+	interactable_activated.emit()
+	
 	if _requestor.has_method("start_interact"):
 		_requestor.start_interact(interact_type,_requestor.global_transform.looking_at(global_position,Vector3.UP,true), .4)
-		audio_stream_player.play()
 		anim_player.play("respawn",.2)
-		await get_tree().create_timer(2).timeout
+		await anim_player.animation_finished
 		_requestor.queue_free()
-		await get_tree().create_timer(1).timeout
-		anim_player.play("idle",.2)
 	
 
 func respawn():
