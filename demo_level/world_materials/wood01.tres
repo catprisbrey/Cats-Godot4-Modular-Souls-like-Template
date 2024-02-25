@@ -10,5 +10,5 @@ roughness = 0.78
 normal_enabled = true
 normal_scale = 1.5
 normal_texture = ExtResource("2_7hy46")
-uv1_scale = Vector3(11, 11, 11)
+uv1_scale = Vector3(10, 10, 10)
 uv1_offset = Vector3(1.045, 0, 0)

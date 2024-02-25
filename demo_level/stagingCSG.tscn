@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bbhrq4snasi1i"]
+[gd_scene load_steps=19 format=3 uid="uid://bbhrq4snasi1i"]
 
 [ext_resource type="Texture2D" uid="uid://b3myc8ugf1j4i" path="res://demo_level/world_materials/TinyCobble01_albedo.png" id="1_33i31"]
 [ext_resource type="Material" uid="uid://bensj7wrago0n" path="res://demo_level/world_materials/citybrick01.tres" id="1_cuay2"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://dwi6wppkvd4nl" path="res://demo_level/torch.tscn" id="4_32otp"]
 [ext_resource type="Material" uid="uid://bu351ebqnnb6x" path="res://demo_level/world_materials/crate01.tres" id="9_ajn22"]
 [ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="9_u68aa"]
+[ext_resource type="PackedScene" uid="uid://07ciwo0kiqm0" path="res://demo_level/objects/cat_barrel.tscn" id="11_2hlem"]
+[ext_resource type="PackedScene" uid="uid://bpvn57cwe8ktj" path="res://demo_level/objects/cat_crate.tscn" id="12_06od4"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_n8eyr"]
 size = Vector3(37.155, 0.1, 40.145)
@@ -82,6 +84,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8719, -1, 8.50028)
 
 [node name="Floor" type="CSGCylinder3D" parent="CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.4918, 0, 6.67338)
+operation = 2
 use_collision = true
 radius = 51.965
 material = SubResource("StandardMaterial3D_dgj8o")
@@ -90,7 +93,7 @@ material = SubResource("StandardMaterial3D_dgj8o")
 transform = Transform3D(2.2, 0, 0, 0, 2.2, 0, 0, 0, 2.2, 11.3575, 8.27731, -7.04642)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D/City"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25913, 1.58002, 20.3027)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25913, 1.58002, 22.3856)
 size = Vector3(8.48157, 13.16, 5)
 material = ExtResource("1_cuay2")
 
@@ -146,14 +149,14 @@ size = Vector3(1, 2, 10)
 material = ExtResource("3_gacsr")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D/City"]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -18.3948, 3.24155, -6.64528)
-size = Vector3(8.48157, 13.16, 5)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -18.3948, 3.24155, -10.1013)
+size = Vector3(8.48157, 13.16, 11.912)
 material = ExtResource("1_cuay2")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D/City/CSGBox3D3"]
-transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 10.0886, 0)
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 8.36473, -2.72099)
 operation = 2
-size = Vector3(8.48157, 13.16, 5)
+size = Vector3(8.48157, 14.8457, 5)
 material = ExtResource("3_gacsr")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D/City/CSGBox3D3"]
@@ -228,7 +231,7 @@ size = Vector3(8.48157, 13.16, 5)
 material = ExtResource("3_gacsr")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGBox3D/City"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.65305, 1.49544, -5.00714)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.61198, 1.49544, -5.00714)
 size = Vector3(8.48157, 13.16, 5)
 material = ExtResource("2_pn36w")
 
@@ -239,7 +242,7 @@ size = Vector3(8.48157, 13.16, 5)
 material = ExtResource("3_gacsr")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="CSGBox3D/City"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.43812, 2.40285, 5.42477)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 8.31123, 2.40285, 5.42477)
 size = Vector3(8.48157, 13.16, 5)
 material = ExtResource("1_cuay2")
 
@@ -267,6 +270,13 @@ operation = 2
 size = Vector3(1, 2, 10)
 material = ExtResource("3_gacsr")
 
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.9131, 4.98904, 5.69051)
+inner_radius = 47.4
+outer_radius = 60.708
+ring_sides = 3
+material = ExtResource("2_pn36w")
+
 [node name="Arena" type="CSGBox3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -24.7076, 0, 15.5255)
 use_collision = true
@@ -275,6 +285,11 @@ material = ExtResource("2_pn36w")
 
 [node name="Doorway2" type="CSGBox3D" parent="Arena"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8851, 0.957041, -1.37757)
+operation = 2
+size = Vector3(1, 2, 1)
+
+[node name="Doorway5" type="CSGBox3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.4362, 0.957041, -9.68494)
 operation = 2
 size = Vector3(1, 2, 1)
 
@@ -406,456 +421,56 @@ size = Vector3(1, 2, 1)
 
 [node name="Props" type="Node3D" parent="."]
 
-[node name="Barrel" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.21722, 0.8, -2.466)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.21722, 0.8, 2.50494)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel2"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel2"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel2"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel2"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -13.3416, 0.8, 2.50494)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel3"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel3"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel3"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel3"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -10.7291, 0.8, 32.9936)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel4"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-0.95317, 0, -0.302436, 0, 1, 0, 0.302436, 0, -0.95317, -0.313085, 0.8, 32.3249)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel5"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-0.863765, 0, -0.503895, 0, 1, 0, 0.503895, 0, -0.863765, -21.7537, 0.8, -0.124868)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel6"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel6"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel6"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel6"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.235566, 0, 0.971858, 0, 1, 0, -0.971858, 0, 0.235566, -6.398, 0.495, 9.294)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1.5, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate3" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.896757, 0, -0.442523, 0, 1, 0, 0.442523, 0, -0.896757, -13.857, 0.459, 21.74)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate3"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -2.57104, 0, 4.92828)
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate2" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.707884, 0, 0.706329, 0, 1, 0, -0.706329, 0, 0.707884, -0.509607, 0.468941, 26.4021)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate2"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1.5, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate4" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.519698, 0, 0.85435, 0, 1, 0, -0.85435, 0, -0.519698, -21.0124, 0.466587, 23.7352)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate4"]
-transform = Transform3D(0.937984, -0.000811059, 0.346682, 0.000436642, 0.999999, 0.00115814, -0.346682, -0.00093495, 0.937983, 13.5227, 0.0228121, 10.1354)
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate5" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.786903, 0, -0.617077, 0, 1, 0, 0.617077, 0, -0.786903, -21.3177, 0.471605, 22.1039)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate5"]
-transform = Transform3D(0.972419, 0, -0.233242, 0, 1, 0, 0.233242, 0, 0.972419, -10.2873, 0, 12.4423)
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -28.9002, 0.8, 32.1597)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel7"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel8" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(0.639681, 0, 0.768641, 0, 1, 0, -0.768641, 0, 0.639681, -47.6768, 4.54634, 9.98329)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel8"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel9" type="CSGCylinder3D" parent="Props"]
-transform = Transform3D(-0.985449, 0, -0.169969, 0, 1, 0, 0.169969, 0, -0.985449, -34.7794, 4.54634, 23.4635)
-use_collision = true
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel2" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -1.58041, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel3" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.751346, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel4" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -3.15482, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel5" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.32576, 1.64559, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel6" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -0.84122, 0, 1.80307)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel7" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, -2.24725, 0, 1.55098)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Barrel8" type="CSGCylinder3D" parent="Props/Barrel9"]
-transform = Transform3D(0.879624, 0, -0.47567, 0, 1, 0, 0.47567, 0, 0.879624, 3.18532, 0, 0)
-radius = 0.75
-height = 1.619
-material = ExtResource("9_ajn22")
-
-[node name="Crate6" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.612714, 0, -0.790305, 0, 1, 0, 0.790305, 0, 0.612714, -46.6436, 4.31912, 20.1294)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate6"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate7" type="CSGBox3D" parent="Props"]
-transform = Transform3D(0.712308, 0, 0.701867, 0, 1, 0, -0.701867, 0, 0.712308, -46.1563, 4.32348, 21.7159)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate7"]
-transform = Transform3D(0.79085, 0, -0.61201, 0, 1, 0, 0.61201, 0, 0.79085, -0.991735, 0, 1.72788)
-size = Vector3(1, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate8" type="CSGBox3D" parent="Props"]
-transform = Transform3D(-0.997876, -0.000302391, 0.0651419, -0.00031312, 1, -0.000154491, -0.0651418, -0.00017456, -0.997876, -13.8573, 1.47279, 15.7981)
-use_collision = true
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
-
-[node name="Crate" type="CSGBox3D" parent="Props/Crate8"]
-transform = Transform3D(0.0646102, 0.452712, -0.889311, -0.997909, 0.029325, -0.0575742, 1.55577e-05, 0.891172, 0.453661, 0.17815, -0.750267, 1.4889)
-size = Vector3(1.5, 1, 1.5)
-material = ExtResource("9_ajn22")
+[node name="Marker3D2" type="Marker3D" parent="Props"]
+transform = Transform3D(0.193447, 0, -0.981111, 0, 1, 0, 0.981111, 0, 0.193447, 2.36801, 0, -0.228015)
+
+[node name="cat_barrel" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.917886, 0, -0.396844, 0, 1, 0, 0.396844, 0, 0.917886, 1.24874, 0, 0.416208)
+
+[node name="cat_barrel2" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.995415, 0, 0.0956547, 0, 1, 0, -0.0956547, 0, 0.995415, 0.429803, 0, 0.00509334)
+
+[node name="cat_barrel3" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.979375, 0, -0.202052, 0, 1, 0, 0.202052, 0, 0.979375, -0.475029, 0, 0.252176)
+
+[node name="cat_barrel4" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.945513, 0, 0.325585, 0, 1, 0, -0.325585, 0, 0.945513, -1.40931, 0, 0.0687785)
+
+[node name="cat_barrel5" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.89235, 0, 0.451345, 0, 1, 0, -0.451345, 0, 0.89235, 0.7898, 1.15148, 0.175135)
+
+[node name="cat_barrel6" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.318033, 0, -0.94808, 0, 1, 0, 0.94808, 0, -0.318033, -0.134178, 1.15148, -0.142633)
+
+[node name="cat_barrel7" parent="Props/Marker3D2" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.995415, 0, 0.0956547, 0, 1, 0, -0.0956547, 0, 0.995415, -1.04849, 1.15148, 0.118217)
+
+[node name="Marker3D" type="Marker3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.59507)
+
+[node name="cat_barrel" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.917886, 0, -0.396844, 0, 1, 0, 0.396844, 0, 0.917886, 1.24874, 0, 0.416208)
+
+[node name="cat_barrel2" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.995415, 0, 0.0956547, 0, 1, 0, -0.0956547, 0, 0.995415, 0.429803, 0, 0.00509334)
+
+[node name="cat_barrel3" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.979375, 0, -0.202052, 0, 1, 0, 0.202052, 0, 0.979375, -0.475029, 0, 0.252176)
+
+[node name="cat_barrel4" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.945513, 0, 0.325585, 0, 1, 0, -0.325585, 0, 0.945513, -1.40931, 0, 0.0687785)
+
+[node name="cat_barrel5" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.89235, 0, 0.451345, 0, 1, 0, -0.451345, 0, 0.89235, 0.7898, 1.15148, 0.175135)
+
+[node name="cat_barrel6" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.318033, 0, -0.94808, 0, 1, 0, 0.94808, 0, -0.318033, -0.134178, 1.15148, -0.142633)
+
+[node name="cat_barrel7" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.995415, 0, 0.0956547, 0, 1, 0, -0.0956547, 0, 0.995415, -1.04849, 1.15148, 0.118217)
+
+[node name="cat_barrel8" parent="Props/Marker3D" instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.925314, 7.15256e-07, 1.64407)
 
 [node name="Lighting" type="Node3D" parent="."]
 
@@ -894,3 +509,453 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.1874, 4.70349, 25.5255)
 
 [node name="Torch12" parent="Lighting" instance=ExtResource("4_32otp")]
 transform = Transform3D(0.999986, 0.00520106, 0, -0.00520106, 0.999986, 0, 0, 0, 1, -23.4739, 1.72631, 14.9011)
+
+[node name="cat_barrel" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.0431, 2.38419e-07, -0.714721)
+
+[node name="cat_barrel2" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8252, 0, 0.301638)
+
+[node name="cat_barrel3" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.2056, 0, 1.17542)
+
+[node name="cat_barrel4" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.9623, 1.10052, -0.262146)
+
+[node name="cat_barrel5" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.9782, 4.76837e-07, -2.74433)
+
+[node name="cat_barrel6" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8527, 1.15148, -2.6361)
+
+[node name="cat_barrel7" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.7964, 2.30297, -2.60211)
+
+[node name="cat_barrel8" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.9359, 0, -2.86591)
+
+[node name="cat_barrel9" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6757, 2.38419e-07, -1.63267)
+
+[node name="cat_barrel10" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02999, 0, 33.1539)
+
+[node name="cat_barrel11" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08045, -4.76837e-07, 33.1767)
+
+[node name="cat_barrel12" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07351, -4.76837e-07, 33.043)
+
+[node name="cat_barrel13" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0044117, 4.76837e-07, 33.2181)
+
+[node name="cat_barrel14" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01513, 0, 33.2946)
+
+[node name="cat_barrel15" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, -0.964216, 0, 31.851)
+
+[node name="cat_barrel16" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, -0.0144008, -4.76837e-07, 31.851)
+
+[node name="cat_barrel17" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 0.989064, -4.76837e-07, 32.0087)
+
+[node name="cat_barrel18" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 2.07086, 4.76837e-07, 31.8593)
+
+[node name="cat_barrel19" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 3.08311, 0, 31.807)
+
+[node name="cat_barrel20" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, -0.964216, 0, 30.681)
+
+[node name="cat_barrel21" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, -0.0144008, -4.76837e-07, 30.681)
+
+[node name="cat_barrel22" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 0.989064, -4.76837e-07, 30.8386)
+
+[node name="cat_barrel23" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 2.07086, 4.76837e-07, 30.6893)
+
+[node name="cat_barrel24" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(-0.999715, 0, 0.0238563, 0, 1, 0, -0.0238563, 0, -0.999715, 3.08311, 0, 30.637)
+
+[node name="cat_barrel25" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.963153, 0, -0.268953, 0, 1, 0, 0.268953, 0, 0.963153, 2.96268, 1.15062, 32.6843)
+
+[node name="cat_barrel26" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.963153, 0, -0.268953, 0, 1, 0, 0.268953, 0, 0.963153, 2.04201, 1.15062, 32.4508)
+
+[node name="cat_barrel27" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.963153, 0, -0.268953, 0, 1, 0, 0.268953, 0, 0.963153, 1.10813, 1.15062, 33.2011)
+
+[node name="cat_barrel28" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.963153, 0, -0.268953, 0, 1, 0, 0.268953, 0, 0.963153, 0.0228246, 1.15063, 32.661)
+
+[node name="cat_barrel29" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.963153, 0, -0.268953, 0, 1, 0, 0.268953, 0, 0.963153, -0.97122, 1.15062, 33.2555)
+
+[node name="cat_barrel30" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0318609, 1.15148, 31.1013)
+
+[node name="cat_barrel31" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96491, 1.15148, 31.8734)
+
+[node name="cat_barrel32" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.01316, 0, 29.2595)
+
+[node name="cat_barrel33" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.03117, 1.15148, 32.0163)
+
+[node name="cat_barrel34" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.23568, 0, 33.6769)
+
+[node name="cat_barrel35" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2349, 4.76837e-07, 33.6156)
+
+[node name="cat_barrel36" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.25166, 4.76837e-07, 33.5671)
+
+[node name="cat_barrel37" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2936, 4.76837e-07, 33.6258)
+
+[node name="cat_barrel38" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.3662, 4.76837e-07, 33.8152)
+
+[node name="cat_barrel39" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.84329, 4.76837e-07, 32.6289)
+
+[node name="cat_barrel40" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.8301, 4.76837e-07, 32.5627)
+
+[node name="cat_barrel41" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.74124, 0, 32.5457)
+
+[node name="cat_barrel42" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.794, 4.76837e-07, 32.7913)
+
+[node name="cat_barrel43" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.89085, 1.05284, 33.404)
+
+[node name="cat_barrel44" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.9302, 1.15148, 32.8298)
+
+[node name="cat_barrel45" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.10797, 1.15148, 33.193)
+
+[node name="cat_barrel46" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.0164, 4.76837e-07, 33.3951)
+
+[node name="cat_barrel47" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1499, 9.53674e-07, 32.4222)
+
+[node name="cat_barrel48" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(0.720708, -0.693238, -3.03024e-08, 0, -4.37114e-08, 1, -0.693238, -0.720708, -3.15032e-08, -12.2822, 0.384787, 33.4996)
+
+[node name="cat_barrel49" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.2207, -2.38419e-07, -0.521757)
+
+[node name="cat_barrel50" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8527, 0, -1.51674)
+
+[node name="cat_barrel51" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.2262, -2.38419e-07, -0.747584)
+
+[node name="cat_barrel52" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.0281, -2.38419e-07, -2.26943)
+
+[node name="cat_barrel53" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.4238, 0, -1.45441)
+
+[node name="cat_barrel54" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8825, 0, -2.88928)
+
+[node name="cat_barrel55" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.8761, 0, -2.60587)
+
+[node name="cat_barrel56" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7672, -4.76837e-07, -2.9484)
+
+[node name="cat_barrel57" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9049, 0, -1.99875)
+
+[node name="cat_barrel58" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6574, 1.15148, -0.889681)
+
+[node name="cat_barrel59" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.6504, 1.15148, -1.7602)
+
+[node name="cat_barrel60" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8503, 1.15148, -2.44654)
+
+[node name="cat_barrel61" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.104, 0, -2.83979)
+
+[node name="cat_barrel62" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.0536, 1.15148, -2.73325)
+
+[node name="cat_barrel63" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.0156, 2.30297, -2.60993)
+
+[node name="cat_barrel64" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.864, 0, -1.72327)
+
+[node name="cat_barrel65" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0418, 4.76837e-07, -2.54321)
+
+[node name="cat_barrel66" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8891, 0.989907, -2.10957)
+
+[node name="cat_barrel67" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.3971, 4.76837e-07, 33.5112)
+
+[node name="cat_barrel68" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.053, 2.38419e-07, 33.6661)
+
+[node name="cat_barrel69" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.9773, 0, 32.2182)
+
+[node name="cat_barrel70" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.5101, -2.38419e-07, 31.6164)
+
+[node name="cat_barrel71" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.0557, 0, 31.0454)
+
+[node name="cat_barrel72" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4306, 1.15148, 33.4691)
+
+[node name="cat_barrel73" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.3441, 2.38419e-07, 32.5542)
+
+[node name="cat_barrel74" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.3547, 4.76837e-07, 31.4883)
+
+[node name="cat_barrel75" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.5656, 0, 33.5392)
+
+[node name="cat_barrel76" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.5992, 0, 9.67735)
+
+[node name="cat_barrel77" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.9692, 9.17182, 8.6429)
+
+[node name="cat_barrel78" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.9296, 9.17182, 7.42931)
+
+[node name="cat_barrel79" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.774, 3.8271, 23.4043)
+
+[node name="cat_barrel80" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.4222, 3.8271, 22.75)
+
+[node name="cat_barrel81" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.9293, 3.8271, 22.0936)
+
+[node name="cat_barrel82" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.6358, 3.8271, 23.8404)
+
+[node name="cat_barrel83" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.3819, 3.8271, 22.7151)
+
+[node name="cat_barrel84" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.0446, 3.8271, 23.0357)
+
+[node name="cat_barrel85" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.5578, 3.8271, 22.6783)
+
+[node name="cat_barrel86" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.9815, 3.8271, 21.5334)
+
+[node name="cat_barrel87" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.1872, 3.8271, 20.9851)
+
+[node name="cat_barrel88" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.4946, 3.8271, 12.0169)
+
+[node name="cat_barrel89" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.226, 3.8271, 11.0437)
+
+[node name="cat_barrel90" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.462, 3.8271, 10.2272)
+
+[node name="cat_barrel91" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.7217, 3.8271, 9.5053)
+
+[node name="cat_barrel92" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.9779, 3.8271, 8.75583)
+
+[node name="cat_barrel93" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6196, 3.8271, 7.61068)
+
+[node name="cat_barrel94" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.179, 3.8271, 11.2002)
+
+[node name="cat_barrel95" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.3491, 3.8271, 10.575)
+
+[node name="cat_barrel96" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6453, 3.8271, 9.98277)
+
+[node name="cat_barrel97" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.0529, 3.8271, 8.81563)
+
+[node name="cat_barrel98" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.4279, 4.97858, 10.8447)
+
+[node name="cat_barrel99" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.6155, 4.97858, 10.2261)
+
+[node name="cat_barrel100" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.8235, 4.97858, 9.65999)
+
+[node name="cat_barrel101" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6461, 4.97858, 8.44537)
+
+[node name="cat_barrel102" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.9987, 5.97581, 10.6799)
+
+[node name="cat_barrel103" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.1857, 3.8271, 11.5881)
+
+[node name="cat_barrel104" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.3824, 4.97858, 11.4396)
+
+[node name="cat_barrel105" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.4973, 3.8271, 10.8448)
+
+[node name="cat_barrel106" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.114, 3.8271, 6.08545)
+
+[node name="cat_barrel107" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.0506, 3.8271, 8.29872)
+
+[node name="cat_barrel108" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0715, 3.45622, 33.5215)
+
+[node name="cat_barrel109" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.98996, -9.53674e-07, 13.9142)
+
+[node name="cat_barrel110" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.87986, 0, 14.9312)
+
+[node name="crate" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.382331, 0, -0.860752)
+
+[node name="crate2" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.13075, -1.19209e-07, 7.58326)
+
+[node name="crate3" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.799297, 0, 0.600937, 0, 1, 0, -0.600937, 0, 0.799297, -4.25345, -2.38419e-07, 10.1391)
+
+[node name="crate4" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.992182, 0, -0.124796, 0, 1, 0, 0.124796, 0, 0.992182, -5.5564, 2.38419e-07, 9.87933)
+
+[node name="crate5" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -4.82812, 1.49016, 9.48637)
+
+[node name="crate6" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6306, -4.76837e-07, 21.752)
+
+[node name="crate7" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.9023, 0, 14.1646)
+
+[node name="crate8" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -13.9057, -4.76837e-07, 15.4028)
+
+[node name="crate9" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.947025, 0, 0.321158, 0, 1, 0, -0.321158, 0, 0.947025, -12.3604, 0, 15.6037)
+
+[node name="crate10" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.0388412, 0, 0.999245, 0, 1, 0, -0.999245, 0, 0.0388412, -13.7687, 0.913521, 14.6646)
+
+[node name="crate11" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.426403, 4.76837e-07, 28.9916)
+
+[node name="crate12" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.770504, 0, 27.7425)
+
+[node name="crate13" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.796748, 1, 29.1413)
+
+[node name="crate14" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.947729, 0, 0.319075, 0, 1, 0, -0.319075, 0, 0.947729, -20.7891, 0, 24.4789)
+
+[node name="crate15" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.6789, -4.76837e-07, 23.2862)
+
+[node name="crate16" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-0.254518, 0, -0.967068, 0, 1, 0, 0.967068, 0, -0.254518, -22.7701, 0, 23.0187)
+
+[node name="crate17" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.5048, 3.8271, 23.8607)
+
+[node name="crate18" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.1303, 3.8271, 22.5916)
+
+[node name="crate19" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-0.0767364, 0, 0.997051, 0, 1, 0, -0.997051, 0, -0.0767364, -44.6914, 3.8271, 22.4758)
+
+[node name="crate20" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.6303, 4.76101, 22.9217)
+
+[node name="crate21" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.2193, 3.8271, 20.8528)
+
+[node name="crate22" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.0327365, 0, -0.999464, 0, 1, 0, 0.999464, 0, 0.0327365, -48.7043, 3.8271, 19.6909)
+
+[node name="crate23" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-0.965454, 0, -0.260572, 0, 1, 0, 0.260572, 0, -0.965454, -46.2893, 3.8271, 21.3574)
+
+[node name="crate24" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.9034, 15.1718, 27.8788)
+
+[node name="crate25" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.4866, 15.1718, 27.5485)
+
+[node name="crate26" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5727, 5.77, 33.253)
+
+[node name="crate27" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5343, 5.77, 32.5709)
+
+[node name="cat_barrel111" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5993, 5.77, 32.2774)
+
+[node name="crate28" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.8645, 9.17182, 2.16211)
+
+[node name="crate29" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.61071, 0, -9.9407)
+
+[node name="crate30" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(-0.0326494, 0, -0.999467, 0, 1, 0, 0.999467, 0, -0.0326494, -4.39935, -1.90735e-06, -10.9651)
+
+[node name="cat_barrel112" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.02699, 0, -4.94916)
+
+[node name="cat_barrel113" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.44974, 0, -7.47932)
+
+[node name="cat_barrel114" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55443, 0, -12.6851)
+
+[node name="cat_barrel115" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.872179, 2.38419e-07, -13.7961)
+
+[node name="cat_barrel116" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.446083, 2.38419e-07, -12.5704)
+
+[node name="cat_barrel117" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.35877, -2.38419e-07, -7.42172)
+
+[node name="cat_barrel118" parent="." instance=ExtResource("11_2hlem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.85411, -2.38419e-07, -12.1005)
+
+[node name="crate31" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.09609, 0, 14.8092)
+
+[node name="crate32" parent="." instance=ExtResource("12_06od4")]
+transform = Transform3D(0.00844726, 0, -0.999964, 0, 1, 0, 0.999964, 0, 0.00844726, 3.00752, 0, 15.837)

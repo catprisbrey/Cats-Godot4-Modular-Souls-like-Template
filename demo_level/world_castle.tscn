@@ -90,6 +90,14 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.941
 [node name="GateObject" parent="." instance=ExtResource("3_0mbes")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.03717, 0, 12.3254)
 
+[node name="LeverObject2" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_10w6y")]
+transform = Transform3D(-0.996195, 0, -0.0871557, 0, 1, 0, 0.0871557, 0, -0.996195, -5.42607, 2.38419e-07, -5.46637)
+node_to_control = NodePath("../GateObject2")
+
+[node name="GateObject2" parent="." instance=ExtResource("3_0mbes")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.66704, 0, -4.07837)
+locked = true
+
 [node name="Ladder" parent="." instance=ExtResource("4_a4kod")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -30.634, -0.1, 15.4212)
 
@@ -110,7 +118,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.99974, 0, -0.0225166, 0, 1, 0, 0.0225166, 0, 0.99974, -0.43294, 0, -0.97773)
+transform = Transform3D(0.99974, 0, -0.0225165, 0, 1, 0, 0.0225165, 0, 0.99974, -0.43294, 0, -0.97773)
 script = ExtResource("6_i73lt")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
