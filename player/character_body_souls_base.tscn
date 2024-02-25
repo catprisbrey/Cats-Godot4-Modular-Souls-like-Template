@@ -73,7 +73,7 @@ resource_name = "Armor"
 cull_mode = 2
 vertex_color_use_as_albedo = true
 metallic = 1.0
-roughness = 0.3
+roughness = 0.34
 normal_enabled = true
 normal_scale = 1.28
 normal_texture = SubResource("NoiseTexture2D_k0716")
@@ -2106,7 +2106,7 @@ held_mount_point = NodePath("RightHand/HandPivot")
 stored_mount_point = NodePath("BackBone/BackPivot")
 
 [node name="RightHand" type="BoneAttachment3D" parent="WeaponSystem"]
-transform = Transform3D(-0.513748, -0.0752869, 0.857577, -0.46136, -0.771135, -0.368976, 0.745087, -0.605438, 0.371825, -0.347862, 0.843638, -0.0286469)
+transform = Transform3D(-0.513748, -0.0752875, 0.857577, -0.461358, -0.771134, -0.368977, 0.745089, -0.60544, 0.371828, -0.347863, 0.843637, -0.0286467)
 bone_name = "RightHand"
 bone_idx = 31
 use_external_skeleton = true
@@ -2118,7 +2118,7 @@ transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, 
 [node name="Sword" parent="WeaponSystem/RightHand/HandPivot" instance=ExtResource("5_d7elj")]
 
 [node name="BackBone" type="BoneAttachment3D" parent="WeaponSystem"]
-transform = Transform3D(1, 0, 0, 0, 0.967234, -0.253886, 0, 0.253886, 0.967234, 3.56162e-18, 1.20232, 0.0108221)
+transform = Transform3D(1, 0, 0, 0, 0.967234, -0.253886, 0, 0.253886, 0.967234, 3.56162e-18, 1.20232, 0.0108222)
 bone_name = "UpperChest"
 bone_idx = 3
 use_external_skeleton = true
@@ -2168,7 +2168,7 @@ held_mount_point = NodePath("LeftHand/HandPivot")
 stored_mount_point = NodePath("HipBone/HipPivot")
 
 [node name="LeftHand" type="BoneAttachment3D" parent="GadgetSystem"]
-transform = Transform3D(-0.400217, -0.216114, -0.893423, 0.400805, -0.876762, -0.00117938, -0.855675, -0.385142, 0.444461, 0.340224, 0.853094, 0.0373875)
+transform = Transform3D(-0.400218, -0.216113, -0.893422, 0.400805, -0.876761, -0.00117923, -0.855671, -0.385139, 0.444456, 0.340224, 0.853094, 0.0373868)
 bone_name = "LeftHand"
 bone_idx = 12
 use_external_skeleton = true
@@ -2180,7 +2180,7 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.0
 [node name="Shield" parent="GadgetSystem/LeftHand/HandPivot" instance=ExtResource("7_yp4e6")]
 
 [node name="HipBone" type="BoneAttachment3D" parent="GadgetSystem"]
-transform = Transform3D(1, 0, 0, 0, 0.985429, -0.170089, 0, 0.170089, 0.985429, 3.56162e-18, 1.06241, -0.00875997)
+transform = Transform3D(1, 0, 0, 0, 0.985429, -0.170089, 0, 0.170089, 0.985429, 3.56162e-18, 1.06241, -0.00875995)
 bone_name = "Chest"
 bone_idx = 2
 use_external_skeleton = true
@@ -2224,7 +2224,7 @@ player_node = NodePath("..")
 signaling_node = NodePath("../InventorySystem")
 
 [node name="HandBone" type="BoneAttachment3D" parent="ItemSystem"]
-transform = Transform3D(-0.400217, -0.216114, -0.893423, 0.400805, -0.876762, -0.00117938, -0.855675, -0.385142, 0.444461, 0.340224, 0.853094, 0.0373875)
+transform = Transform3D(-0.400218, -0.216113, -0.893422, 0.400805, -0.876761, -0.00117923, -0.855671, -0.385139, 0.444456, 0.340224, 0.853094, 0.0373868)
 bone_name = "LeftHand"
 bone_idx = 12
 use_external_skeleton = true
@@ -2234,7 +2234,7 @@ external_skeleton = NodePath("../../minnyquin/godot_rig/GeneralSkeleton")
 transform = Transform3D(-0.0169522, -0.991058, -0.132351, 0.125911, -0.133433, 0.983027, -0.991897, 0, 0.127047, 1.93715e-07, 0.0987651, 0.0465127)
 
 [node name="StorageBone" type="BoneAttachment3D" parent="ItemSystem"]
-transform = Transform3D(1, 0, 0, 0, 0.996377, -0.0850402, 0, 0.0850402, 0.996377, 3.56162e-18, 0.94105, -0.0343734)
+transform = Transform3D(1, 0, 0, 0, 0.996378, -0.0850402, 0, 0.0850402, 0.996378, 3.56162e-18, 0.94105, -0.0343733)
 bone_name = "Spine"
 bone_idx = 1
 use_external_skeleton = true
@@ -2273,7 +2273,7 @@ left_foot = NodePath("FootfallSystemLeft")
 right_foot = NodePath("FootfallSystemRight")
 
 [node name="FootfallSystemLeft" type="BoneAttachment3D" parent="FootstepSoundSystem"]
-transform = Transform3D(-0.996884, 0.0588832, 0.0114696, -0.00901206, 0.0192132, 0.990883, 0.0663152, 1.0101, 0.0174703, 0.296402, 0.102658, 0.18685)
+transform = Transform3D(-0.996881, 0.0588842, 0.0114683, -0.00901211, 0.0192115, 0.99088, 0.0663157, 1.0101, 0.0174677, 0.296403, 0.102658, 0.186851)
 bone_name = "LeftFoot"
 bone_idx = 51
 use_external_skeleton = true
@@ -2287,7 +2287,7 @@ transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
 target_position = Vector3(0, 0.2, 0)
 
 [node name="FootfallSystemRight" type="BoneAttachment3D" parent="FootstepSoundSystem"]
-transform = Transform3D(-0.972251, -0.241369, -0.010591, 0.0100851, -0.00507745, 0.978858, -0.237568, 0.994076, -0.0103775, -0.217152, 0.108937, -0.200704)
+transform = Transform3D(-0.97225, -0.241367, -0.0105906, 0.010085, -0.00507811, 0.978855, -0.237567, 0.994074, -0.0103767, -0.217152, 0.108937, -0.200704)
 bone_name = "RightFoot"
 bone_idx = 55
 use_external_skeleton = true
