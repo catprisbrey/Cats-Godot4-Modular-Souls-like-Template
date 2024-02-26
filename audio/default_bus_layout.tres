@@ -10,6 +10,7 @@ room_size = 0.67
 wet = 0.15
 
 [resource]
+bus/0/volume_db = -10.9863
 bus/1/name = &"Echo"
 bus/1/solo = false
 bus/1/mute = false
