@@ -37,7 +37,7 @@
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://player/player_targeting_system/player_targeting_system.tscn" id="26_qtvan"]
 [ext_resource type="AudioStream" uid="uid://b8av6rc6jwi7n" path="res://audio/SoundFX/voice/voice_hurt_01.wav" id="27_f7c51"]
 [ext_resource type="AudioStream" uid="uid://dyefk5k0gpedy" path="res://audio/SoundFX/swish/swish_2.wav" id="28_x4vw8"]
-[ext_resource type="Script" uid="uid://di3t8o6qo0nmt" path="res://player/signal_caller.gd" id="29_vuyco"]
+[ext_resource type="Script" path="res://player/signal_caller.gd" id="29_vuyco"]
 [ext_resource type="AudioStream" uid="uid://fge5j7dsiwj1" path="res://audio/SoundFX/hit/hit_wet_04.wav" id="30_1eskw"]
 [ext_resource type="AudioStream" uid="uid://bjhg7ssm2k606" path="res://audio/SoundFX/voice/voice_hurt_05.wav" id="30_1ghdj"]
 [ext_resource type="AudioStream" uid="uid://bxqrf0y1eflh6" path="res://audio/SoundFX/hit/hit_blunt_03.wav" id="30_6fy5x"]
