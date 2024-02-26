@@ -190,6 +190,8 @@ func change_state(new_state):
 	match current_state:
 		state.FREE:
 			speed = default_speed
+		state.ATTACK:
+			speed = default_speed
 		state.LADDER:
 			speed = ladder_climb_speed
 		state.DODGE:
@@ -359,7 +361,7 @@ func rotate_player():
 		if input_dir:
 			var new_direction = calc_direction().normalized()
 			# Rotate the player per the perspective of the camera
-			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.2)
+			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.3)
 			global_transform.basis = Basis(target_rotation)
 		
 	else: 
@@ -393,6 +395,9 @@ func calc_direction():
 
 func attack(_is_special_attack : bool = false):
 	current_state = state.ATTACK
+	velocity.x = 0
+	velocity.z = 0
+	direction = global_transform.basis.z.normalized() 
 	if _is_special_attack:
 		big_attack_started.emit()
 	else:
@@ -401,7 +406,7 @@ func attack(_is_special_attack : bool = false):
 		await anim_state_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
 	if anim_state_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
@@ -490,7 +495,7 @@ func end_sprint():
 		current_state = state.FREE
 		
 func dash_movement():
-	var rate = .1
+	var rate = .05
 	velocity.x = move_toward(velocity.x, direction.x * speed, rate)
 	velocity.z = move_toward(velocity.z, direction.z * speed, rate)
 	# required in the process function states for dodges/dashes

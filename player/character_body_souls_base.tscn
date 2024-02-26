@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://g454n8wvwlm6" path="res://player/equipment_system/equipment/shield.tscn" id="7_yp4e6"]
 [ext_resource type="AudioStream" uid="uid://bl6briwljoa1t" path="res://audio/SoundFX/clang/clang_4.wav" id="8_adk4b"]
 [ext_resource type="Material" uid="uid://dxgq525aixvs1" path="res://assets/characters/cloth.tres" id="8_i0y71"]
-[ext_resource type="AnimationLibrary" uid="uid://re8lgpus28ve" path="res://player/animation_libraries/MeleeLib.res" id="9_0ycof"]
+[ext_resource type="AnimationLibrary" uid="uid://cfdsvrbpdnqm8" path="res://player/animation_libraries/MeleeLib.res" id="9_0ycof"]
 [ext_resource type="Script" path="res://player/souls_animation_tree.gd" id="9_fkmjp"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://cameras/follow_cam/follow_cam.tscn" id="12_i13o0"]
 [ext_resource type="AudioStream" uid="uid://dwewi6cxbh3do" path="res://audio/SoundFX/hit/hit_blunt_06.wav" id="12_mounm"]
@@ -479,7 +479,7 @@ advance_mode = 2
 advance_expression = "attack_count == 5"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mlilv"]
-xfade_time = 0.2
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
@@ -498,7 +498,7 @@ states/SprintAttack/node = SubResource("AnimationNodeAnimation_8avow")
 states/SprintAttack/position = Vector2(545, 386.794)
 states/Start/position = Vector2(299, 217)
 transitions = ["Start", "Heavy1", SubResource("AnimationNodeStateMachineTransition_ck5xm"), "Start", "Heavy2", SubResource("AnimationNodeStateMachineTransition_nnqcu"), "Start", "HeavyUppercut", SubResource("AnimationNodeStateMachineTransition_a3tun"), "Heavy1", "End", SubResource("AnimationNodeStateMachineTransition_dvn0w"), "Heavy2", "End", SubResource("AnimationNodeStateMachineTransition_uvel2"), "HeavyUppercut", "End", SubResource("AnimationNodeStateMachineTransition_gi0l4"), "Start", "HeavyJumpAttack", SubResource("AnimationNodeStateMachineTransition_qjlqi"), "HeavyJumpAttack", "End", SubResource("AnimationNodeStateMachineTransition_yx10h"), "Start", "SprintAttack", SubResource("AnimationNodeStateMachineTransition_efaps"), "SprintAttack", "End", SubResource("AnimationNodeStateMachineTransition_mlilv")]
-graph_offset = Vector2(0, 135.794)
+graph_offset = Vector2(0, 150.958)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sreca"]
 animation = &"MeleeLib/LightJumpAttack"
@@ -521,7 +521,7 @@ advance_mode = 2
 advance_expression = "attack_count == 1"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2e73l"]
-xfade_time = 0.2
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
@@ -531,7 +531,7 @@ advance_mode = 2
 advance_expression = "attack_count == 2"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vlhbg"]
-xfade_time = 0.2
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
@@ -562,7 +562,7 @@ advance_mode = 2
 advance_expression = "attack_count == 5"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ipnmu"]
-xfade_time = 0.2
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
@@ -593,7 +593,7 @@ advance_mode = 2
 advance_expression = "weapon_type == \"HEAVY\""
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ec2jn"]
-xfade_time = 0.2
+xfade_time = 0.3
 switch_mode = 2
 advance_mode = 2
 
@@ -607,9 +607,10 @@ states/End/position = Vector2(811, 202)
 states/HEAVY/node = SubResource("AnimationNodeStateMachine_huy17")
 states/HEAVY/position = Vector2(542, 202)
 states/SLASH/node = SubResource("AnimationNodeStateMachine_rsjr4")
-states/SLASH/position = Vector2(542, 106)
+states/SLASH/position = Vector2(542, 105)
 states/Start/position = Vector2(344, 202)
 transitions = ["Start", "SLASH", SubResource("AnimationNodeStateMachineTransition_o12bv"), "Start", "HEAVY", SubResource("AnimationNodeStateMachineTransition_vefpe"), "SLASH", "End", SubResource("AnimationNodeStateMachineTransition_ec2jn"), "HEAVY", "End", SubResource("AnimationNodeStateMachineTransition_ahwok")]
+graph_offset = Vector2(0, 21.2582)
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_gye1t"]
 fadein_time = 0.2
@@ -798,7 +799,7 @@ states/OpenOther/node = SubResource("AnimationNodeAnimation_a168s")
 states/OpenOther/position = Vector2(457, 308.545)
 states/Start/position = Vector2(159, 159)
 transitions = ["Start", "OpenGate", SubResource("AnimationNodeStateMachineTransition_m651o"), "Start", "OpenDoor", SubResource("AnimationNodeStateMachineTransition_fm8h6"), "Start", "OpenChest", SubResource("AnimationNodeStateMachineTransition_1jqqd"), "OpenGate", "End", SubResource("AnimationNodeStateMachineTransition_sbghj"), "OpenDoor", "End", SubResource("AnimationNodeStateMachineTransition_2itl3"), "OpenChest", "End", SubResource("AnimationNodeStateMachineTransition_sgosa"), "Start", "OpenLeverFloor", SubResource("AnimationNodeStateMachineTransition_5l2wn"), "OpenLeverFloor", "End", SubResource("AnimationNodeStateMachineTransition_an8b8"), "Start", "OpenOther", SubResource("AnimationNodeStateMachineTransition_s6nmc"), "OpenOther", "End", SubResource("AnimationNodeStateMachineTransition_n6lgi")]
-graph_offset = Vector2(0, -26.4111)
+graph_offset = Vector2(0, 25.3277)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4vagu"]
 animation = &"MeleeLib/ItemUseFail"
@@ -1322,7 +1323,7 @@ fadeout_time = 0.2
 animation = &"MeleeLib/WeaponChange_back"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pu57o"]
-graph_offset = Vector2(-517.104, -159.592)
+graph_offset = Vector2(-812.702, -185.359)
 nodes/ATTACK_tree/node = SubResource("AnimationNodeStateMachine_v5lqj")
 nodes/ATTACK_tree/position = Vector2(-380, -60)
 nodes/Attack/node = SubResource("AnimationNodeOneShot_gye1t")
@@ -1600,6 +1601,7 @@ weapon_system = NodePath("WeaponSystem")
 gadget_system = NodePath("GadgetSystem")
 health_system = NodePath("HealthSystem")
 inventory_system = NodePath("InventorySystem")
+jump_velocity = 4.6
 hard_landing_height = 2.0
 
 [node name="minnyquin" type="Node3D" parent="."]
@@ -2035,6 +2037,7 @@ mesh = SubResource("ArrayMesh_ne1r7")
 skin = SubResource("Skin_10w4o")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="minnyquin"]
+deterministic = true
 libraries = {
 "MeleeLib": ExtResource("9_0ycof")
 }
