@@ -111,7 +111,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var jump_velocity = 4.5
 @onready var last_altitude = global_position
 @export var hard_landing_height :float = 4 # how far they can fall before 'hard landing'
-signal landed_hard
+signal landed_fall(hard_or_soft:String)
 signal jump_started
 
 ## Dodge and Sprint Mechanics.
@@ -447,11 +447,13 @@ func fall_check():
 		var fall_distance = abs(last_altitude.y - global_position.y)
 		if fall_distance > hard_landing_height:
 			hard_landing()
+		elif fall_distance > .5 :
+			landed_fall.emit("SOFT")
 		last_altitude = null
 				
 func hard_landing():
 		current_state = state.STATIC_ACTION
-		landed_hard.emit()
+		landed_fall.emit("HARD")
 		if anim_state_tree:
 			await anim_state_tree.animation_measured
 		await get_tree().create_timer(anim_length).timeout

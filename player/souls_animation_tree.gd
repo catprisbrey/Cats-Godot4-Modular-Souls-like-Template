@@ -14,13 +14,15 @@ class_name AnimationTreeSoulsBase
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
 @onready var gadget_type : String = "SHIELD"
+@onready var interact_type :String = "GENERIC"
 @onready var current_item : ItemResource
 @onready var attack_count = 1
 @onready var attack_timer = Timer.new()
 @onready var hurt_count = 1
-@onready var interact_type :String = "GENERIC"
+
 @onready var anim_length
 
+@onready var landing_type = "SOFT"
 var last_oneshot = "Attack"
 var lerp_movement
 
@@ -39,7 +41,7 @@ func _ready():
 	player_node.dodge_started.connect(_on_dodge_started)
 	player_node.jump_started.connect(_on_jump_started)
 	player_node.sprint_started.connect(_on_sprint_started)
-	player_node.landed_hard.connect(_on_landed_hard)
+	player_node.landed_fall.connect(_on_landed_fall)
 	
 	player_node.interact_started.connect(_on_interact_started)
 	player_node.ladder_started.connect(_on_ladder_start)
@@ -87,8 +89,9 @@ func request_oneshot(oneshot:String):
 	last_oneshot = oneshot
 	set("parameters/" + oneshot + "/request",true)
 
-func _on_landed_hard():
-	request_oneshot("LandedHard")
+func _on_landed_fall(_hard_or_soft):
+	landing_type = _hard_or_soft
+	request_oneshot("Landed")
 
 func set_guarding():
 	if player_node.guarding:
