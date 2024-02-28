@@ -298,7 +298,7 @@ func _input(_event:InputEvent):
 	
 	elif current_state == state.SPRINT:
 		
-		if _event.is_action_released("dodge_dash"):
+		if _event.is_action_released("dodge_dash") or input_dir.is_zero_approx():
 			end_sprint()
 			
 		if _event.is_action_pressed("use_weapon_light"):
@@ -327,6 +327,8 @@ func free_movement():
 	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var new_direction = calc_direction()
 	if new_direction:
+		if Input.is_action_pressed("dodge_dash"):
+			start_sprint()
 		var rate : float # imiates directional change acceleration rate
 		if is_on_floor():
 			rate = .5
@@ -489,9 +491,12 @@ func dodge_or_sprint():
 		await sprint_timer.timeout
 		if current_state == state.FREE \
 			&& input_dir:
-				current_state = state.SPRINT
-				sprint_started.emit()
-		
+				start_sprint()
+
+func start_sprint():
+	current_state = state.SPRINT
+	sprint_started.emit()
+
 func end_sprint():
 	if current_state == state.SPRINT:
 		current_state = state.FREE
