@@ -298,6 +298,9 @@ func _input(_event:InputEvent):
 	
 	elif current_state == state.SPRINT:
 		
+		if !input_dir:
+			end_sprint()
+		
 		if _event.is_action_released("dodge_dash"):
 			end_sprint()
 			
