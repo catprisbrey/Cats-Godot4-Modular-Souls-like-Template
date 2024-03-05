@@ -132,7 +132,7 @@ func _physics_process(_delta):
 				free_movement()
 			
 			state.DYNAMIC_ACTION:
-				pass
+				free_movement()
 
 func set_target(_new_target): 
 	target = _new_target
@@ -149,7 +149,7 @@ func _on_target_spotted(_spotted_target): # Updates from a TargetSensor if a tar
 
 func _on_target_lost():
 	if is_instance_valid(target):
-		if chase_timer:
+		if is_instance_valid(chase_timer):
 			chase_timer.start()
 
 func _on_chase_timer_timeout():
@@ -274,15 +274,19 @@ func hit(_by_who, _by_what):
 		hurt_started.emit()
 		if anim_state_tree:
 			await anim_state_tree.animation_measured
+		await knocked_back(_by_who)
 		damage_taken.emit(_by_what)
-		await get_tree().create_timer(anim_length*.5).timeout
 		can_be_hurt = true
 		await get_tree().create_timer(anim_length*.5).timeout
-		combat_timer.start()
+		#combat_timer.start()
 		if current_state == state.DYNAMIC_ACTION:
 			current_state = state.CHASE
 		combat_timer.start()
 
+func knocked_back(_by_who: Node3D):
+		velocity = (global_position - _by_who.global_position).normalized() * 20
+		await get_tree().create_timer(anim_length*.1).timeout
+		velocity *= Vector3.UP
 	
 func parried():
 	combat_timer.stop()

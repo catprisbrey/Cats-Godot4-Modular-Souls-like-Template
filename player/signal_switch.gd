@@ -22,6 +22,7 @@ class_name SignalSwitch
 
 @onready var node_to_toggle
 @onready var toggle
+var default_setting
 
 func _ready():
 	node_to_toggle = get_parent()
@@ -29,6 +30,7 @@ func _ready():
 	if end_signal != "":
 		signaling_node.connect(end_signal,_on_signal)
 	toggle = node_to_toggle.get(property)
+	default_setting = node_to_toggle.get(property)
 
 func _on_signal(_arg = null,_arg2 = null):
 	toggle = !node_to_toggle.get(property)
@@ -38,3 +40,4 @@ func _on_signal(_arg = null,_arg2 = null):
 		await get_tree().create_timer(lifetime).timeout
 		toggle = !node_to_toggle.get(property)
 		node_to_toggle.set(property,toggle)
+

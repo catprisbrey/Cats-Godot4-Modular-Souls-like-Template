@@ -121,7 +121,7 @@ func _lookat_target():
 			
 	if targeting: # otherwise track the target
 		if look_target: 
-			var vertical_look_offset = Vector3(0,.7,0) ## to not look at the target's feet.
+			var vertical_look_offset = Vector3(0,1,0) ## to not look at the target's feet.
 			look_at(look_target.global_position + vertical_look_offset ,Vector3.UP)
 
 	if "guarding" in follow_target:

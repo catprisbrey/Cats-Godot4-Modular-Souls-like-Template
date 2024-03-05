@@ -202,6 +202,7 @@ func _on_item_change_ended(_new_item):
 	current_item = _new_item
 
 func _on_ladder_start(top_or_bottom):
+	set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",0)
 	base_state_machine.start("LADDER_tree")
 	ladder_state_machine.travel("LadderStart_" + top_or_bottom)
 	
@@ -209,8 +210,16 @@ func _on_ladder_finished(top_or_bottom):
 	ladder_state_machine.travel("LadderEnd_" + top_or_bottom)
 	
 func set_ladder():
-	set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",-player_node.input_dir.y)
-	
+	#set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",-player_node.input_dir.y)
+	var ladder_frame = get("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position")
+	print(ladder_frame)
+	if ladder_frame > 1:
+		ladder_frame = 0
+	elif ladder_frame < 0:
+		ladder_frame = 1
+	set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",ladder_frame - (player_node.input_dir.y * .015))
+			
+			
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
 	# Forward and back are acording to input, since direction changes by fixed camera orientation

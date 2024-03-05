@@ -101,7 +101,7 @@ func _on_activated():
 	if current_equipment:
 		## pause and start monitoring to hit things
 		current_equipment.monitoring = true
-		await get_tree().create_timer(player_node.anim_length *.35).timeout
+		await get_tree().create_timer(player_node.anim_length *.5).timeout
 		## after moment turn off monitoring to not hit things
 		current_equipment.monitoring = false
 		

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="3_vc67d"]
 [ext_resource type="PackedScene" uid="uid://cwxpu4en7wpi6" path="res://cameras/area_cam/area_cam.tscn" id="4_l2bc3"]
 [ext_resource type="PackedScene" uid="uid://dydcpd450p5ig" path="res://enemy/CharacterBodyEnemyBase.tscn" id="5_ixeet"]
-[ext_resource type="PackedScene" uid="uid://dn8mn12kaey87" path="res://player/character_body_souls_base.tscn" id="6_u2tpu"]
+[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="6_u2tpu"]
 [ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="7_nmq7w"]
 [ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="8_t3kfh"]
 [ext_resource type="PackedScene" uid="uid://daae7mgofoegu" path="res://interactable objects/spawn_site/spawn_site.tscn" id="9_75vfq"]
@@ -165,8 +165,7 @@ transform = Transform3D(-0.0787201, 0, 0.996897, 0, 1, 0, -0.996897, 0, -0.07872
 [node name="CharacterBodyEnemyBase" parent="." instance=ExtResource("5_ixeet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.28031, 0.14465, -3.97313)
 
-[node name="CharacterBodySoulsBase" parent="." node_paths=PackedStringArray("last_spawn_site") instance=ExtResource("6_u2tpu")]
-last_spawn_site = NodePath("../SpawnSite")
+[node name="CharacterBodySoulsBase" parent="." instance=ExtResource("6_u2tpu")]
 
 [node name="ChestObject" parent="." instance=ExtResource("7_nmq7w")]
 transform = Transform3D(0.778616, 0, 0.627501, 0, 1, 0, -0.627501, 0, 0.778616, -8.02334, 1.43051e-06, -5.20081)

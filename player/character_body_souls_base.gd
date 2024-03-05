@@ -202,7 +202,14 @@ func change_state(new_state):
 			speed = walk_speed
 		state.STATIC_ACTION:
 			speed = 0.0
-
+			velocity = Vector3.ZERO
+	
+	if current_state == state.LADDER:
+		system_visible(weapon_system,false)
+		system_visible(gadget_system,false)
+	else:
+		system_visible(weapon_system,true)
+		system_visible(gadget_system,true)
 			
 func _physics_process(_delta):
 	match current_state:
@@ -228,6 +235,8 @@ func _physics_process(_delta):
 			free_movement()
 			rotate_player()
 			
+		state.STATIC_ACTION:
+			move_and_slide()
 	apply_gravity(_delta)
 	fall_check()
 	
@@ -513,7 +522,8 @@ func dodge():
 	sprint_timer.stop()
 	## uses timer rather than 'await' because 'await' stops processes like gravity affecting velocity.
 	if input_dir: # Dodge toward direction of input_dir 
-		direction = calc_direction()
+		direction = calc_direction().normalized()
+		velocity = direction * dodge_speed
 		dodge_started.emit()
 	else: # Dodge toward the 'BACK' of your global position
 		var backward_dir =(global_position - to_global(Vector3.BACK)).normalized()
@@ -542,13 +552,16 @@ func ladder_movement():
 		exit_ladder("BOTTOM")
 	move_and_slide()
 
-func start_ladder(top_or_bottom,mount_transform):
+func start_ladder(top_or_bottom,mount_transform:Transform3D):
 	ladder_started.emit(top_or_bottom)
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
 	# After timer finishes, return to pre-dodge state
 	var tween = create_tween()
-	tween.tween_property(self,"global_transform", mount_transform, anim_length *.4)
+	tween.set_parallel(false)
+	tween.tween_property(self,"global_rotation", mount_transform.basis.get_euler(),anim_length *.2)
+	tween.tween_property(self,"global_position", Vector3(mount_transform.origin.x,global_position.y,mount_transform.origin.z),anim_length *.2)
+	tween.tween_property(self,"global_transform", mount_transform, anim_length *.2)
 	await tween.finished
 	current_state = state.LADDER
 	
@@ -676,8 +689,14 @@ func hit(_who, _by_what):
 		elif guarding:
 			block()
 		else:
+			await knocked_back(_who)
 			damage_taken.emit(_by_what)
 			hurt()
+
+func knocked_back(_by_who: Node3D):
+		velocity = (global_position - _by_who.global_position).normalized() * 8
+		await get_tree().create_timer(anim_length*.1).timeout
+		velocity *= Vector3.UP
 
 func heal(_by_what):
 	health_received.emit(_by_what)
@@ -704,10 +723,10 @@ func parry():
 
 func hurt():
 	current_state = state.STATIC_ACTION
-	can_be_hurt = false
-	hurt_started.emit()
+	hurt_started.emit() # before state change in case on ladder,etc
 	if anim_state_tree:
 		await anim_state_tree.animation_measured
+	can_be_hurt = false
 	await get_tree().create_timer(anim_length).timeout
 	if !is_dead:
 		if current_state == state.STATIC_ACTION:
@@ -733,4 +752,6 @@ func death():
 	await get_tree().create_timer(3).timeout
 	get_tree().reload_current_scene()
 		
-
+func system_visible(_system_node,_new_toggle):
+		if _system_node:
+			_system_node.visible = _new_toggle
