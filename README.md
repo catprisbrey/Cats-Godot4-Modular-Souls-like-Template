@@ -1,6 +1,6 @@
 
 # Cat's Godot 4 Souls-Like Template & Asset Pack
-Version 1.0.1
+Version 1.0.2
 
 ![Controller Screenshot](https://raw.githubusercontent.com/catprisbrey/Cats-Godot4-Modular-Souls-like-Template/main/screenshots/combat.png)
 
@@ -19,7 +19,8 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 - Primary weapon
 - Offhand gadgets 
 - Consumable items
-- Enemy targeting 
+- Enemy targeting
+- Enemy knockback
 - Blocking / perfect parry
 - Dodge rolling
 - Sprinting
@@ -35,6 +36,7 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 - Low resolution textures
 - Lots of sound effects and music
 - 75+ animations
+- Gridmap/Meshlibrary
 - Flexible nested animation state trees
 
 
