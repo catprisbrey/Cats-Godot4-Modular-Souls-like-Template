@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://interactable objects/lever/lever_object.gd" id="1_yoflx"]
 [ext_resource type="AudioStream" uid="uid://bqs6en2dxoi3x" path="res://audio/SoundFX/ratchet/ratchet_3.wav" id="2_kvfhg"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_r31s6"]
-[ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://demo_level/world_materials/wood01.tres" id="3_6pvo0"]
+[ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="3_6pvo0"]
 [ext_resource type="AudioStream" uid="uid://bxgsmc1dwuooi" path="res://audio/SoundFX/clack/clack_4.wav" id="3_xhpgq"]
-[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="4_0ir80"]
+[ext_resource type="Material" uid="uid://pw0qjru3ju6a" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01.tres" id="4_0ir80"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tlw3j"]
 size = Vector3(0.924, 1.406, 1.214)

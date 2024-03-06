@@ -285,6 +285,7 @@ func hit(_by_who, _by_what):
 
 func knocked_back(_by_who: Node3D):
 		velocity = (global_position - _by_who.global_position).normalized() * 20
+		velocity.y = 0 # Bleach the y value to prevent them flying in the air
 		await get_tree().create_timer(anim_length*.1).timeout
 		velocity *= Vector3.UP
 	

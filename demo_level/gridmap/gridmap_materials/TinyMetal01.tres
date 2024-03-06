@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://pw0qjru3ju6a"]
+
+[ext_resource type="Texture2D" uid="uid://rgw06g5vrmq2" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01_albedo.png" id="1_lmmwn"]
+[ext_resource type="Texture2D" uid="uid://dwn7k2eqtv5qt" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01_normal.png" id="2_80cf6"]
+
+[resource]
+albedo_texture = ExtResource("1_lmmwn")
+metallic = 1.0
+roughness = 0.4
+normal_enabled = true
+normal_texture = ExtResource("2_80cf6")
+uv1_scale = Vector3(3, 3, 3)

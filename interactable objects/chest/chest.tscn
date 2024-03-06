@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_pdewx"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_5dulj"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
-[ext_resource type="Material" uid="uid://cgoha54aqf2sv" path="res://demo_level/world_materials/wood01.tres" id="2_uf1fe"]
+[ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="2_uf1fe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1ssk"]
 size = Vector3(1.5, 0.75, 1)

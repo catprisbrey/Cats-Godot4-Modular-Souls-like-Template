@@ -1,10 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://b65t1v7qe0rb3"]
+[gd_scene load_steps=3 format=3 uid="uid://b65t1v7qe0rb3"]
 
 [ext_resource type="Script" path="res://cameras/follow_cam/follow_cam_3d.gd" id="1_y42mi"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_m6qse"]
+margin = 1.0
+
 [node name="FollowCam" type="SpringArm3D" node_paths=PackedStringArray("camera_3d")]
 top_level = true
+shape = SubResource("BoxShape3D_m6qse")
 spring_length = 2.0
+margin = 1.0
 script = ExtResource("1_y42mi")
 camera_3d = NodePath("Camera3D")
 

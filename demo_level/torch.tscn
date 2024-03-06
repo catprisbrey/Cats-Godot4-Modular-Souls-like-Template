@@ -1,6 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://dwi6wppkvd4nl"]
+[gd_scene load_steps=15 format=3 uid="uid://dwi6wppkvd4nl"]
 
 [ext_resource type="AudioStream" uid="uid://bd7r1x1qj66kq" path="res://audio/SoundFX/fire/fire_01_loop.wav" id="1_5cub6"]
+[ext_resource type="Script" path="res://demo_level/torchlight.gd" id="1_um72q"]
+[ext_resource type="Texture2D" uid="uid://cwge1oho80gqv" path="res://demo_level/flame_01.png" id="1_xqg3w"]
+[ext_resource type="Texture2D" uid="uid://c20aj5kavxwu2" path="res://demo_level/flame_02.png" id="2_p0la0"]
+[ext_resource type="Texture2D" uid="uid://dve1qetygtql4" path="res://demo_level/flame_03.png" id="3_if8qv"]
+[ext_resource type="Texture2D" uid="uid://cqleuo5skisus" path="res://demo_level/flame_04.png" id="4_1amwc"]
+[ext_resource type="Script" uid="uid://di3t8o6qo0nmt" path="res://player/signal_caller.gd" id="5_j4f3j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ergnq"]
 resource_name = "Hilt"
@@ -102,54 +108,25 @@ shadow_mesh = SubResource("ArrayMesh_ou0dd")
 [sub_resource type="BoxShape3D" id="BoxShape3D_7pavc"]
 size = Vector3(0.35, 0.5, 0.35)
 
-[sub_resource type="Gradient" id="Gradient_ohsiu"]
-offsets = PackedFloat32Array(0, 0.0740741, 0.599327, 0.814815, 1)
-colors = PackedColorArray(0.195322, 0.61755, 0.946868, 1, 0.947033, 0.237647, 0, 1, 0.970825, 0.589525, 6.16074e-06, 1, 0.778233, 0.2822, 0, 1, 1, 0.543101, 0.379672, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_2ia4i"]
-gradient = SubResource("Gradient_ohsiu")
-
-[sub_resource type="Curve" id="Curve_3r8y6"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443077, 1), 0.0418739, 0.0418739, 0, 0, Vector2(0.966851, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_d52au"]
-curve = SubResource("Curve_3r8y6")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sk1td"]
-emission_shape = 1
-emission_sphere_radius = 0.15
-direction = Vector3(1, 0, 1)
-spread = 0.0
-gravity = Vector3(0, 1, 0)
-scale_min = 0.0
-scale_curve = SubResource("CurveTexture_d52au")
-color_ramp = SubResource("GradientTexture1D_2ia4i")
-
-[sub_resource type="Gradient" id="Gradient_y5nj0"]
-offsets = PackedFloat32Array(0.392982, 0.757895)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xy6jg"]
-gradient = SubResource("Gradient_y5nj0")
-fill = 1
-fill_from = Vector2(0.495726, 0.5)
-fill_to = Vector2(0, 0)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m1sb2"]
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_texture = SubResource("GradientTexture2D_xy6jg")
-disable_receive_shadows = true
-billboard_mode = 1
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_mpevv"]
-material = SubResource("StandardMaterial3D_m1sb2")
-size = Vector2(0.1, 0.1)
-orientation = 2
+[sub_resource type="SpriteFrames" id="SpriteFrames_vkpw8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xqg3w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_p0la0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_if8qv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1amwc")
+}],
+"loop": true,
+"name": &"fire",
+"speed": 5.0
+}]
 
 [node name="Torch" type="Area3D"]
 collision_mask = 5
@@ -162,22 +139,35 @@ mesh = SubResource("ArrayMesh_kps01")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00253296, 0.450897, 0)
 shape = SubResource("BoxShape3D_7pavc")
 
-[node name="TorchFlame2" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510352, 0)
-amount = 15
-lifetime = 0.6
-explosiveness = 0.17
-process_material = SubResource("ParticleProcessMaterial_sk1td")
-draw_pass_1 = SubResource("PlaneMesh_mpevv")
-
-[node name="TorchLight" type="OmniLight3D" parent="TorchFlame2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.153, 0)
+[node name="TorchLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.542216, 0)
 light_color = Color(1, 0.752941, 0.4, 1)
+light_energy = 0.505
 light_size = 0.5
 light_bake_mode = 1
 omni_range = 8.0
+script = ExtResource("1_um72q")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.765, 0, 0, 0, 1, 0, 0.624416, 0)
+cast_shadow = 0
+modulate = Color(1, 0.576471, 0.227451, 1)
+pixel_size = 0.0005
+billboard = 1
+shaded = true
+double_sided = false
+sprite_frames = SubResource("SpriteFrames_vkpw8")
+animation = &"fire"
+frame_progress = 0.454212
+speed_scale = 2.41
+
+[node name="SignalCaller" type="Node" parent="AnimatedSprite3D" node_paths=PackedStringArray("signaling_node")]
+script = ExtResource("5_j4f3j")
+signaling_node = NodePath("../..")
+start_signal = "ready"
+method_to_call = "play"
+args_separated_by_commas = "fire"
 
 [node name="FireSFX" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1_5cub6")
-stream_paused = true
 max_distance = 4.0

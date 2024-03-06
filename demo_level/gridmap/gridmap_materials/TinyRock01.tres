@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cfcu07lbei0iy"]
+
+[ext_resource type="Texture2D" uid="uid://b0bhma25gxlxd" path="res://demo_level/gridmap/gridmap_materials/TinyRock01_albedo.png" id="1_cqy2m"]
+[ext_resource type="Texture2D" uid="uid://8iyu0vxjyggf" path="res://demo_level/gridmap/gridmap_materials/TinyRock01_normal.png" id="2_sqlgw"]
+
+[resource]
+albedo_color = Color(0.258824, 0.254902, 0.262745, 1)
+albedo_texture = ExtResource("1_cqy2m")
+normal_enabled = true
+normal_texture = ExtResource("2_sqlgw")
+uv1_scale = Vector3(2, 2, 2)

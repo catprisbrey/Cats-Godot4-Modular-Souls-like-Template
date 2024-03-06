@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://ve3obxs5rjps"]
+
+[ext_resource type="Texture2D" uid="uid://cocqy1evueb73" path="res://demo_level/gridmap/gridmap_materials/TinyTile02_albedo.png" id="1_txitu"]
+[ext_resource type="Texture2D" uid="uid://bhhn54khmyhnk" path="res://demo_level/gridmap/gridmap_materials/TinyTile02_normal.png" id="2_wcfxf"]
+
+[resource]
+albedo_color = Color(0.968627, 0.737255, 0.384314, 1)
+albedo_texture = ExtResource("1_txitu")
+roughness = 0.77
+normal_enabled = true
+normal_texture = ExtResource("2_wcfxf")
+uv1_scale = Vector3(2, 2, 2)

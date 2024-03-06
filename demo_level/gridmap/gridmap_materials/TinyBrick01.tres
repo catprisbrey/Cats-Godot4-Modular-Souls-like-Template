@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://b87ja3jul5hmt"]
+
+[ext_resource type="Texture2D" uid="uid://clc4h7n1lhvq1" path="res://demo_level/gridmap/gridmap_materials/TinyBrick01_albedo.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://c512o2jnsoa54" path="res://demo_level/gridmap/gridmap_materials/TinyBrick01_normal.png" id="3"]
+
+[resource]
+resource_name = "wall_01"
+cull_mode = 2
+albedo_color = Color(0.615686, 0.752941, 0.839216, 1)
+albedo_texture = ExtResource("1")
+roughness = 0.46
+normal_enabled = true
+normal_texture = ExtResource("3")
+uv1_scale = Vector3(3, 3, 3)

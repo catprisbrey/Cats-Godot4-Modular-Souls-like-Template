@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://vqqbpvkewcuu"]
+
+[ext_resource type="Texture2D" uid="uid://dhrtjubohcu6h" path="res://demo_level/gridmap/gridmap_materials/TinyCobble01_albedo.png" id="1_ebgoq"]
+[ext_resource type="Texture2D" uid="uid://drmi05od00ibi" path="res://demo_level/gridmap/gridmap_materials/TinyCobble01_normal.png" id="2_6ddvi"]
+
+[resource]
+albedo_color = Color(0.968627, 0.737255, 0.384314, 1)
+albedo_texture = ExtResource("1_ebgoq")
+roughness = 0.49
+normal_enabled = true
+normal_texture = ExtResource("2_6ddvi")
+uv1_scale = Vector3(2, 2, 2)

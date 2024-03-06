@@ -123,7 +123,7 @@ func _lookat_target():
 		if look_target: 
 			var vertical_look_offset = Vector3(0,1,0) ## to not look at the target's feet.
 			look_at(look_target.global_position + vertical_look_offset ,Vector3.UP)
-
+			
 	if "guarding" in follow_target:
 		if follow_target.guarding:
 			spring_length = lerp(spring_length,aim_spring_length,.1)

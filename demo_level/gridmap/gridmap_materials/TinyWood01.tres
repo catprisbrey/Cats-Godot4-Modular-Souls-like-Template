@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://b4m1mgfioqq2s"]
+
+[ext_resource type="Texture2D" uid="uid://c87axgbjum31x" path="res://demo_level/gridmap/gridmap_materials/TinyWood03_albedo.png" id="1_irccd"]
+[ext_resource type="Texture2D" uid="uid://sb8ostfeo1wq" path="res://demo_level/gridmap/gridmap_materials/TinyWood03_normal.png" id="2_sgo2w"]
+
+[resource]
+albedo_color = Color(0.397906, 0.284364, 0.175717, 1)
+albedo_texture = ExtResource("1_irccd")
+normal_enabled = true
+normal_texture = ExtResource("2_sgo2w")
+uv1_scale = Vector3(5, 5, 5)

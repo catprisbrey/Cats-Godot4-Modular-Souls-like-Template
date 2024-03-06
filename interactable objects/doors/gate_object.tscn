@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://bp5aql2ip2qwi"]
 
 [ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jmheh"]
-[ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="2_1tfmp"]
+[ext_resource type="Material" uid="uid://pw0qjru3ju6a" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01.tres" id="2_1tfmp"]
 [ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
 [ext_resource type="AudioStream" uid="uid://b7mejiv87ktbl" path="res://audio/SoundFX/clack/clack_1.wav" id="3_0j2dh"]
 [ext_resource type="AudioStream" uid="uid://bc1pbogw28uc4" path="res://audio/SoundFX/creak/creak_3.wav" id="4_ohgwa"]

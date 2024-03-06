@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cfnff53sw0hgk"]
+
+[ext_resource type="Texture2D" uid="uid://1uxwnsgy45gn" path="res://demo_level/gridmap/gridmap_materials/TinyTile01_albedo.png" id="1_rtsnx"]
+[ext_resource type="Texture2D" uid="uid://bhtxrtq8c0qlb" path="res://demo_level/gridmap/gridmap_materials/TinyTile01_normal.png" id="2_xw0gq"]
+
+[resource]
+resource_name = "roof_01"
+cull_mode = 2
+albedo_color = Color(0.533333, 0.721569, 0.745098, 1)
+albedo_texture = ExtResource("1_rtsnx")
+roughness = 0.44
+normal_enabled = true
+normal_texture = ExtResource("2_xw0gq")
+uv1_scale = Vector3(2, 2, 2)
