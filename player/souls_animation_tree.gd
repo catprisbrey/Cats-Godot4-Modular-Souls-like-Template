@@ -16,7 +16,9 @@ class_name AnimationTreeSoulsBase
 @onready var gadget_type : String = "SHIELD"
 @onready var interact_type :String = "GENERIC"
 @onready var current_item : ItemResource
-@onready var attack_count = 1
+@onready var attack_count = 1 ## Used in the anim state tree. The oneShot for the
+## ATTACK_tree, under SLASH and HEAVY each route to an animation will use this 
+## variable under it's advanced expression to know which route to take.
 @onready var attack_timer = Timer.new()
 @onready var hurt_count = 1
 
