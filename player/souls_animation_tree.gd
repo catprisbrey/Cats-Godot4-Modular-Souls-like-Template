@@ -8,7 +8,7 @@ class_name AnimationTreeSoulsBase
 ## There are many ways to approach transitioning between different movement trees,
 ## I simply found this to be most convenient.
 
-@export var player_node : CharacterBodySoulsBase
+@export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
 @onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback

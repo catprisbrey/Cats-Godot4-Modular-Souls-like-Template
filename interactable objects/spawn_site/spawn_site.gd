@@ -10,7 +10,7 @@ class_name SpawnSite
 @onready var flame_particles = $FlameParticles
 
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+func activate(_requestor: CharacterBody3D):
 	interactable_activated.emit()
 	
 	if _requestor.has_method("start_interact"):

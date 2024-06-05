@@ -14,7 +14,7 @@ class_name DoorObject
 @export var locked : bool = false
 var anim
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+func activate(_requestor: CharacterBody3D,_sensor_top_or_bottom :String):
 	if locked:
 		shake_door()
 		

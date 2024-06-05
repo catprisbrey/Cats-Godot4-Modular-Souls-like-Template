@@ -14,7 +14,7 @@ class_name LeverObject
 
 var anim
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+func activate(_requestor: CharacterBody3D):
 	if locked:
 		shake_lever()
 		
@@ -25,7 +25,7 @@ func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
 		
 		if opened == false:
 			if _requestor.has_method("start_interact"):
-				_requestor.start_interact(interact_type,new_translation, move_time)
+				_requestor.start_interact(new_translation, move_time)
 				await get_tree().create_timer(move_time).timeout
 			open_lever()
 

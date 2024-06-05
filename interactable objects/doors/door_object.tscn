@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cnv210lnfdoan"]
 
-[ext_resource type="Script" path="res://interactable objects/doors/door_object.gd" id="1_6re5x"]
+[ext_resource type="Script" path="res://interactable objects_OLD/doors/door_object.gd" id="1_6re5x"]
 [ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="2_3rd0r"]
 [ext_resource type="AudioStream" uid="uid://dmbreupif03hc" path="res://audio/SoundFX/creak/creak_4.wav" id="2_sslvw"]
 [ext_resource type="AudioStream" uid="uid://twq1ywacwc88" path="res://audio/SoundFX/hit/hit_blunt_04.wav" id="3_4d5yu"]

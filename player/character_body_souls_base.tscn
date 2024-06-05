@@ -1,9 +1,8 @@
-[gd_scene load_steps=277 format=3 uid="uid://bn7vh6v8mmgja"]
+[gd_scene load_steps=275 format=3 uid="uid://bn7vh6v8mmgja"]
 
 [ext_resource type="Script" path="res://player/character_body_souls_base.gd" id="1_4per7"]
 [ext_resource type="PackedScene" uid="uid://bffefrgxjb4sc" path="res://assets/characters/minnyquinn.glb" id="2_74vsj"]
-[ext_resource type="PackedScene" uid="uid://c622p3bhgteim" path="res://player/player_interact_sensors/player_interact_sensors.tscn" id="3_d12x8"]
-[ext_resource type="AnimationLibrary" uid="uid://cii8w4s1pbeei" path="res://player/animation_libraries/MeleeLib.res" id="3_sbr3f"]
+[ext_resource type="AnimationLibrary" uid="uid://d3h8qu2uqwwdf" path="res://player/animation_libraries/MeleeLib.res" id="3_sbr3f"]
 [ext_resource type="Script" path="res://player/equipment_system/equipment_system.gd" id="4_bebk6"]
 [ext_resource type="PackedScene" uid="uid://dva7owhrl4wew" path="res://player/equipment_system/equipment/sword.tscn" id="5_d7elj"]
 [ext_resource type="PackedScene" uid="uid://cppm5fkbguoqx" path="res://player/equipment_system/equipment/Ax.tscn" id="6_iekbc"]
@@ -44,29 +43,7 @@
 [ext_resource type="Script" path="res://ui/item_slot.gd" id="36_vymyb"]
 [ext_resource type="Script" path="res://ui/health_bar.gd" id="38_auti3"]
 [ext_resource type="Script" path="res://enemy/health_system.gd" id="41_x7csm"]
-
-[sub_resource type="Animation" id="Animation_p0bgm"]
-resource_name = "Armature|mixamo_com|Layer0_godot_rig"
-length = 0.0416667
-tracks/0/type = "rotation_3d"
-tracks/0/imported = true
-tracks/0/enabled = true
-tracks/0/path = NodePath("godot_rig/Skeleton3D:DEF-breast.L")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 3.14052e-08, 0.695561, 0.718467, 3.04039e-08)
-tracks/1/type = "rotation_3d"
-tracks/1/imported = true
-tracks/1/enabled = true
-tracks/1/path = NodePath("godot_rig/Skeleton3D:DEF-breast.R")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 3.14052e-08, 0.695561, 0.718467, 3.04039e-08)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mtccr"]
-_data = {
-"Armature|mixamo_com|Layer0_godot_rig": SubResource("Animation_p0bgm")
-}
+[ext_resource type="PackedScene" uid="uid://r31q8k2be4qk" path="res://interactables/sensor_cast.tscn" id="44_gyr7x"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7f43o"]
 radius = 0.4
@@ -1060,6 +1037,7 @@ fadeout_time = 0.2
 animation = &"MeleeLib/WeaponChange_back"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pu57o"]
+graph_offset = Vector2(-863.652, -226.409)
 nodes/ATTACK_tree/node = SubResource("AnimationNodeStateMachine_v5lqj")
 nodes/ATTACK_tree/position = Vector2(-380, -60)
 nodes/Attack/node = SubResource("AnimationNodeOneShot_gye1t")
@@ -1371,15 +1349,14 @@ material = SubResource("StandardMaterial3D_ygg1y")
 size = Vector2(0.02, 0.02)
 orientation = 2
 
-[node name="PlayerCharacterBodySoulsBase" type="CharacterBody3D" node_paths=PackedStringArray("anim_state_tree", "interact_sensor", "weapon_system", "gadget_system", "health_system", "inventory_system") groups=["Player"]]
+[node name="PlayerCharacterBodySoulsBase" type="CharacterBody3D" node_paths=PackedStringArray("animation_tree", "weapon_system", "gadget_system", "health_system", "inventory_system") groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38419e-07, 0)
 collision_layer = 2
 collision_mask = 3
 floor_constant_speed = true
 floor_max_angle = 0.872665
 script = ExtResource("1_4per7")
-anim_state_tree = NodePath("AnimStateTree")
-interact_sensor = NodePath("PlayerInteractSensors")
+animation_tree = NodePath("AnimStateTree")
 weapon_system = NodePath("WeaponSystem")
 gadget_system = NodePath("GadgetSystem")
 health_system = NodePath("HealthSystem")
@@ -1464,7 +1441,6 @@ bones/57/scale = Vector3(1.00022, 0.999735, 1.00005)
 
 [node name="AnimationPlayer" parent="minnyquinn" index="1"]
 libraries = {
-"": SubResource("AnimationLibrary_mtccr"),
 "MeleeLib": ExtResource("3_sbr3f")
 }
 
@@ -1679,8 +1655,6 @@ panning_strength = 0.0
 script = ExtResource("6_wnkxc")
 triggering_node = NodePath("..")
 sound_trigger_signal = "item_thrown"
-
-[node name="PlayerInteractSensors" parent="." instance=ExtResource("3_d12x8")]
 
 [node name="FollowCam" parent="." node_paths=PackedStringArray("follow_target", "optional_targeting_system") instance=ExtResource("12_i13o0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -2030,6 +2004,8 @@ randomness = 1.0
 visibility_aabb = AABB(-3, -1, -3, 6, 2, 6)
 process_material = SubResource("ParticleProcessMaterial_4pi6a")
 draw_pass_1 = SubResource("PlaneMesh_1rh5k")
+
+[node name="SensorCast" parent="." instance=ExtResource("44_gyr7x")]
 
 [connection signal="animation_started" from="AnimStateTree" to="AnimStateTree" method="_on_animation_started"]
 
