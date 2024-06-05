@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c20aj5kavxwu2" path="res://demo_level/flame_02.png" id="2_p0la0"]
 [ext_resource type="Texture2D" uid="uid://dve1qetygtql4" path="res://demo_level/flame_03.png" id="3_if8qv"]
 [ext_resource type="Texture2D" uid="uid://cqleuo5skisus" path="res://demo_level/flame_04.png" id="4_1amwc"]
-[ext_resource type="Script" uid="uid://di3t8o6qo0nmt" path="res://player/signal_caller.gd" id="5_j4f3j"]
+[ext_resource type="Script" path="res://player/signal_caller.gd" id="5_j4f3j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ergnq"]
 resource_name = "Hilt"

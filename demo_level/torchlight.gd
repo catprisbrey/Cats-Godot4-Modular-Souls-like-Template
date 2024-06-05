@@ -1,16 +1,24 @@
 extends OmniLight3D
 
-@onready var tween : Tween
+@onready var default_energy :float = self.light_energy
+@onready var timer = Timer.new()
+@onready var new_target :float
 # Called when the node enters the scene tree for the first time.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _ready():
-	tween = create_tween()
-	tween.connect("finished",_on_tween_finished)
-	await get_tree().process_frame
-	_on_tween_finished()
+	timer.autostart = true
+	timer.one_shot = false
+	timer.wait_time = .5
+	add_child(timer)
+	timer.timeout.connect(_on_timer_timeout)
+	
 
-func _on_tween_finished():
-	tween.stop()
-	tween.tween_property(self,"light_energy", randf(),randf_range(.1,.2))
-	tween.play()
+func _process(delta):
+		light_energy = move_toward(light_energy, new_target,.2)
+	
+func _on_timer_timeout():
+	new_target = default_energy + randf_range(-.3,.2)
+	var new_time = randf_range(.05,.2)
+	timer.start(new_time)
+	

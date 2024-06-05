@@ -1,5 +1,4 @@
-extends InteractableObject
-class_name LeverObject
+extends StaticBody3D
 
 ## The physical maniifestation of a boolean haha. Pull the lever, it will
 ## flip the boolean on of the property_to_switch on the node_to_control
@@ -14,6 +13,7 @@ class_name LeverObject
 @onready var interact_type = "LEVER"
 @export var anim_delay : float = .3
 var anim
+signal interactable_activated
 
 func activate(_requestor: CharacterBody3D):
 	if locked:
@@ -21,12 +21,14 @@ func activate(_requestor: CharacterBody3D):
 		
 	else:
 		interactable_activated.emit()
+		
+		# move the player in front of the lever
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
-
 		var tween = create_tween()
 		tween.tween_property(_requestor,"global_transform", new_translation,.2)
 		await tween.finished
 		
+		# trigger player and lever animation
 		_requestor.trigger_interact(interact_type)
 		await get_tree().create_timer(anim_delay).timeout
 		open_lever()

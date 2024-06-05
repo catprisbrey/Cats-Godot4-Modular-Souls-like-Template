@@ -1,5 +1,4 @@
-extends InteractableObject
-class_name ChestObject
+extends StaticBody3D
 
 # Called when the node enters the scene tree for the first time.
 @onready var opened = false
@@ -9,6 +8,7 @@ class_name ChestObject
 @onready var interact_type = "CHEST"
 @export var anim_delay : float = .5
 var anim
+signal interactable_activated
 
 func _ready():
 	add_to_group("interactable")
