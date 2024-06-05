@@ -1,12 +1,12 @@
 [gd_scene load_steps=13 format=3 uid="uid://c3yajhej5laa7"]
 
-[ext_resource type="Script" path="res://interactable objects_OLD/chest/chest_object.gd" id="1_pdewx"]
+[ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_mq2t8"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_5dulj"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
 [ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="2_uf1fe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1ssk"]
-size = Vector3(1.5, 0.75, 1)
+size = Vector3(0.965, 1, 0.775)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fowan"]
 albedo_color = Color(0.890196, 0.647059, 0, 1)
@@ -119,11 +119,10 @@ _data = {
 
 [node name="ChestObject" type="StaticBody3D"]
 collision_layer = 9
-script = ExtResource("1_pdewx")
-interact_type = "CHEST"
+script = ExtResource("1_mq2t8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0263672, 0.562805, 0.112549)
 shape = SubResource("BoxShape3D_f1ssk")
 
 [node name="MeshInstance3D" type="CSGBox3D" parent="."]

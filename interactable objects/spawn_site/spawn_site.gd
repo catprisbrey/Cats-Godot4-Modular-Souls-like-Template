@@ -1,5 +1,5 @@
-extends InteractableObject
-class_name SpawnSite
+extends StaticBody3D
+
 
 # Called when the node enters the scene tree for the first time.
 @onready var anim_player :AnimationPlayer = $AnimationPlayer
@@ -8,16 +8,18 @@ class_name SpawnSite
 @export var reset_level : bool = true
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var flame_particles = $FlameParticles
+@onready var interact_type = "SPAWN"
 
+
+func _ready():
+	add_to_group("interactable")
+	collision_layer = 9
 
 func activate(_requestor: CharacterBody3D):
-	interactable_activated.emit()
-	
-	if _requestor.has_method("start_interact"):
-		_requestor.start_interact(interact_type,_requestor.global_transform.looking_at(global_position,Vector3.UP,true), .4)
-		anim_player.play("respawn",.2)
-		await anim_player.animation_finished
-		_requestor.queue_free()
+	_requestor.trigger_interact(interact_type)
+	anim_player.play("respawn",.2)
+	await anim_player.animation_finished
+	_requestor.queue_free()
 	
 
 func respawn():

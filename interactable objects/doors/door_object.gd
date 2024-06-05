@@ -1,5 +1,4 @@
-extends InteractableObject
-class_name DoorObject
+extends StaticBody3D
 
 ## This door object expects waits to be told to "activate". Interactables
 ## typically are on physics layer 4, and in group "Interactable"
@@ -9,33 +8,39 @@ class_name DoorObject
 ## their own "start_door" logic and animations.
 
 @onready var opened = false
-@onready var door_anim_player :AnimationPlayer = $DoorAnimPlayer
-
+@onready var door_anim_player :AnimationPlayer = $AnimationPlayer
+@onready var interact_type  = "DOOR"
 @export var locked : bool = false
+@export var delay_anim : float = .8
 var anim
 
-func activate(_requestor: CharacterBody3D,_sensor_top_or_bottom :String):
+func _ready():
+	add_to_group("interactable")
+	collision_layer = 9
+	
+func activate(requestor: CharacterBody3D):
 	if locked:
 		shake_door()
 		
 	else:
-		interactable_activated.emit()
 		 # detect where the requestor is, and pass them location info to know where to center up.
-		var dist_to_front = to_global(Vector3.FORWARD).distance_to(_requestor.global_position)
-		var dist_to_back = to_global(Vector3.BACK).distance_to(_requestor.global_position)
+		var dist_to_front = to_global(Vector3.FORWARD).distance_to(requestor.global_position)
+		var dist_to_back = to_global(Vector3.BACK).distance_to(requestor.global_position)
 		
 		var new_translation = global_transform
 		if dist_to_front > dist_to_back: # detect which side of the door the player is on.
 			new_translation = global_transform.rotated_local(Vector3.UP,PI)
 		# update the new_location with the tranfrom info of where the requestor should ideally stand to open the door
-		new_translation = new_translation.translated_local(Vector3(0,_requestor.global_position.y,-1))
-		var move_time = .3
+		new_translation = new_translation.translated_local(Vector3(0,requestor.global_position.y,-1))
+
+		var tween = create_tween()
+		tween.tween_property(requestor,"global_transform", new_translation,.2)
+		await tween.finished
+		
 		
 		if opened == false:
-			# Requestor 'handshake', to trigger them to take open door actions
-			if _requestor.has_method("start_interact"):
-				_requestor.start_interact(interact_type,new_translation, move_time)
-				await get_tree().create_timer(move_time + .5).timeout
+			requestor.trigger_interact(interact_type)
+			await get_tree().create_timer(delay_anim).timeout
 			open_door(dist_to_front, dist_to_back)
 			
 		if opened == true:

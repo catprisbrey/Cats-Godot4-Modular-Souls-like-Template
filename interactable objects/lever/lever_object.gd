@@ -11,7 +11,8 @@ class_name LeverObject
 @onready var lever_anim_player :AnimationPlayer = $LeverAnimPlayer
 @export var locked : bool = false
 @export var player_offset : Vector3 = Vector3(0,0,1)
-
+@onready var interact_type = "LEVER"
+@export var anim_delay : float = .3
 var anim
 
 func activate(_requestor: CharacterBody3D):
@@ -21,13 +22,14 @@ func activate(_requestor: CharacterBody3D):
 	else:
 		interactable_activated.emit()
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
-		var move_time = .3
+
+		var tween = create_tween()
+		tween.tween_property(_requestor,"global_transform", new_translation,.2)
+		await tween.finished
 		
-		if opened == false:
-			if _requestor.has_method("start_interact"):
-				_requestor.start_interact(new_translation, move_time)
-				await get_tree().create_timer(move_time).timeout
-			open_lever()
+		_requestor.trigger_interact(interact_type)
+		await get_tree().create_timer(anim_delay).timeout
+		open_lever()
 
 func shake_lever():
 	lever_anim_player.play("locked")
