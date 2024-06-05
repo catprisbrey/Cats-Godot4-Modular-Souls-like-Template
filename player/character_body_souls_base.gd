@@ -2,8 +2,10 @@ extends CharacterBody3D
 
 @onready var sensor_cast : ShapeCast3D
 @onready var busy : bool = false
-@onready var ladder
+
 @export var animation_tree : AnimationTree
+
+
 ## A semi-smart character controller. Will detect the current camera in use
 ## and update control orientation to match it. Strafing will lock rotation
 ## to face camera perspective, except for dodging actions.
@@ -39,6 +41,8 @@ extends CharacterBody3D
 ## this CharacterBody3D will talk directly to a node rather than with signals is when it
 ## interacts with an interactable object.
 @onready var interactable : Node3D
+@onready var ladder
+signal climb_started
 signal interact_started(interact_type)
 
 ## A generic EquipmentSystem class, used to manage moving Weapons 
@@ -143,7 +147,7 @@ signal ladder_started(top_or_bottom:String)
 signal ladder_finished(top_or_bottom:String)
 
 # State management
-enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
+enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,CLIMB,ATTACK}
 @onready var current_state = state.STATIC : set = change_state
 signal changed_state(new_state: state)
 
@@ -165,6 +169,7 @@ func _ready():
 	if health_system:
 		health_system.died.connect(death)
 		
+	climb_started.connect(_on_climb_started)
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
@@ -223,8 +228,9 @@ func _physics_process(_delta):
 			dash_movement()
 			rotate_player()
 			
-		state.LADDER:
-			ladder_movement()
+		state.CLIMB:
+			climb_movement()
+			
 			
 		state.ATTACK:
 			dash_movement()
@@ -316,7 +322,12 @@ func _input(_event:InputEvent):
 			
 		elif _event.is_action_pressed("jump"):
 			jump()
-				
+	
+	elif current_state == state.CLIMB:
+			#aiming = false
+			if _event.is_action_pressed("interact"):
+				abort_climb()
+	
 	elif current_state == state.LADDER:
 		if _event.is_action_pressed("dodge_dash"):
 			current_state = state.FREE
@@ -538,46 +549,7 @@ func _on_dodge_timer_timeout():
 	current_state = state.FREE
 	can_be_hurt = true
 
-func ladder_movement():
-	# move up and down ladders per the indicated direction
-	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity = (Vector3.DOWN * input_dir.y) * speed
-	# exiting ladder state triggers:
-	last_altitude = global_position
-	if interact_loc == "BOTTOM":
-		exit_ladder("TOP") 
-	if is_on_floor():
-		exit_ladder("BOTTOM")
-	move_and_slide()
 
-func start_ladder(top_or_bottom,mount_transform:Transform3D):
-	ladder_started.emit(top_or_bottom)
-	if animation_tree:
-		await animation_tree.animation_measured
-	# After timer finishes, return to pre-dodge state
-	var tween = create_tween()
-	tween.set_parallel(false)
-	tween.tween_property(self,"global_rotation", mount_transform.basis.get_euler(),anim_length *.2)
-	tween.tween_property(self,"global_position", Vector3(mount_transform.origin.x,global_position.y,mount_transform.origin.z),anim_length *.2)
-	tween.tween_property(self,"global_transform", mount_transform, anim_length *.2)
-	await tween.finished
-	current_state = state.LADDER
-	
-func exit_ladder(exit_loc):
-	current_state = state.STATIC
-	ladder_finished.emit(exit_loc)
-	var dismount_pos
-	if animation_tree:
-		await animation_tree.animation_measured
-	match exit_loc:
-		"TOP":
-			dismount_pos = to_global(Vector3(0,1.5,.5))
-		"BOTTOM":
-			dismount_pos = global_position
-	var tween = create_tween()
-	tween.tween_property(self,"global_position", dismount_pos, anim_length * .6)
-	await tween.finished
-	current_state = state.FREE
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
@@ -592,6 +564,17 @@ func interact():
 			interactable.activate(self)
 		elif ladder:
 			ladder.activate(self)
+
+func _on_climb_started():
+	#interactable = null
+	current_state = state.CLIMB
+	
+func abort_climb():
+	if current_state == state.CLIMB:
+		current_state = state.FREE
+	
+
+
 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
@@ -762,3 +745,19 @@ func trigger_event(signal_name:String):
 	await animation_tree.animation_finished
 	current_state = state.FREE
 	busy = false
+
+func climb_movement(): ## Non-root_motion controller
+	## move up and down ladders per the indicated direction
+	input_dir = Input.get_vector("move_down", "move_right", "move_up", "move_down")
+	velocity = (Vector3.DOWN * input_dir.y) * ladder_climb_speed
+	## exiting ladder state triggers:
+	if !sensor_cast.is_colliding():
+		current_state = state.FREE
+		#free_started.emit()
+		jump()
+		var tween = create_tween()
+		tween.tween_property(self,"global_position",sensor_cast.to_global(Vector3.BACK),.4)
+		current_state = state.FREE
+	if is_on_floor():
+		abort_climb()
+	move_and_slide()

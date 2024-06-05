@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=29 format=3 uid="uid://uiw1spc0mevb"]
 
 [ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
@@ -87,6 +87,9 @@ _data = {
 }
 point_count = 4
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_hr4mr"]
+size = Vector3(0.7, 50.1672, 0.62)
+
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -151,7 +154,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.999736, 0, -0.0225165, 0, 1, 0, 0.0225165, 0, 0.999736, -0.43294, 0, -0.97773)
+transform = Transform3D(0.999735, 0, -0.0225164, 0, 1, 0, 0.0225164, 0, 0.999735, -0.43294, 0, -0.97773)
 script = ExtResource("6_i73lt")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -330,6 +333,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.5002, 0)
 [node name="PlayerCharacterBodySoulsBase" parent="." instance=ExtResource("1_70e33")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50545, 0, 2.39099)
 
+[node name="Ladder4" parent="." instance=ExtResource("4_a4kod")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.998, 0.0596613, 4.62441)
+
+[node name="LadderCol" parent="Ladder4" index="0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15.261, 25.0465, -51.4854)
+shape = SubResource("BoxShape3D_hr4mr")
+
 [editable path="Ladder"]
 [editable path="Ladder2"]
 [editable path="Ladder3"]
+[editable path="Ladder4"]

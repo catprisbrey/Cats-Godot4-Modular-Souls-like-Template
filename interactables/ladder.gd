@@ -20,6 +20,7 @@ func activate(requester: CharacterBody3D):
 	else: # Top of ladder
 		new_trans.origin = to_global(Vector3.BACK *.5)
 		new_trans.origin.y = requester.global_position.y - 1.2
+	
 	var tween = create_tween()
 	tween.tween_property(requester,"global_transform",new_trans,.3)
 	await tween.finished

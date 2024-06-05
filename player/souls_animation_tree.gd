@@ -10,7 +10,7 @@ class_name AnimationTreeSoulsBase
 
 @export var player_node : CharacterBody3D
 @onready var base_state_machine : AnimationNodeStateMachinePlayback = self["parameters/MovementStates/playback"]
-@onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
+#@onready var ladder_state_machine = self["parameters/MovementStates/LADDER_tree/playback"]
 @onready var current_weapon_tree : AnimationNodeStateMachinePlayback
 @onready var weapon_type : String = "SLASH"
 @onready var gadget_type : String = "SHIELD"
@@ -46,8 +46,8 @@ func _ready():
 	player_node.landed_fall.connect(_on_landed_fall)
 	
 	player_node.interact_started.connect(_on_interact_started)
-	player_node.ladder_started.connect(_on_ladder_start)
-	player_node.ladder_finished.connect(_on_ladder_finished)
+	player_node.climb_started.connect(_on_climb_start)
+	#player_node.ladder_finished.connect(_on_ladder_finished)
 
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
 	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
@@ -81,7 +81,7 @@ func _process(_delta):
 	else:
 		set_free_move()
 		
-	if player_node.current_state == player_node.state.LADDER:
+	if player_node.current_state == player_node.state.CLIMB:
 		set_ladder()
 		
 	set_guarding()
@@ -203,24 +203,27 @@ func _on_item_change_started():
 func _on_item_change_ended(_new_item):
 	current_item = _new_item
 
-func _on_ladder_start(top_or_bottom):
-	set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",0)
-	base_state_machine.start("LADDER_tree")
-	ladder_state_machine.travel("LadderStart_" + top_or_bottom)
+func _on_climb_start():
+	#set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",0)
+	#base_state_machine.start("LADDER_tree")
+	base_state_machine.travel("LADDER_tree")
+	#ladder_state_machine.travel("LadderStart_" + top_or_bottom)
 	
-func _on_ladder_finished(top_or_bottom):
-	ladder_state_machine.travel("LadderEnd_" + top_or_bottom)
+#func _on_ladder_finished(top_or_bottom):
+	##ladder_state_machine.travel("LadderEnd_" + top_or_bottom)
+	#pass
 	
 func set_ladder():
 	#set("parameters/MovementStates/LADDER_tree/LadderBlend/blend_position",-player_node.input_dir.y)
-	var ladder_frame = get("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position")
-	print(ladder_frame)
-	if ladder_frame > 1:
-		ladder_frame = 0
-	elif ladder_frame < 0:
-		ladder_frame = 1
-	set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",ladder_frame - (player_node.input_dir.y * .015))
-			
+	#var ladder_frame = get("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position")
+	#print(ladder_frame)
+	#if ladder_frame > 1:
+		#ladder_frame = 0
+	#elif ladder_frame < 0:
+		#ladder_frame = 1
+	#set("parameters/MovementStates/LADDER_tree/LadderBlender/blend_position",ladder_frame - (player_node.input_dir.y * .015)) # otherwise, play the animation at the speed of player input (* a speed if climb anim is slow)
+	print(player_node.input_dir.y)
+	set("parameters/MovementStates/LADDER_tree/LadderTime/scale",-player_node.input_dir.y)
 			
 func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
