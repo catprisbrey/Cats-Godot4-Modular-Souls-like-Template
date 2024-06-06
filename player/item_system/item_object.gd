@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name ItemObject
 
-@export var target_group :String = "Player"
+@export var target_group :String = "player"
 @export_enum("HURT","HEAL") var effect_type :String = "HEAL"
 @export_enum("DRINK","THROWN","OTHER") var object_type : String= "DRINK"
 @export var power : int = 1

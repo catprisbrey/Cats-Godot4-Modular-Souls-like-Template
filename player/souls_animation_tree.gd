@@ -142,7 +142,7 @@ func _on_block_started():
 	request_oneshot("Block")
 
 func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
-	if player_node.current_state == player_node.state.LADDER:
+	if player_node.current_state == player_node.state.CLIMB:
 		hurt_count = 3
 	else:
 		abort_oneshot(last_oneshot)
