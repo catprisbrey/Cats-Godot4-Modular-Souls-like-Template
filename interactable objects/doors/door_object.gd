@@ -2,9 +2,9 @@ extends StaticBody3D
 
 ## This door object expects waits to be told to "activate". Interactables
 ## typically are on physics layer 4, and in group "Interactable"
-## Interacts are a bit of a 'handshake'. The requestor tells the door
-## to activate. The door replies back to the requestor a translation and wait time
-## so the requestor can be in sync, moving to a good position before running 
+## Interacts are a bit of a 'handshake'. The player tells the door
+## to activate. The door replies back to the player a translation and wait time
+## so the player can be in sync, moving to a good position before running 
 ## their own "start_door" logic and animations.
 
 @onready var opened = false
@@ -18,29 +18,29 @@ func _ready():
 	add_to_group("interactable")
 	collision_layer = 9
 	
-func activate(requestor: CharacterBody3D):
+func activate(player: CharacterBody3D):
 	if locked:
 		shake_door()
 		
 	else:
-		requestor.current_state = requestor.state.STATIC
-		 # detect where the requestor is, and pass them location info to know where to center up.
-		var dist_to_front = to_global(Vector3.FORWARD).distance_to(requestor.global_position)
-		var dist_to_back = to_global(Vector3.BACK).distance_to(requestor.global_position)
+		player.current_state = player.state.STATIC
+		 # detect where the player is, and pass them location info to know where to center up.
+		var dist_to_front = to_global(Vector3.FORWARD).distance_to(player.global_position)
+		var dist_to_back = to_global(Vector3.BACK).distance_to(player.global_position)
 		
 		var new_translation = global_transform
 		if dist_to_front > dist_to_back: # detect which side of the door the player is on.
 			new_translation = global_transform.rotated_local(Vector3.UP,PI)
-		# update the new_location with the tranfrom info of where the requestor should ideally stand to open the door
-		new_translation = new_translation.translated_local(Vector3(0,requestor.global_position.y,-1))
+		# update the new_location with the tranfrom info of where the player should ideally stand to open the door
+		new_translation = new_translation.translated_local(Vector3(0,player.global_position.y,-1))
 
 		var tween = create_tween()
-		tween.tween_property(requestor,"global_transform", new_translation,.2)
+		tween.tween_property(player,"global_transform", new_translation,.2)
 		await tween.finished
 		
 		
 		if opened == false:
-			requestor.trigger_interact(interact_type)
+			player.trigger_interact(interact_type)
 			await get_tree().create_timer(delay_anim).timeout
 			open_door(dist_to_front, dist_to_back)
 			
@@ -52,7 +52,7 @@ func activate(requestor: CharacterBody3D):
 func shake_door():
 	door_anim_player.play("Locked")
 	
-## Based on the requestors updated location from being activated,
+## Based on the players updated location from being activated,
 ## The door will open in or outwards. A signally lever can pass it info
 ## and it will work just the same.
 

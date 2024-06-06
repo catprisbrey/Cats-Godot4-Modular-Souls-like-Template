@@ -20,21 +20,22 @@ func _ready():
 	collision_layer = 9
 
 
-func activate(requestor: CharacterBody3D):
+func activate(player: CharacterBody3D):
 	if locked:
 		shake_lever()
-		
+	elif opened:
+		return
 	else:
 		interactable_activated.emit()
-		requestor.current_state = requestor.state.STATIC
+		player.current_state = player.state.STATIC
 		# move the player in front of the lever
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
 		var tween = create_tween()
-		tween.tween_property(requestor,"global_transform", new_translation,.2)
+		tween.tween_property(player,"global_transform", new_translation,.2)
 		await tween.finished
 		
 		# trigger player and lever animation
-		requestor.trigger_interact(interact_type)
+		player.trigger_interact(interact_type)
 		await get_tree().create_timer(anim_delay).timeout
 		open_lever()
 

@@ -12,21 +12,21 @@ func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	
-func activate(requester: CharacterBody3D):
-	requester.current_state = requester.state.STATIC
-	if requester.global_position.distance_to(global_position) < 2: # bottom of ladder
+func activate(player: CharacterBody3D):
+	player.current_state = player.state.STATIC
+	if player.global_position.distance_to(global_position) < 2: # bottom of ladder
 		new_trans.origin = to_global(Vector3.BACK *.5)
-		new_trans.origin.y = requester.global_position.y +.5
+		new_trans.origin.y = player.global_position.y +.5
 	else: # Top of ladder
 		new_trans.origin = to_global(Vector3.BACK *.5)
-		new_trans.origin.y = requester.global_position.y - 1.2
+		new_trans.origin.y = player.global_position.y - 1.2
 	
 	var tween = create_tween()
-	tween.tween_property(requester,"global_transform",new_trans,.3)
+	tween.tween_property(player,"global_transform",new_trans,.3)
 	await tween.finished
 	
-	#requester.start_climb()
-	requester.climb_started.emit()
+	#player.start_climb()
+	player.climb_started.emit()
 
 
 func _on_body_entered(body):

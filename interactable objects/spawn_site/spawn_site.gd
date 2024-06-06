@@ -15,12 +15,12 @@ func _ready():
 	add_to_group("interactable")
 	collision_layer = 9
 
-func activate(requester: CharacterBody3D):
-	requester.current_state = requester.state.STATIC
-	requester.trigger_interact(interact_type)
+func activate(player: CharacterBody3D):
+	player.current_state = player.state.STATIC
+	player.trigger_interact(interact_type)
 	anim_player.play("respawn",.2)
 	await anim_player.animation_finished
-	requester.queue_free()
+	player.queue_free()
 	
 
 func respawn():
