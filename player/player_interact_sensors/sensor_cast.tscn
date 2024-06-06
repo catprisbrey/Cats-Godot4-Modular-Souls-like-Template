@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://r31q8k2be4qk"]
+
+[ext_resource type="Script" path="res://player/player_interact_sensors/sensor_cast.gd" id="1_fiu3x"]
+
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cfuto"]
+margin = 0.05
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="SensorCast" type="ShapeCast3D"]
+shape = SubResource("BoxShape3D_cfuto")
+collision_mask = 9
+script = ExtResource("1_fiu3x")

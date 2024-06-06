@@ -1,5 +1,9 @@
 extends StaticBody3D
 
+## All interactables function similarly. They have a function called "activate"
+## that takes in the player node as an argument. Typically the interactable
+## forces the player to a STATIC state, moves the player into a ready postiion,
+## triggers the interact on the player while making any changes needed here.
 
 # Called when the node enters the scene tree for the first time.
 @onready var anim_player :AnimationPlayer = $AnimationPlayer

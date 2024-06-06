@@ -1,11 +1,10 @@
 extends StaticBody3D
 
-## This door object expects waits to be told to "activate". Interactables
-## typically are on physics layer 4, and in group "Interactable"
-## Interacts are a bit of a 'handshake'. The player tells the door
-## to activate. The door replies back to the player a translation and wait time
-## so the player can be in sync, moving to a good position before running 
-## their own "start_door" logic and animations.
+
+## All interactables function similarly. They have a function called "activate"
+## that takes in the player node as an argument. Typically the interactable
+## forces the player to a STATIC state, moves the player into a ready postiion,
+## triggers the interact on the player while making any changes needed here.
 
 @onready var opened = false
 @onready var door_anim_player :AnimationPlayer = $AnimationPlayer
@@ -46,8 +45,6 @@ func activate(player: CharacterBody3D):
 			
 		if opened == true:
 			close_door()
-
-
 
 func shake_door():
 	door_anim_player.play("Locked")

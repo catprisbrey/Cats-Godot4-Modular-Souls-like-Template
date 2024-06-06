@@ -50,7 +50,7 @@ var can_be_hurt = true
 
 ## if disabled, then a normal death animation will play instead of ragdoll
 @export var ragdoll_death : bool = false
-@onready var general_skeleton = %GeneralSkeleton
+@onready var general_skeleton = $mannyquin/godot_rig/GeneralSkeleton
 
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper

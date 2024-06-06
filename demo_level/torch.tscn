@@ -1,12 +1,12 @@
 [gd_scene load_steps=15 format=3 uid="uid://dwi6wppkvd4nl"]
 
 [ext_resource type="AudioStream" uid="uid://bd7r1x1qj66kq" path="res://audio/SoundFX/fire/fire_01_loop.wav" id="1_5cub6"]
-[ext_resource type="Script" path="res://demo_level/torchlight.gd" id="1_um72q"]
+[ext_resource type="Script" path="res://utility scripts/torchlight.gd" id="1_um72q"]
 [ext_resource type="Texture2D" uid="uid://cwge1oho80gqv" path="res://demo_level/flame_01.png" id="1_xqg3w"]
 [ext_resource type="Texture2D" uid="uid://c20aj5kavxwu2" path="res://demo_level/flame_02.png" id="2_p0la0"]
 [ext_resource type="Texture2D" uid="uid://dve1qetygtql4" path="res://demo_level/flame_03.png" id="3_if8qv"]
 [ext_resource type="Texture2D" uid="uid://cqleuo5skisus" path="res://demo_level/flame_04.png" id="4_1amwc"]
-[ext_resource type="Script" path="res://player/signal_caller.gd" id="5_j4f3j"]
+[ext_resource type="Script" path="res://utility scripts/signal_caller.gd" id="5_j4f3j"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ergnq"]
 resource_name = "Hilt"
