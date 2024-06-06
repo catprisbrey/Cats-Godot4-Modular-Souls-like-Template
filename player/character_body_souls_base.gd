@@ -542,7 +542,6 @@ func _on_dodge_timer_timeout():
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
-
 func interact():
 	if is_on_floor() && !busy:
 		if interactable:
