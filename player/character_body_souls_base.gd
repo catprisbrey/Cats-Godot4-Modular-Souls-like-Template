@@ -29,17 +29,9 @@ extends CharacterBody3D
 ## track of whatever the starting camera was, rather than update it if camera's change.
 @onready var orientation_target = current_camera
 
-## Add here a PlayerInteractSensor. It will connect up the signals needed to identify
-## and interact with interactables in the world
+## Interactables that updates based on entering a Ladder Area or, the sensor_cast
+## colliding with an interactable.
 
-## A variablet that updates storing the info of which sensor spotted an interactable.
-## A string of "TOP", "BOTTOM, "BOTH" is stored here. Based one which sensors spotted an object 
-## aids identifying if the object is on the floor, head height, or both. 
-@onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
-
-## The newly sensed interactable node found by the interact sensor. One of the few itmes
-## this CharacterBody3D will talk directly to a node rather than with signals is when it
-## interacts with an interactable object.
 @onready var interactable : Node3D
 @onready var ladder
 signal climb_started
@@ -147,7 +139,7 @@ signal ladder_started(top_or_bottom:String)
 signal ladder_finished(top_or_bottom:String)
 
 # State management
-enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,CLIMB,ATTACK}
+enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,CLIMB,ATTACK}
 @onready var current_state = state.STATIC : set = change_state
 signal changed_state(new_state: state)
 
@@ -195,8 +187,6 @@ func change_state(new_state):
 			speed = default_speed
 		state.ATTACK:
 			speed = default_speed
-		state.LADDER:
-			speed = ladder_climb_speed
 		state.DODGE:
 			speed = dodge_speed
 		state.SPRINT:
@@ -207,7 +197,7 @@ func change_state(new_state):
 			speed = 0.0
 			velocity = Vector3.ZERO
 	
-	if current_state == state.LADDER:
+	if current_state == state.CLIMB:
 		system_visible(weapon_system,false)
 		system_visible(gadget_system,false)
 	else:
@@ -328,9 +318,6 @@ func _input(_event:InputEvent):
 			if _event.is_action_pressed("interact"):
 				abort_climb()
 	
-	elif current_state == state.LADDER:
-		if _event.is_action_pressed("dodge_dash"):
-			current_state = state.FREE
 				
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
@@ -338,7 +325,7 @@ func _input(_event:InputEvent):
 
 func apply_gravity(_delta):
 	if !is_on_floor() \
-	&& current_state != state.LADDER:
+	&& current_state != state.CLIMB:
 		velocity.y -= gravity * _delta
 		
 func free_movement():
@@ -462,6 +449,7 @@ func fall_check():
 	## When you land again, compare the distances of both location y values, if greater
 	## than the hard_landing_height, then trigger a hard landing. Otherwise, 
 	## clear the last_altitude variable.
+
 	if !is_on_floor() && last_altitude == null: 
 		last_altitude = global_position
 	if is_on_floor() && last_altitude != null:
@@ -554,10 +542,7 @@ func _on_dodge_timer_timeout():
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
-func _on_interact_updated(_interactable, _int_loc):
-	interactable = _interactable
-	interact_loc = _int_loc
-	
+
 func interact():
 	if is_on_floor() && !busy:
 		if interactable:
@@ -571,6 +556,7 @@ func _on_climb_started():
 	
 func abort_climb():
 	if current_state == state.CLIMB:
+		last_altitude = global_position
 		current_state = state.FREE
 	
 
@@ -752,6 +738,7 @@ func climb_movement(): ## Non-root_motion controller
 	velocity = (Vector3.DOWN * input_dir.y) * ladder_climb_speed
 	## exiting ladder state triggers:
 	if !sensor_cast.is_colliding():
+		last_altitude = global_position
 		current_state = state.FREE
 		#free_started.emit()
 		jump()

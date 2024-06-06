@@ -14,7 +14,7 @@ func _ready():
 	timer.timeout.connect(_on_timer_timeout)
 	
 
-func _process(delta):
+func _process(_delta):
 		light_energy = move_toward(light_energy, new_target,.2)
 	
 func _on_timer_timeout():

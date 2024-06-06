@@ -11,25 +11,30 @@ extends StaticBody3D
 @export var locked : bool = false
 @export var player_offset : Vector3 = Vector3(0,0,1)
 @onready var interact_type = "LEVER"
-@export var anim_delay : float = .3
+@export var anim_delay : float = .1
 var anim
 signal interactable_activated
 
-func activate(_requestor: CharacterBody3D):
+func _ready():
+	add_to_group("interactable")
+	collision_layer = 9
+
+
+func activate(requestor: CharacterBody3D):
 	if locked:
 		shake_lever()
 		
 	else:
 		interactable_activated.emit()
-		
+		requestor.current_state = requestor.state.STATIC
 		# move the player in front of the lever
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
 		var tween = create_tween()
-		tween.tween_property(_requestor,"global_transform", new_translation,.2)
+		tween.tween_property(requestor,"global_transform", new_translation,.2)
 		await tween.finished
 		
 		# trigger player and lever animation
-		_requestor.trigger_interact(interact_type)
+		requestor.trigger_interact(interact_type)
 		await get_tree().create_timer(anim_delay).timeout
 		open_lever()
 

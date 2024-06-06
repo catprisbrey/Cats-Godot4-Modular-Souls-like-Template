@@ -23,6 +23,7 @@ func activate(requestor: CharacterBody3D):
 		shake_door()
 		
 	else:
+		requestor.current_state = requestor.state.STATIC
 		 # detect where the requestor is, and pass them location info to know where to center up.
 		var dist_to_front = to_global(Vector3.FORWARD).distance_to(requestor.global_position)
 		var dist_to_back = to_global(Vector3.BACK).distance_to(requestor.global_position)
