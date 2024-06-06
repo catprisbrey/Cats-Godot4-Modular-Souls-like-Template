@@ -456,8 +456,8 @@ func fall_check():
 		var fall_distance = abs(last_altitude.y - global_position.y)
 		if fall_distance > hard_landing_height:
 			hard_landing()
-		elif fall_distance > .5 :
-			landed_fall.emit("SOFT")
+		#elif fall_distance > .5 :
+			#landed_fall.emit("SOFT")
 		last_altitude = null
 				
 func hard_landing():
