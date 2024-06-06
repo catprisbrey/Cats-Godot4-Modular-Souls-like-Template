@@ -20,7 +20,7 @@ func _ready():
 	collision_layer = 9
 
 func activate(player: CharacterBody3D):
-	player.current_state = player.state.STATIC
+	
 	player.trigger_interact(interact_type)
 	anim_player.play("respawn",.2)
 	await anim_player.animation_finished

@@ -22,7 +22,7 @@ func activate(player: CharacterBody3D):
 		shake_door()
 		
 	else:
-		player.current_state = player.state.STATIC
+		
 		 # detect where the player is, and pass them location info to know where to center up.
 		var dist_to_front = to_global(Vector3.FORWARD).distance_to(player.global_position)
 		var dist_to_back = to_global(Vector3.BACK).distance_to(player.global_position)

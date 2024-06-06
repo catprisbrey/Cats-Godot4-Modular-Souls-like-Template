@@ -1,26 +1,9 @@
 extends CharacterBody3D
 
 @onready var sensor_cast : ShapeCast3D
-
-
 @export var animation_tree : AnimationTree
-
-## A semi-smart character controller. Will detect the current camera in use
-## and update control orientation to match it. Strafing will lock rotation
-## to face camera perspective, except for dodging actions.
-
-## A LOT of actions here have signals delayed by timers. This is bad form.
-## It's bad for production but handy when protoyping new animations and you don't
-## want to hard bake where each trigger happens every time you change something.
-## Once player animations are finalized, add the signal triggers to the animations
-## and remove the timers in the functions here as needed. 
-
-## Manages all animations generally pulling info it needs from states and substates.
-
-## When the animation_tree starts a new animatino, this variable updates with it's length
-## great for automatic updating of timer lengths to match the current animation length
-@onready var anim_length = .5
-
+@onready var anim_length = .5 # updates as new animnations start
+signal event_finished
 ## default/1st camera is a follow cam.
 @onready var current_camera = get_viewport().get_camera_3d()
 
@@ -28,9 +11,8 @@ extends CharacterBody3D
 ## track of whatever the starting camera was, rather than update it if camera's change.
 @onready var orientation_target = current_camera
 
-## Interactables that updates based on entering a Ladder Area or, the sensor_cast
+## Interactables that update based on entering a Ladder Area or, the sensor_cast
 ## colliding with an interactable.
-
 @onready var interactable : Node3D
 @onready var ladder
 signal climb_started
@@ -48,10 +30,7 @@ signal weapon_change_started ## to start the animation
 signal weapon_changed ## the moment the weapon objects change hands.
 signal weapon_change_ended(weapon_type:String) ## informing the change is complete
 signal attack_started ## to start the animation
-signal attack_activated ## to activate collision detection, sound effects, etc.
-signal air_attack_started
-signal big_attack_started
-signal sprint_attack_started
+
 
 ## A helper variable for keyboard events across 2 key inputs "shift+ attack", etc.
 ## there may be a better way to capture combo key presses across multiple device types,
@@ -228,6 +207,11 @@ func _input(_event:InputEvent):
 		secondary_action = false
 	
 	if current_state == state.FREE:
+		if _event.is_action_pressed("use_weapon_light"):
+			attack()
+		elif _event.is_action_pressed("use_weapon_strong"):
+			attack_strong()
+				
 		if is_on_floor():
 			# if interactable exists, activate its action
 			if _event.is_action_pressed("interact"):
@@ -236,14 +220,8 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("jump"):
 				jump()
 				
-			elif _event.is_action_pressed("use_weapon_light"):
-				if secondary_action: # big attack for keyboard
-					attack(secondary_action)
-				else:
-					attack()
 					
-			elif _event.is_action_pressed("use_weapon_strong"):
-				attack(secondary_action) # big attack for joypad
+
 
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge_or_sprint()
@@ -270,9 +248,6 @@ func _input(_event:InputEvent):
 				item_change()
 			elif _event.is_action_pressed("use_item"): 
 				use_item()
-		else: # if not on floor
-			if _event.is_action_pressed("use_weapon_light"):
-				air_attack()
 	
 
 	
@@ -288,9 +263,6 @@ func _input(_event:InputEvent):
 		
 		if _event.is_action_released("dodge_dash"):
 			end_sprint()
-			
-		if _event.is_action_pressed("use_weapon_light"):
-			sprint_attack()
 	
 				
 	if _event.is_action_released("use_gadget_light"):
@@ -376,53 +348,17 @@ func set_strafe_targeting():
 func _on_target_cleared():
 	strafing = false
 
-func attack(_is_special_attack : bool = false):
-	if busy:
-		return
-	busy = true
-	#current_state = state.ATTACK
-	if _is_special_attack:
-		big_attack_started.emit()
-	else:
-		attack_started.emit()
-	if animation_tree: 
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.3).timeout
-	attack_activated.emit()
-
-	if animation_tree: 
-		await get_tree().create_timer(anim_length *.7).timeout
-	busy = false
-	#if current_state == state.ATTACK:
-		#current_state = state.FREE
-
-		
-func air_attack():
-	if busy:
-		return
-	busy = true
-	air_attack_started.emit()
-	#current_state = state.DYNAMIC_ACTION
-	if animation_tree: 
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
-	attack_activated.emit()
-	await get_tree().create_timer(anim_length *.5).timeout
-	#current_state = state.FREE
-	busy = false
+func attack():
+	trigger_event("attack_started")
 	
-func sprint_attack():
-	#current_state = state.ATTACK
-	sprint_attack_started.emit()
-	if animation_tree: 
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.3).timeout
-	attack_activated.emit()
-
-	if animation_tree: 
-		await get_tree().create_timer(anim_length *.7).timeout
-	#if current_state == state.ATTACK:
-		#current_state = state.FREE
+func attack_strong():
+	if busy or dodging:
+		return
+	secondary_action = true
+	trigger_event("attack_started")
+	await attack_started
+	secondary_action = false
+	
 	
 func fall_check():
 	## If you leave the floor, store last position.
@@ -643,16 +579,16 @@ func trigger_interact(interact_type:String):
 	interact_started.emit(interact_type)
 	await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	current_state = state.FREE
 	busy = false
 		
 func trigger_event(signal_name:String):
-	if busy:
+	if busy or dodging:
 		return
 	busy = true
 	emit_signal(signal_name)
-	await animation_tree.animation_finished
-	#current_state = state.FREE
+	await animation_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	event_finished.emit()
 	busy = false
 
 

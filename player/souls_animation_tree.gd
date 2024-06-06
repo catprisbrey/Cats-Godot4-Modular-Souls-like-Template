@@ -16,6 +16,7 @@ class_name AnimationTreeSoulsBase
 @onready var gadget_type : String = "SHIELD"
 @onready var interact_type :String = "GENERIC"
 @onready var current_item : ItemResource
+@export var max_attack_count : int = 2 ## how many attacks you have in the attack tree
 @onready var attack_count = 1 ## Used in the anim state tree. The oneShot for the
 ## ATTACK_tree, under SLASH and HEAVY each route to an animation will use this 
 ## variable under it's advanced expression to know which route to take.
@@ -52,9 +53,6 @@ func _ready():
 	player_node.weapon_change_started.connect(_on_weapon_change_started)
 	player_node.weapon_change_ended.connect(_on_weapon_change_ended)
 	player_node.attack_started.connect(_on_attack_started)
-	player_node.big_attack_started.connect(_on_big_attack_started)
-	player_node.air_attack_started.connect(_on_air_attack_started)
-	player_node.sprint_attack_started.connect(_on_sprint_attack_started)
 	
 	player_node.gadget_change_started.connect(_on_gadget_change_started)
 	player_node.gadget_change_ended.connect(_on_gadget_change_ended)
@@ -107,36 +105,12 @@ func _on_parry_started():
 	request_oneshot("Parry")
 
 func _on_attack_started():
-	
 	request_oneshot("Attack")
 	await animation_measured
 	attack_timer.start(anim_length +.2)
-	
-	match attack_count:
-		1:
-			attack_count = 2
-		2: 
-			attack_count = 1
-
-func _on_big_attack_started():
-	attack_count = 3
-	request_oneshot("Attack")
-	await animation_measured
-	attack_timer.start(anim_length +.2)
-	attack_count = 2
-	
-func _on_sprint_attack_started():
-	attack_count = 5
-	request_oneshot("Attack")
-	await animation_measured
-	attack_timer.start(anim_length +.2)
-	attack_count = 1
-	
-func _on_air_attack_started():
-	attack_count = 4
-	request_oneshot("Attack")
-	await animation_measured
-	attack_timer.start(.1)
+	attack_count +=1
+	if attack_count > max_attack_count:
+		attack_count = 1
 
 
 func _on_block_started():
@@ -152,7 +126,6 @@ func _on_hurt_started(): ## Picks a hurt animation between "Hurt1" and "Hurt2"
 		current_weapon_tree.start("MoveStrafe")
 		
 func abort_oneshot(_last_oneshot:String):
-	
 	set("parameters/" + _last_oneshot + "/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
 	

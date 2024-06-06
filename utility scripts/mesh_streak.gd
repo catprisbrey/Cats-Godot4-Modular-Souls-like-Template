@@ -11,7 +11,6 @@ class_name MeshStreak
 ## Will stop emitting after the lifetime. Set to 0 to never stop emitting.
 @export var lifetime = .5
 
-
 ## Node where the mesh will base its the offset origins vertext points. If left
 ## empty, then a get_parent() will be used, and offest will be based on that parent's
 ## origin.
@@ -49,7 +48,7 @@ func _ready():
 		origin_node = get_parent()
 
 func _process(_delta):
-	
+	sync_property()
 	if emitting:
 		counter += 1
 		if counter > 1:
@@ -107,3 +106,7 @@ func material_check(): ## Create a new default material for the streak
 		new_grad_texture.gradient = new_gradient
 		custom_material.albedo_texture = new_grad_texture
 		
+
+func sync_property():
+	if get_parent().current_equipment:
+		emitting = get_parent().current_equipment.monitoring
