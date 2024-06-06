@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="3_0mbes"]
-[ext_resource type="PackedScene" uid="uid://b5y7f5xgkpa1d" path="res://interactable objects/ladder.tscn" id="4_a4kod"]
+[ext_resource type="PackedScene" path="res://interactable objects/ladder.tscn" id="4_a4kod"]
 [ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="5_b73po"]
 [ext_resource type="Script" path="res://enemy/patrol_point.gd" id="6_i73lt"]
 [ext_resource type="PackedScene" uid="uid://bbhrq4snasi1i" path="res://demo_level/stagingCSG.tscn" id="7_p8o0k"]
@@ -334,10 +334,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.5002, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50545, 0, 2.39099)
 
 [node name="Ladder4" parent="." instance=ExtResource("4_a4kod")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.998, 0.0596613, 4.62441)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -65.4717, 0.0596613, 19.9718)
 
 [node name="LadderCol" parent="Ladder4" index="0"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15.261, 25.0465, -51.4854)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 25.028, 0)
 shape = SubResource("BoxShape3D_hr4mr")
 
 [editable path="Ladder"]
