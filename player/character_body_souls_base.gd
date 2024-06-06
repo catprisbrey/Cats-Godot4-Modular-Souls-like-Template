@@ -443,16 +443,18 @@ func end_guard():
 	slowed = false
 
 func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
-	current_state = state.STATIC
-	gadget_started.emit()
-	if animation_tree:
-		await animation_tree.animation_started
-	await get_tree().create_timer(anim_length  *.3).timeout
-	gadget_activated.emit()
-
-	await get_tree().create_timer(anim_length  *.7).timeout
-	if current_state == state.STATIC:
-		current_state = state.FREE
+	trigger_event("gadget_started")
+	
+	#current_state = state.STATIC
+	#gadget_started.emit()
+	#if animation_tree:
+		#await animation_tree.animation_started
+	#await get_tree().create_timer(anim_length  *.3).timeout
+	#gadget_activated.emit()
+#
+	#await get_tree().create_timer(anim_length  *.7).timeout
+	#if current_state == state.STATIC:
+		#current_state = state.FREE
 
 func hit(_who, _by_what):
 	if hurt_cool_down.time_left > 0:
@@ -565,7 +567,7 @@ func set_root_climb(delta):
 	var rate = 2
 	var new_velocity = get_quaternion() * animation_tree.get_root_motion_rotation() * animation_tree.get_root_motion_position() / delta
 	
-	#velocity = lerp (velocity,new_velocity,rate)
+	#velocity = lerp (velocity,new_velocity,rate) #buggier than move_toward
 	velocity.x = move_toward(velocity.x, new_velocity.x, rate)
 	velocity.y = move_toward(velocity.y, new_velocity.y, rate)
 	velocity.z = move_toward(velocity.z, new_velocity.z, rate)
@@ -574,8 +576,6 @@ func set_root_climb(delta):
 		print("cast not colliding")
 		current_state = state.FREE
 		last_altitude = global_position
-		#free_started.emit()
-		#jump()
 		var dismount_pos = to_global(Vector3.BACK)
 		dismount_pos.y += .5
 		var tween = create_tween()

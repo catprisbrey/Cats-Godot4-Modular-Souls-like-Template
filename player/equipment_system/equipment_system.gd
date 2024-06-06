@@ -39,6 +39,9 @@ class_name EquipmentSystem
 @onready var stored_equipment : EquipmentObject
 @export var activate_delay : float = .2
 
+@onready var active_timer = Timer.new()
+
+
 @export_flags_3d_physics var collision_detect_layers = 15
 
 signal hit_target
@@ -46,6 +49,10 @@ signal hit_world
 signal equipment_changed(new_equipment : EquipmentObject)
 
 func _ready():
+	active_timer.one_shot = true
+	active_timer.timeout.connect(_on_active_timer_timoeout)
+	add_child(active_timer)
+	
 	if player_node:
 		if player_node.has_signal(change_signal):
 			player_node.connect(change_signal,_on_equipment_changed)
@@ -100,21 +107,22 @@ func _on_equipment_changed():
 func _on_activated():
 	## awaiting so the area3D starts monitoring about after attack wind-up
 	if current_equipment:
-		
 		await get_tree().create_timer(player_node.anim_length *.3).timeout
 		## pause and start monitoring to hit things
 		current_equipment.monitoring = true
-		await get_tree().create_timer(player_node.anim_length *.5).timeout
-		## after moment turn off monitoring to not hit things
-		current_equipment.monitoring = false
+		active_timer.start(player_node.anim_length *.5)
 		
 func _on_body_entered(_hit_body):
 	if _hit_body.is_in_group(target_group):
 		if _hit_body.has_method("hit"):
 			hit_target.emit()
 			_hit_body.hit(player_node,current_equipment.equipment_info)
+			
 	else: 
 		hit_world.emit()
 
 func _on_stop_signal():
+	current_equipment.monitoring = false
+
+func _on_active_timer_timoeout():
 	current_equipment.monitoring = false
