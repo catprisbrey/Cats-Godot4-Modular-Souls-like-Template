@@ -1,10 +1,9 @@
 extends CharacterBody3D
 
 @onready var sensor_cast : ShapeCast3D
-@onready var busy : bool = false
+
 
 @export var animation_tree : AnimationTree
-
 
 ## A semi-smart character controller. Will detect the current camera in use
 ## and update control orientation to match it. Strafing will lock rotation
@@ -74,12 +73,8 @@ signal gadget_activated ## when the collision hitbox shapes/sounds should activa
 ## When guarding this substate is true. Drives animation and hitbox logic for blocking.
 ## The first moments of guarding, the parry window is active, allowing to parry()
 ## attacks and avoid damage
-@onready var guarding = false
 
-## To control invincibility frames and when the player can take damage. Helps also
-## to prevent a character from being hit mutliple process frames in a row before
-## the state properly changes.
-@onready var can_be_hurt = true
+
 ## Turns on when the perfect parry window is active, making regular blocks turn into parries.
 @onready var parry_active = false
 ## How brief the perfect parry window is in seconds.
@@ -89,6 +84,7 @@ signal block_started
 
 ## The HealthSystem node that will take in information about damage and healing received.
 @export var health_system : HealthSystem
+@onready var hurt_cool_down = Timer.new() # while running, player can't be hurt
 signal hurt_started # to start the animation
 signal damage_taken(by_what:EquipmentObject) # to indicate the damage value
 signal health_received(by_what:ItemObject)
@@ -112,34 +108,35 @@ signal landed_fall(hard_or_soft:String)
 signal jump_started
 
 ## Dodge and Sprint Mechanics.
-@export var dodge_speed = 10.0
-@onready var dodge_timer :Timer = Timer.new()
 @onready var sprint_timer :Timer = Timer.new()
-@export var sprint_speed = 7.0
 signal dodge_started
-signal dodge_ended
 signal sprint_started
 
 # Movement Mechanics
 var input_dir : Vector2
 @export var default_speed = 4.0
-@export var walk_speed = 1.0
 @onready var speed = default_speed
-var direction = Vector3.ZERO
+
 
 # Strafing
-var strafing :bool = false
+var strafing :bool = false # substate
 @onready var strafe_cross_product = 0.0
 @onready var move_dot_product = 0.0
 signal strafe_toggled(toggle:bool)
 
 # Laddering
-@export var ladder_climb_speed = 1.0
 signal ladder_started(top_or_bottom:String)
 signal ladder_finished(top_or_bottom:String)
 
 # State management
-enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,CLIMB,ATTACK}
+enum state {FREE,STATIC,CLIMB}
+
+@onready var busy : bool = false # substate: to prevent input spamming
+@onready var guarding = false # substate
+@onready var sprinting : bool = false # substate
+@onready var dodging : bool = false # substate
+@onready var slowed : bool = false # substate:  force a slower walking speed
+
 @onready var current_state = state.STATIC : set = change_state
 signal changed_state(new_state: state)
 
@@ -166,10 +163,10 @@ func _ready():
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
 	
-	add_child(dodge_timer)
-	dodge_timer.one_shot = true
-	dodge_timer.connect("timeout",_on_dodge_timer_timeout)
-	
+	hurt_cool_down.one_shot = true
+	hurt_cool_down.wait_time = .5
+	add_child(hurt_cool_down)
+
 	if animation_tree:
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
@@ -185,14 +182,7 @@ func change_state(new_state):
 	match current_state:
 		state.FREE:
 			speed = default_speed
-		state.ATTACK:
-			speed = default_speed
-		state.DODGE:
-			speed = dodge_speed
-		state.SPRINT:
-			speed = sprint_speed
-		state.DYNAMIC_ACTION:
-			speed = walk_speed
+
 		state.STATIC:
 			speed = 0.0
 			velocity = Vector3.ZERO
@@ -208,29 +198,14 @@ func _physics_process(_delta):
 	match current_state:
 		state.FREE:
 			rotate_player()
-			free_movement()
-
-		state.SPRINT:
-			rotate_player()
-			free_movement()
-			
-		state.DODGE:
-			dash_movement()
-			rotate_player()
 			
 		state.CLIMB:
-			climb_movement()
+			set_root_climb(_delta)
 			
-			
-		state.ATTACK:
-			dash_movement()
-		
-		state.DYNAMIC_ACTION:
-			free_movement()
-			rotate_player()
-			
-		state.STATIC:
-			move_and_slide()
+	
+	set_root_move(_delta)
+	
+	move_and_slide()
 	apply_gravity(_delta)
 	fall_check()
 	
@@ -283,7 +258,7 @@ func _input(_event:InputEvent):
 				gadget_change()
 
 			elif _event.is_action_pressed("use_gadget_strong"): 
-					use_gadget()
+				use_gadget()
 					
 			elif _event.is_action_pressed("use_gadget_light"):
 				if secondary_action:
@@ -299,7 +274,14 @@ func _input(_event:InputEvent):
 			if _event.is_action_pressed("use_weapon_light"):
 				air_attack()
 	
-	elif current_state == state.SPRINT:
+
+	
+	elif current_state == state.CLIMB:
+			#aiming = false
+			if _event.is_action_pressed("interact"):
+				abort_climb()
+	
+	if sprinting:
 		
 		if !input_dir:
 			end_sprint()
@@ -309,14 +291,6 @@ func _input(_event:InputEvent):
 			
 		if _event.is_action_pressed("use_weapon_light"):
 			sprint_attack()
-			
-		elif _event.is_action_pressed("jump"):
-			jump()
-	
-	elif current_state == state.CLIMB:
-			#aiming = false
-			if _event.is_action_pressed("interact"):
-				abort_climb()
 	
 				
 	if _event.is_action_released("use_gadget_light"):
@@ -328,64 +302,72 @@ func apply_gravity(_delta):
 	&& current_state != state.CLIMB:
 		velocity.y -= gravity * _delta
 		
-func free_movement():
-	# Get the movement orientation from the angles of the player to the camera.
-	# Using only camera's basis rotation created weird speed inconsistencies at downward angles
-	#dodge_movement()
-	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var new_direction = calc_direction()
-	if new_direction:
-		var rate : float # imiates directional change acceleration rate
-		if is_on_floor():
-			rate = .5
-		else:
-			rate = .1 # Makes it hard to change directions once in midair
-		velocity.x = move_toward(velocity.x, new_direction.x * speed, rate)
-		velocity.z = move_toward(velocity.z, new_direction.z * speed, rate)
-	else: # Smoothly come to a stop
-		velocity.x = move_toward(velocity.x, 0, .5)
-		velocity.z = move_toward(velocity.z, 0, .5)
-	move_and_slide()
-	
 func rotate_player():
-	var freelook
-	match strafing:
-		true:
-			## since during dodges we want the player to look where they roll...
-			if current_state == state.DODGE:
-				freelook = true
-			## otherwise just strafe about.
-			else:
-				freelook = false
-		false:
-			freelook = true
+	if busy:
+		return
+	var rate = .15
 	
 	var target_rotation
 	var current_rotation = global_transform.basis.get_rotation_quaternion()
-	
-
-	if freelook: 
-		# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
-		if input_dir:
-			var new_direction = calc_direction().normalized()
-			# Rotate the player per the perspective of the camera
-			target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.3)
-			global_transform.basis = Basis(target_rotation)
-		
-	else: 
+	# FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
+	if strafing:
+		rate = .4
 		# StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
-		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
+		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), rate)
 		global_transform.basis = Basis(target_rotation)
-
-		var forward_vector = global_transform.basis.z.normalized() 
-		
 		var new_direction = calc_direction().normalized()
+		
+		var forward_vector = global_transform.basis.z.normalized() 
 		strafe_cross_product = -forward_vector.cross(new_direction).y
 		move_dot_product = forward_vector.dot(new_direction)
+		return
+	
+	if input_dir:
+		var new_direction = calc_direction().normalized()
+		# Rotate the player per the perspective of the camera
+		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), rate)
+		global_transform.basis = Basis(target_rotation)
 
-	# Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
 
-	# move_and_slide() unused here. Controlled by States and free_movement().
+#func rotate_player():
+	#var freelook
+	#match strafing:
+		#true:
+			### since during dodges we want the player to look where they roll...
+			#if current_state == state.DODGE:
+				#freelook = true
+			### otherwise just strafe about.
+			#else:
+				#freelook = false
+		#false:
+			#freelook = true
+	#
+	#var target_rotation
+	#var current_rotation = global_transform.basis.get_rotation_quaternion()
+	#
+#
+	#if freelook: 
+		## FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
+		#if input_dir:
+			#var new_direction = calc_direction().normalized()
+			## Rotate the player per the perspective of the camera
+			#target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.3)
+			#global_transform.basis = Basis(target_rotation)
+		#
+	#else: 
+		## StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
+		#target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
+		#global_transform.basis = Basis(target_rotation)
+#
+		#var forward_vector = global_transform.basis.z.normalized() 
+		#
+		#var new_direction = calc_direction().normalized()
+		#strafe_cross_product = -forward_vector.cross(new_direction).y
+		#move_dot_product = forward_vector.dot(new_direction)
+#
+	## Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
+#
+	## move_and_slide() unused here. Controlled by States and free_movement().
 
 func set_strafe_targeting():
 	strafing = !strafing
@@ -393,19 +375,12 @@ func set_strafe_targeting():
 	
 func _on_target_cleared():
 	strafing = false
-	
-## calculate and return the direction of movement oriented to the current camera
-func calc_direction():
-	var forward_vector = Vector3(0, 0, 1).rotated(Vector3.UP, current_camera.global_rotation.y)
-	var horizontal_vector = Vector3(1, 0, 0).rotated(Vector3.UP, current_camera.global_rotation.y)
-	var new_direction = (forward_vector * input_dir.y + horizontal_vector * input_dir.x)
-	return new_direction
 
 func attack(_is_special_attack : bool = false):
-	current_state = state.ATTACK
-	velocity.x = 0
-	velocity.z = 0
-	direction = global_transform.basis.z.normalized() 
+	if busy:
+		return
+	busy = true
+	#current_state = state.ATTACK
 	if _is_special_attack:
 		big_attack_started.emit()
 	else:
@@ -414,35 +389,40 @@ func attack(_is_special_attack : bool = false):
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
+
 	if animation_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
-	if current_state == state.ATTACK:
-		current_state = state.FREE
+	busy = false
+	#if current_state == state.ATTACK:
+		#current_state = state.FREE
 
 		
 func air_attack():
+	if busy:
+		return
+	busy = true
 	air_attack_started.emit()
-	current_state = state.DYNAMIC_ACTION
+	#current_state = state.DYNAMIC_ACTION
 	if animation_tree: 
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	attack_activated.emit()
 	await get_tree().create_timer(anim_length *.5).timeout
-	current_state = state.FREE
+	#current_state = state.FREE
+	busy = false
 	
 func sprint_attack():
-	current_state = state.ATTACK
+	#current_state = state.ATTACK
 	sprint_attack_started.emit()
 	if animation_tree: 
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
-	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
+
 	if animation_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
-	if current_state == state.ATTACK:
-		current_state = state.FREE
+	#if current_state == state.ATTACK:
+		#current_state = state.FREE
 	
 func fall_check():
 	## If you leave the floor, store last position.
@@ -455,88 +435,41 @@ func fall_check():
 	if is_on_floor() && last_altitude != null:
 		var fall_distance = abs(last_altitude.y - global_position.y)
 		if fall_distance > hard_landing_height:
-			hard_landing()
+			trigger_event("landed_fall")
+			#hard_landing()
 		#elif fall_distance > .5 :
 			#landed_fall.emit("SOFT")
 		last_altitude = null
-				
-func hard_landing():
-		current_state = state.STATIC
-		landed_fall.emit("HARD")
-		if animation_tree:
-			await animation_tree.animation_measured
-		await get_tree().create_timer(anim_length).timeout
-		if current_state == state.STATIC:
-			current_state = state.FREE
-	
-func jump():
-	if is_on_floor():
-		jump_started.emit()
-		if animation_tree:
-			await animation_tree.animation_measured
-		# After timer finishes, return to pre-dodge state
-			await get_tree().create_timer(anim_length *.7).timeout
-		velocity.y = jump_velocity
 
-func dash(_new_direction : Vector3 = Vector3.FORWARD, _duration = .1): 
-	# burst of speed toward indicated direction, or forward by default
-	speed = dodge_speed
-	if _new_direction:
-		direction = (global_position - to_global(_new_direction)).normalized()
-	#speed = default_speed
-	await get_tree().create_timer(_duration).timeout
-	direction.x = 0
-	direction.z = 0
-	## for a more immediate stop, you can set velocity.x and .z to 0 instead
-	## doing direction allows velocty to slow in the dash_movement() move_toward methods.
-	#velocity.x = 0
-	#velocity.z = 0
-	
 func dodge_or_sprint():
 	if sprint_timer.is_stopped():
 		sprint_timer.start(.3)
 		await sprint_timer.timeout
-		if current_state == state.FREE \
-			&& input_dir:
-				current_state = state.SPRINT
+		if !dodging && input_dir:
+				sprinting = true
 				sprint_started.emit()
 		
 func end_sprint():
-	if current_state == state.SPRINT:
-		current_state = state.FREE
+	sprinting = false
 		
-func dash_movement():
-	var rate = .05
-	velocity.x = move_toward(velocity.x, direction.x * speed, rate)
-	velocity.z = move_toward(velocity.z, direction.z * speed, rate)
-	# required in the process function states for dodges/dashes
-	move_and_slide()
 	
 func dodge(): 
-	# Burst of speed toward an input direction, or backwards
-	current_state = state.DODGE
-	can_be_hurt = false
+	#busy = true
+	if dodging:
+		return
+	var strafe_sat = strafing
+	dodging = true
+	
 	sprint_timer.stop()
-	## uses timer rather than 'await' because 'await' stops processes like gravity affecting velocity.
-	if input_dir: # Dodge toward direction of input_dir 
-		direction = calc_direction().normalized()
-		velocity = direction * dodge_speed
-		dodge_started.emit()
-	else: # Dodge toward the 'BACK' of your global position
-		var backward_dir =(global_position - to_global(Vector3.BACK)).normalized()
-		velocity = backward_dir * (dodge_speed * .75)
-		dodge_started.emit()
+	strafing = false
+	dodge_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
-	# After timer finishes, return to pre-dodge state
-	dodge_timer.start(anim_length * .7)
-	
-func _on_dodge_timer_timeout():
-	dodge_ended.emit()
-	speed = default_speed
-	current_state = state.FREE
-	can_be_hurt = true
-
+	await get_tree().create_timer(anim_length).timeout
+	hurt_cool_down.start(anim_length*.7)
+	strafing = strafe_sat
+	#busy = false
+	dodging = false
 
 
 func _on_animation_measured(_new_length):
@@ -559,10 +492,9 @@ func abort_climb():
 		current_state = state.FREE
 	
 
-
-
 func weapon_change():
-	current_state = state.DYNAMIC_ACTION
+	slowed = true
+	busy = true
 	weapon_change_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
@@ -573,7 +505,8 @@ func weapon_change():
 	print(weapon_type)
 	weapon_change_ended.emit(weapon_type)
 	await get_tree().create_timer(anim_length *.5).timeout
-	current_state = state.FREE
+	busy = false
+	slowed = false
 	
 func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
 	weapon_type = _new_weapon.equipment_info.object_type
@@ -585,7 +518,8 @@ func _on_inventory_item_used(_item):
 	current_item = _item
 	
 func gadget_change():
-	current_state = state.DYNAMIC_ACTION
+	slowed = true
+	busy = true
 	gadget_change_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
@@ -596,10 +530,12 @@ func gadget_change():
 	print(gadget_type)
 	gadget_change_ended.emit(gadget_type)
 	await get_tree().create_timer(anim_length *.5).timeout
-	current_state = state.FREE
+	slowed = false
+	busy = false
 
 func item_change():
-	current_state = state.DYNAMIC_ACTION
+	slowed = true
+	busy = true
 	item_change_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
@@ -608,19 +544,20 @@ func item_change():
 	await get_tree().process_frame
 	item_change_ended.emit(current_item)
 	await get_tree().create_timer(anim_length *.5).timeout
-	current_state = state.FREE
+	slowed = false
+	busy = false
 	
 func start_guard(): # Guarding, and for a short window, parring is possible
+	slowed = true
 	guarding = true
 	parry_active = true
-	current_state = state.DYNAMIC_ACTION
 	await get_tree().create_timer(parry_window).timeout
 	parry_active = false
 	
 func end_guard():
 	guarding = false
 	parry_active = false
-	current_state = state.FREE
+	slowed = false
 
 func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
 	current_state = state.STATIC
@@ -629,24 +566,26 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 		await animation_tree.animation_started
 	await get_tree().create_timer(anim_length  *.3).timeout
 	gadget_activated.emit()
-	dash(Vector3.FORWARD,.3)
+
 	await get_tree().create_timer(anim_length  *.7).timeout
 	if current_state == state.STATIC:
 		current_state = state.FREE
 
 func hit(_who, _by_what):
-	if can_be_hurt:
-		if parry_active:
-			parry()
-			if _who.has_method("parried"):
-				_who.parried()
-			return
-		elif guarding:
-			block()
-		else:
-			await knocked_back(_who)
-			damage_taken.emit(_by_what)
-			hurt()
+	if hurt_cool_down.time_left > 0:
+		return
+		
+	if parry_active:
+		parry()
+		if _who.has_method("parried"):
+			_who.parried()
+		return
+	elif guarding:
+		block()
+	else:
+		await knocked_back(_who)
+		damage_taken.emit(_by_what)
+		hurt()
 
 func knocked_back(_by_who: Node3D):
 		velocity = (global_position - _by_who.global_position).normalized() * 8
@@ -658,51 +597,36 @@ func heal(_by_what):
 	health_received.emit(_by_what)
 
 func block():
-	current_state = state.STATIC
 	block_started.emit()
-	if animation_tree:
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length).timeout
-	if current_state == state.STATIC:
-		current_state = state.DYNAMIC_ACTION
 
 func parry():
-	current_state = state.STATIC
-	can_be_hurt = false
 	parry_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	if current_state == state.STATIC:
-		current_state = state.FREE
-	can_be_hurt = true
+	hurt_cool_down.start(anim_length)
 
 func hurt():
-	current_state = state.STATIC
 	hurt_started.emit() # before state change in case on ladder,etc
 	if animation_tree:
 		await animation_tree.animation_measured
-	can_be_hurt = false
+	hurt_cool_down.start(anim_length)
 	await get_tree().create_timer(anim_length).timeout
-	if !is_dead:
-		if current_state == state.STATIC:
-			current_state = state.FREE
-		can_be_hurt = true
 
 func use_item():
-	current_state = state.DYNAMIC_ACTION
+	slowed = true
+	
 	use_item_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length * .5).timeout
 	item_used.emit()
 	await get_tree().create_timer(anim_length * .5).timeout
-	if current_state == state.DYNAMIC_ACTION:
-		current_state = state.FREE
+	slowed = false
 
 func death():
 	current_state = state.STATIC
-	can_be_hurt = false
+	hurt_cool_down.start(10)
 	is_dead = true
 	death_started.emit()
 	await get_tree().create_timer(3).timeout
@@ -728,22 +652,63 @@ func trigger_event(signal_name:String):
 	busy = true
 	emit_signal(signal_name)
 	await animation_tree.animation_finished
-	current_state = state.FREE
+	#current_state = state.FREE
 	busy = false
 
-func climb_movement(): ## Non-root_motion controller
-	## move up and down ladders per the indicated direction
-	input_dir = Input.get_vector("move_down", "move_right", "move_up", "move_down")
-	velocity = (Vector3.DOWN * input_dir.y) * ladder_climb_speed
-	## exiting ladder state triggers:
+
+func jump():
+	# Handle jump.
+	if is_on_floor():
+		jump_started.emit()
+		await get_tree().create_timer(.2).timeout # for the windup
+		velocity.y = jump_velocity
+
+func set_root_move(delta):
+	input_dir = Input.get_vector("move_left","move_right","move_up","move_down")
+	#set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
+	var rate : float # imiates directional change acceleration rate
+	if is_on_floor():
+		rate = .5
+	else:
+		rate = .1
+	var new_velocity = get_quaternion() * animation_tree.get_root_motion_position() / delta
+
+	if is_on_floor():
+		velocity.x = move_toward(velocity.x, new_velocity.x, rate)
+		velocity.y = move_toward(velocity.y, new_velocity.y, rate)
+		velocity.z = move_toward(velocity.z, new_velocity.z, rate)
+	else:
+		velocity.x = move_toward(velocity.x, calc_direction().x * speed, rate)
+		velocity.z = move_toward(velocity.z, calc_direction().z * speed, rate)
+
+	
+func set_root_climb(delta):
+	input_dir = Input.get_vector("move_left","move_right","move_up","move_down")
+	
+	var rate = 2
+	var new_velocity = get_quaternion() * animation_tree.get_root_motion_rotation() * animation_tree.get_root_motion_position() / delta
+	
+	#velocity = lerp (velocity,new_velocity,rate)
+	velocity.x = move_toward(velocity.x, new_velocity.x, rate)
+	velocity.y = move_toward(velocity.y, new_velocity.y, rate)
+	velocity.z = move_toward(velocity.z, new_velocity.z, rate)
+	# dismount logic
 	if !sensor_cast.is_colliding():
-		last_altitude = global_position
+		print("cast not colliding")
 		current_state = state.FREE
 		#free_started.emit()
-		jump()
+		#jump()
+		var dismount_pos = to_global(Vector3.BACK)
+		dismount_pos.y += .5
 		var tween = create_tween()
-		tween.tween_property(self,"global_position",sensor_cast.to_global(Vector3.BACK),.4)
-		current_state = state.FREE
+
+		tween.tween_property(self,"global_position",dismount_pos,.3)
 	if is_on_floor():
-		abort_climb()
-	move_and_slide()
+		current_state = state.FREE
+		#free_started.emit()
+	
+		
+func calc_direction() -> Vector3 :
+	var new_direction = (current_camera.global_transform.basis.z * input_dir.y + \
+	current_camera.global_transform.basis.x * input_dir.x)
+	return new_direction

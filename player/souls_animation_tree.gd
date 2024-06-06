@@ -91,12 +91,12 @@ func request_oneshot(oneshot:String):
 	last_oneshot = oneshot
 	set("parameters/" + oneshot + "/request",true)
 
-func _on_landed_fall(_hard_or_soft):
+func _on_landed_fall(_hard_or_soft = "HARD"):
 	landing_type = _hard_or_soft
 	request_oneshot("Landed")
 
 func set_guarding():
-	if player_node.guarding:
+	if player_node.guarding && !player_node.busy:
 		guard_value = 1
 	else:
 		guard_value = 0
@@ -107,6 +107,7 @@ func _on_parry_started():
 	request_oneshot("Parry")
 
 func _on_attack_started():
+	
 	request_oneshot("Attack")
 	await animation_measured
 	attack_timer.start(anim_length +.2)
@@ -229,7 +230,8 @@ func set_strafe():
 	# Strafe left and right animations run by the player's velocity cross product
 	# Forward and back are acording to input, since direction changes by fixed camera orientation
 	var new_blend = Vector2(player_node.strafe_cross_product,player_node.move_dot_product)
-	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
+	#if player_node.current_state == player_node.state.DYNAMIC_ACTION:
+	if player_node.slowed:
 		new_blend *= .25 # Force a walk animiation
 	else:
 		# apply input as a magnatude for more natural run versus walk animation blending
@@ -241,7 +243,7 @@ func set_strafe():
 func set_free_move():
 	# Non-strafing "free" movement, is just the forward input direction.
 	var new_blend = Vector2(0,abs(player_node.input_dir.x) + abs(player_node.input_dir.y))
-	if player_node.current_state == player_node.state.DYNAMIC_ACTION:
+	if player_node.slowed:
 		new_blend *= .4 # force a walk speed
 	lerp_movement = get("parameters/MovementStates/" + weapon_type + "_tree/MoveStrafe/blend_position")
 	lerp_movement = lerp(lerp_movement,new_blend,.2)
