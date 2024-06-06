@@ -181,9 +181,7 @@ func _physics_process(_delta):
 		state.CLIMB:
 			set_root_climb(_delta)
 			
-	
 	set_root_move(_delta)
-	
 	move_and_slide()
 	apply_gravity(_delta)
 	fall_check()
@@ -220,9 +218,6 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("jump"):
 				jump()
 				
-					
-
-
 			elif _event.is_action_pressed("dodge_dash"):
 				dodge_or_sprint()
 				
@@ -249,8 +244,6 @@ func _input(_event:InputEvent):
 			elif _event.is_action_pressed("use_item"): 
 				use_item()
 	
-
-	
 	elif current_state == state.CLIMB:
 			#aiming = false
 			if _event.is_action_pressed("interact"):
@@ -263,7 +256,6 @@ func _input(_event:InputEvent):
 		
 		if _event.is_action_released("dodge_dash"):
 			end_sprint()
-	
 				
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
@@ -300,47 +292,6 @@ func rotate_player():
 		target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), rate)
 		global_transform.basis = Basis(target_rotation)
 
-
-#func rotate_player():
-	#var freelook
-	#match strafing:
-		#true:
-			### since during dodges we want the player to look where they roll...
-			#if current_state == state.DODGE:
-				#freelook = true
-			### otherwise just strafe about.
-			#else:
-				#freelook = false
-		#false:
-			#freelook = true
-	#
-	#var target_rotation
-	#var current_rotation = global_transform.basis.get_rotation_quaternion()
-	#
-#
-	#if freelook: 
-		## FreeCam rotation code, slerps to input oriented to the camera perspective, and only calculates when input is given
-		#if input_dir:
-			#var new_direction = calc_direction().normalized()
-			## Rotate the player per the perspective of the camera
-			#target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, atan2(new_direction.x, new_direction.z)), 0.3)
-			#global_transform.basis = Basis(target_rotation)
-		#
-	#else: 
-		## StrafeCam code - Look at target, slerping current rotation to the camera's rotation.
-		#target_rotation = current_rotation.slerp(Quaternion(Vector3.UP, orientation_target.global_rotation.y + PI), 0.4)
-		#global_transform.basis = Basis(target_rotation)
-#
-		#var forward_vector = global_transform.basis.z.normalized() 
-		#
-		#var new_direction = calc_direction().normalized()
-		#strafe_cross_product = -forward_vector.cross(new_direction).y
-		#move_dot_product = forward_vector.dot(new_direction)
-#
-	## Otherwise freelook, which is when not strafing or dodging, as well as, when rolling as you strafe. 
-#
-	## move_and_slide() unused here. Controlled by States and free_movement().
-
 func set_strafe_targeting():
 	strafing = !strafing
 	strafe_toggled.emit(strafing)
@@ -372,9 +323,6 @@ func fall_check():
 		var fall_distance = abs(last_altitude.y - global_position.y)
 		if fall_distance > hard_landing_height:
 			trigger_event("landed_fall")
-			#hard_landing()
-		#elif fall_distance > .5 :
-			#landed_fall.emit("SOFT")
 		last_altitude = null
 
 func dodge_or_sprint():
@@ -383,28 +331,27 @@ func dodge_or_sprint():
 		await sprint_timer.timeout
 		if !dodging && input_dir:
 				sprinting = true
-				sprint_started.emit()
+				sprint_started.emit() # triggers the change in anim tree
 		
 func end_sprint():
 	sprinting = false
 		
 	
 func dodge(): 
-	#busy = true
 	if dodging:
 		return
-	var strafe_sat = strafing
-	dodging = true
-	
-	sprint_timer.stop()
+		
+	var strafe_status = strafing
 	strafing = false
+	dodging = true
+	sprint_timer.stop()
 	dodge_started.emit()
 	if animation_tree:
 		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length).timeout
 	hurt_cool_down.start(anim_length*.7)
-	strafing = strafe_sat
-	#busy = false
+	await get_tree().create_timer(anim_length).timeout
+	
+	strafing = strafe_status
 	dodging = false
 
 
@@ -510,7 +457,6 @@ func use_gadget(): # emits to start the gadget, and runs some timers before stop
 func hit(_who, _by_what):
 	if hurt_cool_down.time_left > 0:
 		return
-		
 	if parry_active:
 		parry()
 		if _who.has_method("parried"):
@@ -519,15 +465,10 @@ func hit(_who, _by_what):
 	elif guarding:
 		block()
 	else:
-		await knocked_back(_who)
 		damage_taken.emit(_by_what)
 		hurt()
 
-func knocked_back(_by_who: Node3D):
-		velocity = (global_position - _by_who.global_position).normalized() * 8
-		velocity.y = 0 # bleach the y to prevent getting hit in the air.
-		await get_tree().create_timer(anim_length*.1).timeout
-		velocity *= Vector3.UP
+
 
 func heal(_by_what):
 	health_received.emit(_by_what)
@@ -632,6 +573,7 @@ func set_root_climb(delta):
 	if !sensor_cast.is_colliding():
 		print("cast not colliding")
 		current_state = state.FREE
+		last_altitude = global_position
 		#free_started.emit()
 		#jump()
 		var dismount_pos = to_global(Vector3.BACK)
