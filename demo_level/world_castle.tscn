@@ -1,9 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=29 format=3 uid="uid://uiw1spc0mevb"]
 
 [ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="3_0mbes"]
-[ext_resource type="PackedScene" uid="uid://cda0r3gahfvhp" path="res://interactable objects/ladders/ladder_object.tscn" id="4_a4kod"]
+[ext_resource type="PackedScene" uid="uid://b5y7f5xgkpa1d" path="res://interactable objects/ladder.tscn" id="4_a4kod"]
 [ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="5_b73po"]
 [ext_resource type="Script" path="res://enemy/patrol_point.gd" id="6_i73lt"]
 [ext_resource type="PackedScene" uid="uid://bbhrq4snasi1i" path="res://demo_level/stagingCSG.tscn" id="7_p8o0k"]
@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://c46nfvbeeb3pr" path="res://ui/panel-border-027.png" id="12_1f7l8"]
 [ext_resource type="Script" path="res://cameras/area_cam/area_cam.gd" id="13_2aall"]
 [ext_resource type="AudioStream" uid="uid://ddfdcmyfdq6fi" path="res://audio/bone_in_the_walls__level_loop_session.ogg" id="14_wsft0"]
-[ext_resource type="Script" path="res://interactable objects/ladders/ladder_object.gd" id="15_3adky"]
 
 [sub_resource type="Gradient" id="Gradient_sxwq5"]
 colors = PackedColorArray(0.00282093, 0.0124845, 0.103078, 1, 0.742305, 0.387089, 0.172949, 1)
@@ -81,15 +80,15 @@ width = 8
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6vf8"]
 size = Vector3(7.74271, 3, 11.8024)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xl4ld"]
-size = Vector3(1, 48.9554, 0.1)
-
 [sub_resource type="Curve3D" id="Curve3D_2r1aj"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -13.8325, 0.0425377, 0.198796, 0, 0, 0, 0, 0, 0, -5.03967, -0.141396, 1.56654, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "tilts": PackedFloat32Array(0, 0, 0, 0)
 }
 point_count = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hr4mr"]
+size = Vector3(0.7, 50.1672, 0.62)
 
 [node name="World" type="Node3D"]
 
@@ -112,14 +111,11 @@ light_angular_distance = 5.58
 shadow_enabled = true
 directional_shadow_mode = 1
 
-[node name="PlayerCharacterBodySoulsBase" parent="." instance=ExtResource("1_70e33")]
-transform = Transform3D(-0.998787, 0, -0.0492505, 0, 1, 0, 0.0492505, 0, -0.998787, -3.90703, 2.38419e-07, -1.61519)
-
 [node name="DoorObject" parent="." instance=ExtResource("2_4fq4l")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.45039, 0, 24.0387)
 
 [node name="GateObject" parent="." instance=ExtResource("3_0mbes")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14057, 0.0725538, 12.3254)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14057, 0.0725539, 12.3254)
 
 [node name="LeverObject2" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_10w6y")]
 transform = Transform3D(-0.996195, 0, -0.0871557, 0, 1, 0, 0.0871557, 0, -0.996195, -5.50223, 2.38419e-07, -4.89158)
@@ -131,6 +127,9 @@ locked = true
 
 [node name="Ladder" parent="." instance=ExtResource("4_a4kod")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -30.9244, 0.0596613, 15.4925)
+
+[node name="LadderCol" parent="Ladder" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00007, 0)
 
 [node name="ChestObject" parent="." instance=ExtResource("5_b73po")]
 transform = Transform3D(-0.00619584, 0, 0.999981, 0, 1, 0, -0.999981, 0, -0.00619584, -53.5913, 5.99063, 14.8777)
@@ -144,8 +143,8 @@ transform = Transform3D(-0.998275, 0, 0.0586963, 0, 1, 0, -0.0586963, 0, -0.9982
 [node name="Ladder2" parent="." instance=ExtResource("4_a4kod")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.9542, 0.0822022, 30.5086)
 
-[node name="CollisionShape3D" parent="Ladder2" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91932, 0)
+[node name="LadderCol" parent="Ladder2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92884, 0)
 
 [node name="StaticBody3D" parent="Ladder2" instance=ExtResource("4_a4kod")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.8426, 0.0822022, 30.5086)
@@ -155,7 +154,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4471, 0, 30.6534)
 curve = SubResource("Curve3D_2c2rs")
 
 [node name="EnemyPatrolPoint" type="PathFollow3D" parent="PatrolPath"]
-transform = Transform3D(0.999737, 0, -0.0225165, 0, 1, 0, 0.0225165, 0, 0.999737, -0.43294, 0, -0.97773)
+transform = Transform3D(0.999735, 0, -0.0225164, 0, 1, 0, 0.0225164, 0, 0.999735, -0.43294, 0, -0.97773)
 script = ExtResource("6_i73lt")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -304,16 +303,6 @@ autoplay = true
 [node name="SpawnSite" parent="." instance=ExtResource("9_cpxbt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07785, 9.53674e-07, 5.67158)
 
-[node name="Ladder3" type="StaticBody3D" parent="." groups=["Interactable"]]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -65.4987, 0.0822022, 19.9207)
-collision_layer = 9
-script = ExtResource("15_3adky")
-interact_type = "LADDER"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ladder3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.4277, 0)
-shape = SubResource("BoxShape3D_xl4ld")
-
 [node name="CharacterBodyEnemyBase6" parent="." instance=ExtResource("8_3w8s6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0326, 9, 10.6311)
 
@@ -335,4 +324,23 @@ script = ExtResource("6_i73lt")
 [node name="CharacterBodyEnemyBase9" parent="." instance=ExtResource("8_3w8s6")]
 transform = Transform3D(0.0685725, 0, 0.997646, 0, 1, 0, -0.997646, 0, 0.0685725, -60.3035, 52, 29.9481)
 
+[node name="Ladder3" parent="." instance=ExtResource("4_a4kod")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.4492, 0, 19.8901)
+
+[node name="LadderCol" parent="Ladder3" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.5002, 0)
+
+[node name="PlayerCharacterBodySoulsBase" parent="." instance=ExtResource("1_70e33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50545, 0, 2.39099)
+
+[node name="Ladder4" parent="." instance=ExtResource("4_a4kod")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.998, 0.0596613, 4.62441)
+
+[node name="LadderCol" parent="Ladder4" index="0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15.261, 25.0465, -51.4854)
+shape = SubResource("BoxShape3D_hr4mr")
+
+[editable path="Ladder"]
 [editable path="Ladder2"]
+[editable path="Ladder3"]
+[editable path="Ladder4"]

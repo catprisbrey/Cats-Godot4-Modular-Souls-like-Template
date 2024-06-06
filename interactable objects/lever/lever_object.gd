@@ -1,5 +1,9 @@
-extends InteractableObject
-class_name LeverObject
+extends StaticBody3D
+
+## All interactables function similarly. They have a function called "activate"
+## that takes in the player node as an argument. Typically the interactable
+## forces the player to a STATIC state, moves the player into a ready postiion,
+## triggers the interact on the player while making any changes needed here.
 
 ## The physical maniifestation of a boolean haha. Pull the lever, it will
 ## flip the boolean on of the property_to_switch on the node_to_control
@@ -11,23 +15,34 @@ class_name LeverObject
 @onready var lever_anim_player :AnimationPlayer = $LeverAnimPlayer
 @export var locked : bool = false
 @export var player_offset : Vector3 = Vector3(0,0,1)
-
+@onready var interact_type = "LEVER"
+@export var anim_delay : float = .1
 var anim
+signal interactable_activated
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
+func _ready():
+	add_to_group("interactable")
+	collision_layer = 9
+
+
+func activate(player: CharacterBody3D):
 	if locked:
 		shake_lever()
-		
+	elif opened:
+		return
 	else:
 		interactable_activated.emit()
+		player.current_state = player.state.STATIC
+		# move the player in front of the lever
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
-		var move_time = .3
+		var tween = create_tween()
+		tween.tween_property(player,"global_transform", new_translation,.2)
+		await tween.finished
 		
-		if opened == false:
-			if _requestor.has_method("start_interact"):
-				_requestor.start_interact(interact_type,new_translation, move_time)
-				await get_tree().create_timer(move_time).timeout
-			open_lever()
+		# trigger player and lever animation
+		player.trigger_interact(interact_type)
+		await get_tree().create_timer(anim_delay).timeout
+		open_lever()
 
 func shake_lever():
 	lever_anim_player.play("locked")

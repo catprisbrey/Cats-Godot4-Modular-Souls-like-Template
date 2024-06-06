@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://cev0hfdkmno27"]
 
-[ext_resource type="Script" path="res://interactable objects/lever/lever_object.gd" id="1_yoflx"]
+[ext_resource type="Script" path="res://interactable objects/lever/lever_object.gd" id="1_qd4id"]
 [ext_resource type="AudioStream" uid="uid://bqs6en2dxoi3x" path="res://audio/SoundFX/ratchet/ratchet_3.wav" id="2_kvfhg"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_r31s6"]
 [ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="3_6pvo0"]
@@ -124,8 +124,7 @@ _data = {
 }
 
 [node name="LeverObject" type="StaticBody3D" groups=["Interactable"]]
-script = ExtResource("1_yoflx")
-interact_type = "LEVER"
+script = ExtResource("1_qd4id")
 
 [node name="InteractCol" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0187988, 0.703125, 0.0309143)

@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name CharacterBodyEnemyBase
 
 ## Group names are used to detect enemies (along with their physics layer)
-@export var group_name :String = "Targets"
+@export var group_name :String = "targets"
 
 @export var anim_state_tree :AnimationTree 
 @onready var anim_length
@@ -50,7 +50,7 @@ var can_be_hurt = true
 
 ## if disabled, then a normal death animation will play instead of ragdoll
 @export var ragdoll_death : bool = false
-@onready var general_skeleton = %GeneralSkeleton
+@onready var general_skeleton = $mannyquin/godot_rig/GeneralSkeleton
 
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")# helper

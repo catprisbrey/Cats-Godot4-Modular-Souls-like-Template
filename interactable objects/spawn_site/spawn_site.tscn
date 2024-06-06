@@ -1,11 +1,9 @@
-[gd_scene load_steps=35 format=3 uid="uid://daae7mgofoegu"]
+[gd_scene load_steps=33 format=3 uid="uid://daae7mgofoegu"]
 
-[ext_resource type="Script" path="res://interactable objects/spawn_site/spawn_site.gd" id="1_xc0h8"]
-[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="2_xqcjh"]
+[ext_resource type="Script" path="res://interactable objects/spawn_site/spawn_site.gd" id="1_4sqar"]
 [ext_resource type="AudioStream" uid="uid://dk0v3ug6sia4l" path="res://audio/SoundFX/special/Spawn01.wav" id="3_hjika"]
 [ext_resource type="Material" uid="uid://yduwfgw1haxq" path="res://assets/metal_black.tres" id="3_i7pdy"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="4_vtr76"]
-[ext_resource type="Script" path="res://player/signal_switch.gd" id="5_ig8yx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8k66n"]
 size = Vector3(0.97, 1, 0.86)
@@ -118,6 +116,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_71hhn"]
 resource_name = "respawn"
@@ -147,6 +157,18 @@ tracks/1/keys = {
 "args": [],
 "method": &"respawn"
 }]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vy1e8"]
@@ -206,9 +228,7 @@ orientation = 2
 [node name="SpawnSite" type="StaticBody3D" groups=["Interactable"]]
 collision_layer = 9
 collision_mask = 9
-script = ExtResource("1_xc0h8")
-spawn_scene = ExtResource("2_xqcjh")
-physical_layer = 8
+script = ExtResource("1_4sqar")
 
 [node name="DetectShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -317,12 +337,6 @@ libraries = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_hjika")
 pitch_scale = 0.79
-
-[node name="SignalSwitch" type="Node" parent="AudioStreamPlayer" node_paths=PackedStringArray("signaling_node")]
-script = ExtResource("5_ig8yx")
-signaling_node = NodePath("../..")
-start_signal = "interactable_activated"
-property = "playing"
 
 [node name="FlameParticles" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.201001, 1.16045, 0)

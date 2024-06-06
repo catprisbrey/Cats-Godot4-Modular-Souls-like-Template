@@ -33,7 +33,7 @@ signal target_found
 @onready var reticle_control = $ReticleControl
 
 ## The group name of targetable objects if using groups
-@export var target_group_name : String = "Targets"
+@export var target_group_name : String = "targets"
 ## The layers the eyes will scan when detecting targets
 @export_flags_3d_physics var target_detection_layer_mask = 3
 

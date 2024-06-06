@@ -1,5 +1,9 @@
-extends InteractableObject
-class_name SpawnSite
+extends StaticBody3D
+
+## All interactables function similarly. They have a function called "activate"
+## that takes in the player node as an argument. Typically the interactable
+## forces the player to a STATIC state, moves the player into a ready postiion,
+## triggers the interact on the player while making any changes needed here.
 
 # Called when the node enters the scene tree for the first time.
 @onready var anim_player :AnimationPlayer = $AnimationPlayer
@@ -8,16 +12,19 @@ class_name SpawnSite
 @export var reset_level : bool = true
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var flame_particles = $FlameParticles
+@onready var interact_type = "SPAWN"
 
 
-func activate(_requestor: CharacterBodySoulsBase,_sensor_top_or_bottom :String):
-	interactable_activated.emit()
-	
-	if _requestor.has_method("start_interact"):
-		_requestor.start_interact(interact_type,_requestor.global_transform.looking_at(global_position,Vector3.UP,true), .4)
-		anim_player.play("respawn",.2)
-		await anim_player.animation_finished
-		_requestor.queue_free()
+func _ready():
+	add_to_group("interactable")
+	collision_layer = 9
+
+func activate(player: CharacterBody3D):
+	player.current_state = player.state.STATIC
+	player.trigger_interact(interact_type)
+	anim_player.play("respawn",.2)
+	await anim_player.animation_finished
+	player.queue_free()
 	
 
 func respawn():

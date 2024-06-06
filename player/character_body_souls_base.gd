@@ -1,5 +1,10 @@
 extends CharacterBody3D
-class_name CharacterBodySoulsBase
+
+@onready var sensor_cast : ShapeCast3D
+@onready var busy : bool = false
+
+@export var animation_tree : AnimationTree
+
 
 ## A semi-smart character controller. Will detect the current camera in use
 ## and update control orientation to match it. Strafing will lock rotation
@@ -12,9 +17,8 @@ class_name CharacterBodySoulsBase
 ## and remove the timers in the functions here as needed. 
 
 ## Manages all animations generally pulling info it needs from states and substates.
-@export var anim_state_tree : AnimationTreeSoulsBase
 
-## When the anim_state_tree starts a new animatino, this variable updates with it's length
+## When the animation_tree starts a new animatino, this variable updates with it's length
 ## great for automatic updating of timer lengths to match the current animation length
 @onready var anim_length = .5
 
@@ -25,19 +29,12 @@ class_name CharacterBodySoulsBase
 ## track of whatever the starting camera was, rather than update it if camera's change.
 @onready var orientation_target = current_camera
 
-## Add here a PlayerInteractSensor. It will connect up the signals needed to identify
-## and interact with interactables in the world
-@export var interact_sensor : PlayerInteractSensors
+## Interactables that updates based on entering a Ladder Area or, the sensor_cast
+## colliding with an interactable.
 
-## A variablet that updates storing the info of which sensor spotted an interactable.
-## A string of "TOP", "BOTTOM, "BOTH" is stored here. Based one which sensors spotted an object 
-## aids identifying if the object is on the floor, head height, or both. 
-@onready var interact_loc : String # use "TOP","BOTTOM","BOTH"
-
-## The newly sensed interactable node found by the interact sensor. One of the few itmes
-## this CharacterBody3D will talk directly to a node rather than with signals is when it
-## interacts with an interactable object.
 @onready var interactable : Node3D
+@onready var ladder
+signal climb_started
 signal interact_started(interact_type)
 
 ## A generic EquipmentSystem class, used to manage moving Weapons 
@@ -46,7 +43,7 @@ signal interact_started(interact_type)
 @export var weapon_system : EquipmentSystem
 
 ## A helper variable, tracks the current weapon type for easier referencing from
-## the anim_state_tree and anywhere else that may want to know what weapon type is held.
+## the animation_tree and anywhere else that may want to know what weapon type is held.
 var weapon_type :String = "SLASH"
 signal weapon_change_started ## to start the animation
 signal weapon_changed ## the moment the weapon objects change hands.
@@ -142,16 +139,13 @@ signal ladder_started(top_or_bottom:String)
 signal ladder_finished(top_or_bottom:String)
 
 # State management
-enum state {FREE,STATIC_ACTION,DYNAMIC_ACTION,DODGE,SPRINT,LADDER,ATTACK}
-@onready var current_state = state.STATIC_ACTION : set = change_state
+enum state {FREE,STATIC,DYNAMIC_ACTION,DODGE,SPRINT,CLIMB,ATTACK}
+@onready var current_state = state.STATIC : set = change_state
 signal changed_state(new_state: state)
 
 func _ready():
-	if anim_state_tree:
-		anim_state_tree.animation_measured.connect(_on_animation_measured)
-
-	if interact_sensor:
-		interact_sensor.interact_updated.connect(_on_interact_updated)
+	if animation_tree:
+		animation_tree.animation_measured.connect(_on_animation_measured)
 		
 	if weapon_system:
 		weapon_system.equipment_changed.connect(_on_weapon_equipment_changed)
@@ -167,6 +161,7 @@ func _ready():
 	if health_system:
 		health_system.died.connect(death)
 		
+	climb_started.connect(_on_climb_started)
 		
 	add_child(sprint_timer)
 	sprint_timer.one_shot = true
@@ -175,8 +170,8 @@ func _ready():
 	dodge_timer.one_shot = true
 	dodge_timer.connect("timeout",_on_dodge_timer_timeout)
 	
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
 	current_state = state.FREE
 	
@@ -192,19 +187,17 @@ func change_state(new_state):
 			speed = default_speed
 		state.ATTACK:
 			speed = default_speed
-		state.LADDER:
-			speed = ladder_climb_speed
 		state.DODGE:
 			speed = dodge_speed
 		state.SPRINT:
 			speed = sprint_speed
 		state.DYNAMIC_ACTION:
 			speed = walk_speed
-		state.STATIC_ACTION:
+		state.STATIC:
 			speed = 0.0
 			velocity = Vector3.ZERO
 	
-	if current_state == state.LADDER:
+	if current_state == state.CLIMB:
 		system_visible(weapon_system,false)
 		system_visible(gadget_system,false)
 	else:
@@ -225,8 +218,9 @@ func _physics_process(_delta):
 			dash_movement()
 			rotate_player()
 			
-		state.LADDER:
-			ladder_movement()
+		state.CLIMB:
+			climb_movement()
+			
 			
 		state.ATTACK:
 			dash_movement()
@@ -235,7 +229,7 @@ func _physics_process(_delta):
 			free_movement()
 			rotate_player()
 			
-		state.STATIC_ACTION:
+		state.STATIC:
 			move_and_slide()
 	apply_gravity(_delta)
 	fall_check()
@@ -318,10 +312,12 @@ func _input(_event:InputEvent):
 			
 		elif _event.is_action_pressed("jump"):
 			jump()
-				
-	elif current_state == state.LADDER:
-		if _event.is_action_pressed("dodge_dash"):
-			current_state = state.FREE
+	
+	elif current_state == state.CLIMB:
+			#aiming = false
+			if _event.is_action_pressed("interact"):
+				abort_climb()
+	
 				
 	if _event.is_action_released("use_gadget_light"):
 		if not secondary_action:
@@ -329,7 +325,7 @@ func _input(_event:InputEvent):
 
 func apply_gravity(_delta):
 	if !is_on_floor() \
-	&& current_state != state.LADDER:
+	&& current_state != state.CLIMB:
 		velocity.y -= gravity * _delta
 		
 func free_movement():
@@ -414,12 +410,12 @@ func attack(_is_special_attack : bool = false):
 		big_attack_started.emit()
 	else:
 		attack_started.emit()
-	if anim_state_tree: 
-		await anim_state_tree.animation_measured
+	if animation_tree: 
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
 	dash(Vector3.FORWARD,.2) ## delayed dash to move forward during attack animation
-	if anim_state_tree: 
+	if animation_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
@@ -428,8 +424,8 @@ func attack(_is_special_attack : bool = false):
 func air_attack():
 	air_attack_started.emit()
 	current_state = state.DYNAMIC_ACTION
-	if anim_state_tree: 
-		await anim_state_tree.animation_measured
+	if animation_tree: 
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	attack_activated.emit()
 	await get_tree().create_timer(anim_length *.5).timeout
@@ -438,12 +434,12 @@ func air_attack():
 func sprint_attack():
 	current_state = state.ATTACK
 	sprint_attack_started.emit()
-	if anim_state_tree: 
-		await anim_state_tree.animation_measured
+	if animation_tree: 
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.3).timeout
 	attack_activated.emit()
 	dash(Vector3.FORWARD,.3) ## delayed dash to move forward during attack animation
-	if anim_state_tree: 
+	if animation_tree: 
 		await get_tree().create_timer(anim_length *.7).timeout
 	if current_state == state.ATTACK:
 		current_state = state.FREE
@@ -453,6 +449,7 @@ func fall_check():
 	## When you land again, compare the distances of both location y values, if greater
 	## than the hard_landing_height, then trigger a hard landing. Otherwise, 
 	## clear the last_altitude variable.
+
 	if !is_on_floor() && last_altitude == null: 
 		last_altitude = global_position
 	if is_on_floor() && last_altitude != null:
@@ -464,19 +461,19 @@ func fall_check():
 		last_altitude = null
 				
 func hard_landing():
-		current_state = state.STATIC_ACTION
+		current_state = state.STATIC
 		landed_fall.emit("HARD")
-		if anim_state_tree:
-			await anim_state_tree.animation_measured
+		if animation_tree:
+			await animation_tree.animation_measured
 		await get_tree().create_timer(anim_length).timeout
-		if current_state == state.STATIC_ACTION:
+		if current_state == state.STATIC:
 			current_state = state.FREE
 	
 func jump():
 	if is_on_floor():
 		jump_started.emit()
-		if anim_state_tree:
-			await anim_state_tree.animation_measured
+		if animation_tree:
+			await animation_tree.animation_measured
 		# After timer finishes, return to pre-dodge state
 			await get_tree().create_timer(anim_length *.7).timeout
 		velocity.y = jump_velocity
@@ -529,8 +526,8 @@ func dodge():
 		var backward_dir =(global_position - to_global(Vector3.BACK)).normalized()
 		velocity = backward_dir * (dodge_speed * .75)
 		dodge_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	# After timer finishes, return to pre-dodge state
 	dodge_timer.start(anim_length * .7)
 	
@@ -540,77 +537,35 @@ func _on_dodge_timer_timeout():
 	current_state = state.FREE
 	can_be_hurt = true
 
-func ladder_movement():
-	# move up and down ladders per the indicated direction
-	input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity = (Vector3.DOWN * input_dir.y) * speed
-	# exiting ladder state triggers:
-	last_altitude = global_position
-	if interact_loc == "BOTTOM":
-		exit_ladder("TOP") 
-	if is_on_floor():
-		exit_ladder("BOTTOM")
-	move_and_slide()
 
-func start_ladder(top_or_bottom,mount_transform:Transform3D):
-	ladder_started.emit(top_or_bottom)
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
-	# After timer finishes, return to pre-dodge state
-	var tween = create_tween()
-	tween.set_parallel(false)
-	tween.tween_property(self,"global_rotation", mount_transform.basis.get_euler(),anim_length *.2)
-	tween.tween_property(self,"global_position", Vector3(mount_transform.origin.x,global_position.y,mount_transform.origin.z),anim_length *.2)
-	tween.tween_property(self,"global_transform", mount_transform, anim_length *.2)
-	await tween.finished
-	current_state = state.LADDER
-	
-func exit_ladder(exit_loc):
-	current_state = state.STATIC_ACTION
-	ladder_finished.emit(exit_loc)
-	var dismount_pos
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
-	match exit_loc:
-		"TOP":
-			dismount_pos = to_global(Vector3(0,1.5,.5))
-		"BOTTOM":
-			dismount_pos = global_position
-	var tween = create_tween()
-	tween.tween_property(self,"global_position", dismount_pos, anim_length * .6)
-	await tween.finished
-	current_state = state.FREE
 
 func _on_animation_measured(_new_length):
 	anim_length = _new_length - .05 # offset slightly for the process frame
 
-func _on_interact_updated(_interactable, _int_loc):
-	interactable = _interactable
-	interact_loc = _int_loc
-	
 func interact():
-	## interactions are a handshake. The interactable will reply back with more
-	## info or actions if needed.
-	if interactable:
-		interactable.activate(self,interact_loc)
+	if is_on_floor() && !busy:
+		if interactable:
+			interactable.activate(self)
+		elif ladder:
+			ladder.activate(self)
 
-func start_interact(interact_type = "GENERIC", desired_transform :Transform3D = global_transform, move_time : float = .5):
-	current_state = state.STATIC_ACTION
-	# After timer finishes, return to pre-dodge state
-	var tween = create_tween()
-	tween.tween_property(self,"global_transform", desired_transform, move_time)
-	await tween.finished
-	interact_started.emit(interact_type)
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
-	await get_tree().create_timer(anim_length).timeout
-	current_state = state.FREE
+func _on_climb_started():
+	#interactable = null
+	current_state = state.CLIMB
+	
+func abort_climb():
+	if current_state == state.CLIMB:
+		last_altitude = global_position
+		current_state = state.FREE
+	
+
+
 
 func weapon_change():
 	current_state = state.DYNAMIC_ACTION
 	weapon_change_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	weapon_changed.emit()
 	if weapon_system:
@@ -632,8 +587,8 @@ func _on_inventory_item_used(_item):
 func gadget_change():
 	current_state = state.DYNAMIC_ACTION
 	gadget_change_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	gadget_changed.emit()
 	if gadget_system:
@@ -646,8 +601,8 @@ func gadget_change():
 func item_change():
 	current_state = state.DYNAMIC_ACTION
 	item_change_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length *.5).timeout
 	item_changed.emit()
 	await get_tree().process_frame
@@ -668,15 +623,15 @@ func end_guard():
 	current_state = state.FREE
 
 func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
-	current_state = state.STATIC_ACTION
+	current_state = state.STATIC
 	gadget_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_started
+	if animation_tree:
+		await animation_tree.animation_started
 	await get_tree().create_timer(anim_length  *.3).timeout
 	gadget_activated.emit()
 	dash(Vector3.FORWARD,.3)
 	await get_tree().create_timer(anim_length  *.7).timeout
-	if current_state == state.STATIC_ACTION:
+	if current_state == state.STATIC:
 		current_state = state.FREE
 
 func hit(_who, _by_what):
@@ -703,42 +658,42 @@ func heal(_by_what):
 	health_received.emit(_by_what)
 
 func block():
-	current_state = state.STATIC_ACTION
+	current_state = state.STATIC
 	block_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	if current_state == state.STATIC_ACTION:
+	if current_state == state.STATIC:
 		current_state = state.DYNAMIC_ACTION
 
 func parry():
-	current_state = state.STATIC_ACTION
+	current_state = state.STATIC
 	can_be_hurt = false
 	parry_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length).timeout
-	if current_state == state.STATIC_ACTION:
+	if current_state == state.STATIC:
 		current_state = state.FREE
 	can_be_hurt = true
 
 func hurt():
-	current_state = state.STATIC_ACTION
+	current_state = state.STATIC
 	hurt_started.emit() # before state change in case on ladder,etc
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	can_be_hurt = false
 	await get_tree().create_timer(anim_length).timeout
 	if !is_dead:
-		if current_state == state.STATIC_ACTION:
+		if current_state == state.STATIC:
 			current_state = state.FREE
 		can_be_hurt = true
 
 func use_item():
 	current_state = state.DYNAMIC_ACTION
 	use_item_started.emit()
-	if anim_state_tree:
-		await anim_state_tree.animation_measured
+	if animation_tree:
+		await animation_tree.animation_measured
 	await get_tree().create_timer(anim_length * .5).timeout
 	item_used.emit()
 	await get_tree().create_timer(anim_length * .5).timeout
@@ -746,7 +701,7 @@ func use_item():
 		current_state = state.FREE
 
 func death():
-	current_state = state.STATIC_ACTION
+	current_state = state.STATIC
 	can_be_hurt = false
 	is_dead = true
 	death_started.emit()
@@ -756,3 +711,39 @@ func death():
 func system_visible(_system_node,_new_toggle):
 		if _system_node:
 			_system_node.visible = _new_toggle
+
+func trigger_interact(interact_type:String):
+	if busy:
+		return
+	busy = true
+	interact_started.emit(interact_type)
+	await animation_tree.animation_measured
+	await get_tree().create_timer(anim_length).timeout
+	current_state = state.FREE
+	busy = false
+		
+func trigger_event(signal_name:String):
+	if busy:
+		return
+	busy = true
+	emit_signal(signal_name)
+	await animation_tree.animation_finished
+	current_state = state.FREE
+	busy = false
+
+func climb_movement(): ## Non-root_motion controller
+	## move up and down ladders per the indicated direction
+	input_dir = Input.get_vector("move_down", "move_right", "move_up", "move_down")
+	velocity = (Vector3.DOWN * input_dir.y) * ladder_climb_speed
+	## exiting ladder state triggers:
+	if !sensor_cast.is_colliding():
+		last_altitude = global_position
+		current_state = state.FREE
+		#free_started.emit()
+		jump()
+		var tween = create_tween()
+		tween.tween_property(self,"global_position",sensor_cast.to_global(Vector3.BACK),.4)
+		current_state = state.FREE
+	if is_on_floor():
+		abort_climb()
+	move_and_slide()

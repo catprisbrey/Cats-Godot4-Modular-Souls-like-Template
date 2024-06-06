@@ -17,9 +17,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _add_cam(body):
-	if body.is_in_group("Player"):
+	if body.is_in_group("player"):
 		camera_3d.current = true
 
 func _drop_cam(body):
-	if body.is_in_group("Player"):
+	if body.is_in_group("player"):
 		camera_3d.current = false

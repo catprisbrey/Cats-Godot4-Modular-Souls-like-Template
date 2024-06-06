@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="SoulsGameTemplate"
+config/name="CatsGodot4SoulsTemplate-NonRoot"
+config/version="1.0.3"
 run/main_scene="res://demo_level/world_castle.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.png"

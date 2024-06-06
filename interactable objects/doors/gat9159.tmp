@@ -1,0 +1,254 @@
+[gd_scene load_steps=13 format=3 uid="uid://bp5aql2ip2qwi"]
+
+[ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jkoxb"]
+[ext_resource type="Material" uid="uid://pw0qjru3ju6a" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01.tres" id="2_1tfmp"]
+[ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
+[ext_resource type="AudioStream" uid="uid://b7mejiv87ktbl" path="res://audio/SoundFX/clack/clack_1.wav" id="3_0j2dh"]
+[ext_resource type="AudioStream" uid="uid://bc1pbogw28uc4" path="res://audio/SoundFX/creak/creak_3.wav" id="4_ohgwa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ytu87"]
+size = Vector3(1.975, 4.071, 0.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xidkn"]
+material = ExtResource("2_1tfmp")
+top_radius = 0.065
+bottom_radius = 0.015
+height = 4.22
+radial_segments = 6
+rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_01yin"]
+material = ExtResource("2_1tfmp")
+size = Vector3(2.105, 0.125, 0.125)
+
+[sub_resource type="Animation" id="Animation_4xpfs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ratchet:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Clank:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Creak:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_4eqcm"]
+resource_name = "Open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0), Vector3(0, 2.5, 0), Vector3(0, 2.4, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ratchet:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Clank:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Creak:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(-0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_atpco"]
+resource_name = "Locked"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.00174533, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ratchet:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b5b81"]
+_data = {
+"RESET": SubResource("Animation_4xpfs"),
+"locked": SubResource("Animation_atpco"),
+"open": SubResource("Animation_4eqcm")
+}
+
+[node name="GateObject" type="Node3D"]
+script = ExtResource("1_jkoxb")
+
+[node name="Pivot" type="Marker3D" parent="."]
+
+[node name="GateInteract" type="StaticBody3D" parent="Pivot"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/GateInteract"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03564, 0)
+shape = SubResource("BoxShape3D_ytu87")
+
+[node name="Gate" type="MeshInstance3D" parent="Pivot/GateInteract"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.630215, 2.0264, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../..")
+
+[node name="Gate2" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.295852, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Gate3" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.57829, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Gate4" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.328043, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Gate5" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.618284, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Gate6" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.916735, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Gate7" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24569, 0, 0)
+mesh = SubResource("CylinderMesh_xidkn")
+skeleton = NodePath("../../../..")
+
+[node name="Crossbar" type="MeshInstance3D" parent="Pivot/GateInteract/Gate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63958, -1.51803, 0)
+mesh = SubResource("BoxMesh_01yin")
+
+[node name="Crossbar" type="MeshInstance3D" parent="Pivot/GateInteract/Gate/Crossbar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.78197, 0)
+mesh = SubResource("BoxMesh_01yin")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b5b81")
+}
+
+[node name="Ratchet" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_4mohy")
+pitch_scale = 1.35
+
+[node name="Clank" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_0j2dh")
+pitch_scale = 0.25
+
+[node name="Creak" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_ohgwa")
+pitch_scale = 0.19
