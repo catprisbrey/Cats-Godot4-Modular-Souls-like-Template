@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name CharacterBodyEnemyBase
 
 ## Group names are used to detect enemies (along with their physics layer)
-@export var group_name :String = "Targets"
+@export var group_name :String = "targets"
 
 @export var anim_state_tree :AnimationTree 
 @onready var anim_length

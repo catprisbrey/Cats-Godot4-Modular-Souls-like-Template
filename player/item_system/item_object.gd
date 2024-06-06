@@ -24,8 +24,8 @@ func activate():
 	queue_free()
 
 func _on_area_3d_body_entered(body):
+	touched_target.emit()
 	if body.is_in_group(target_group):
-		touched_target.emit()
 		if effect_type == "HEAL":
 			if body.has_method("heal"):
 				body.heal(self)

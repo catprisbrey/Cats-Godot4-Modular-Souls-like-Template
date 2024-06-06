@@ -19,7 +19,7 @@ class_name EquipmentSystem
 ## The node that will emit the weapon change signal
 @export var player_node : CharacterBody3D
 ## The object group to detect 
-@export var target_group : String = "Targets"
+@export var target_group : String = "targets"
 
 ## The signal name from player_node for when the item should be active.
 ## items themselves should manage what "active" means, but typically this is
