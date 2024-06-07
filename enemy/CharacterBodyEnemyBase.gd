@@ -5,7 +5,7 @@ class_name CharacterBodyEnemyBase
 @export var group_name :String = "targets"
 
 @export var anim_state_tree :AnimationTree 
-@onready var anim_length
+@onready var anim_length = .5
 
 @export var target_sensor : Area3D 
 @onready var target : set = set_target

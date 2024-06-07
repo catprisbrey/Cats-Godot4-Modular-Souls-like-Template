@@ -4,6 +4,8 @@ extends CharacterBody3D
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var nav_agent_3d = $NavigationAgent3D
 @onready var animation_tree = $AnimationTree
+@onready var anim_length = .5
+
 @export var speed :float = 4.0
 @onready var direction : Vector3 = Vector3.ZERO
 
@@ -13,6 +15,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 ## giving up a chase. Most commonly this is a pathfollow node, following a Path.
 ## if left blank, then the default target is simply the same locationw here this
 ## enemy spawns.
+@export var health_system : HealthSystem
+
 @export var default_target : Node3D
 @onready var spawn_location : Marker3D = Marker3D.new()
 @export var combat_range :float = 2
@@ -21,7 +25,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var hurt_cool_down = Timer.new() # while running, player can't be hurt
 @export var ragdoll_death :bool = true
-@onready var general_skeleton = %GeneralSkeleton
+@onready var general_skeleton = $mannyquin/godot_rig/GeneralSkeleton
 
 signal hurt_started
 signal damage_taken
@@ -42,6 +46,9 @@ signal state_changed
 
 
 func _ready():
+	if animation_tree:
+		animation_tree.animation_measured.connect(_on_animation_measured)
+	
 	hurt_cool_down.one_shot = true
 	hurt_cool_down.wait_time = .3
 	add_child(hurt_cool_down)
@@ -52,7 +59,8 @@ func _ready():
 		target_sensor.target_spotted.connect(_on_target_spotted)
 		target_sensor.target_lost.connect(_on_target_lost)
 	
-	
+	if health_system:
+		health_system.died.connect(death)
 
 	combat_timer.timeout.connect(_on_combat_timer_timeout)
 	chase_timer.timeout.connect(_on_chase_timer_timeout)
@@ -61,11 +69,13 @@ func _ready():
 	
 	
 func _process(delta):
+	apply_gravity(delta)
+	if current_state == state.DEAD:
+		return
 	rotate_character()
 	navigation()
 	free_movement(delta)
 	evaluate_state()
-	apply_gravity(delta)
 	
 func free_movement(delta):
 	#set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
@@ -205,3 +215,6 @@ func apply_ragdoll():
 	general_skeleton.physical_bones_stop_simulation()
 	for i in bone_count:
 		general_skeleton.set_bone_global_pose_override(i, bone_transforms[i],1,true)
+
+func _on_animation_measured(_new_length):
+	anim_length = _new_length - .05 # offset slightly for the process frame
