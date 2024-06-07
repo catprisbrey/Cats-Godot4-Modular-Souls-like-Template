@@ -6,7 +6,7 @@ class_name AreaEnemyTargetSensor
 ## target. If it succeeds, a 'target_spotted' signal emits. Connect wherever
 ## useful, for example, into navegation code to persue the player.
 
-@export var player_node : CharacterBody3D 
+@onready var player_node : CharacterBody3D = get_parent()
 @onready var eyeline : RayCast3D = $Eyeline
 @export var target_group_name : String = "player"
 @export_flags_3d_physics var dectection_layer_mask

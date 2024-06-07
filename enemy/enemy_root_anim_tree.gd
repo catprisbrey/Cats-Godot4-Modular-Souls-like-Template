@@ -12,12 +12,21 @@ func _process(delta):
 
 func set_movement():
 	var speed : Vector2 = Vector2.ZERO
+	var near
 	#if enemy.current_state:
 	match enemy.current_state:
 		enemy.state.FREE:
-			speed.y = .5
+			near = (enemy.target.global_position.distance_to(enemy.global_position) < .2)
+			if near:
+				speed.y = 0.0
+			else:
+				speed.y = .5
 		enemy.state.CHASE:
-			speed.y = 1.0
+			near = (enemy.target.global_position.distance_to(enemy.global_position) < 4.0)
+			if near:
+				speed.y = .5
+			else:
+				speed.y = 1.0
 			
 	var blend = lerp(get("parameters/Movement/Movement2D/blend_position"),speed,.1)
 	set("parameters/Movement/Movement2D/blend_position",blend)

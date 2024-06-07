@@ -672,11 +672,11 @@ fadeout_time = 0.1
 animation = &"MeleeLib/GuardBlocked"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uwd7d"]
-animation = &"MeleeLib/root-roll"
+animation = &"MeleeLib/root-Roll"
 play_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pwgqg"]
-animation = &"MeleeLib/root-roll"
+animation = &"MeleeLib/root-Roll"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_03ncs"]
 xfade_time = 0.1
@@ -1331,7 +1331,7 @@ fadeout_time = 0.2
 animation = &"MeleeLib/WeaponChange_back"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pu57o"]
-graph_offset = Vector2(-728.438, -283.735)
+graph_offset = Vector2(-812.349, -156.36)
 nodes/ATTACK_tree/node = SubResource("AnimationNodeStateMachine_v5lqj")
 nodes/ATTACK_tree/position = Vector2(-380, -60)
 nodes/Attack/node = SubResource("AnimationNodeOneShot_gye1t")
