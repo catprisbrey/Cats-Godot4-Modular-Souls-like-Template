@@ -39,9 +39,6 @@ class_name EquipmentSystem
 @onready var stored_equipment : EquipmentObject
 @export var activate_delay : float = .2
 
-@onready var active_timer = Timer.new()
-
-
 @export_flags_3d_physics var collision_detect_layers = 15
 
 signal hit_target
@@ -49,9 +46,6 @@ signal hit_world
 signal equipment_changed(new_equipment : EquipmentObject)
 
 func _ready():
-	active_timer.one_shot = true
-	active_timer.timeout.connect(_on_active_timer_timoeout)
-	add_child(active_timer)
 	
 	if player_node:
 		if player_node.has_signal(change_signal):
@@ -127,5 +121,3 @@ func _on_body_entered(_hit_body):
 func _on_stop_signal():
 	current_equipment.monitoring = false
 
-func _on_active_timer_timoeout():
-	current_equipment.monitoring = false
