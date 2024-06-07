@@ -1,6 +1,6 @@
-[gd_scene load_steps=29 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=30 format=3 uid="uid://uiw1spc0mevb"]
 
-[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/character_body_souls_base.tscn" id="1_70e33"]
+[ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/player_charbody3d.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
 [ext_resource type="PackedScene" uid="uid://bp5aql2ip2qwi" path="res://interactable objects/doors/gate_object.tscn" id="3_0mbes"]
 [ext_resource type="PackedScene" path="res://interactable objects/ladder.tscn" id="4_a4kod"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c46nfvbeeb3pr" path="res://ui/panel-border-027.png" id="12_1f7l8"]
 [ext_resource type="Script" path="res://cameras/area_cam/area_cam.gd" id="13_2aall"]
 [ext_resource type="AudioStream" uid="uid://ddfdcmyfdq6fi" path="res://audio/bone_in_the_walls__level_loop_session.ogg" id="14_wsft0"]
+[ext_resource type="PackedScene" uid="uid://cq2lr6sclvutj" path="res://enemy/enemy_base_root_motion.tscn" id="15_yac72"]
 
 [sub_resource type="Gradient" id="Gradient_sxwq5"]
 colors = PackedColorArray(0.00282093, 0.0124845, 0.103078, 1, 0.742305, 0.387089, 0.172949, 1)
@@ -339,6 +340,10 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -65.47
 [node name="LadderCol" parent="Ladder4" index="0"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 25.028, 0)
 shape = SubResource("BoxShape3D_hr4mr")
+
+[node name="EnemyBase" parent="." node_paths=PackedStringArray("target") instance=ExtResource("15_yac72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5729, 0, 5.17577)
+target = NodePath("../PlayerCharacterBodySoulsBase")
 
 [editable path="Ladder"]
 [editable path="Ladder2"]
