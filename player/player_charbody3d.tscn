@@ -1267,10 +1267,10 @@ fadeout_time = 0.2
 animation = &"MeleeLib/GuardParry"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yt1s7"]
-animation = &"MeleeLib/root-hurt1"
+animation = &"MeleeLib/Hurt1"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_08fmk"]
-animation = &"MeleeLib/root-hurt2"
+animation = &"MeleeLib/root-Hurt2"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rd53y"]
 animation = &"MeleeLib/LadderHurt1"
@@ -1331,7 +1331,7 @@ fadeout_time = 0.2
 animation = &"MeleeLib/WeaponChange_back"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pu57o"]
-graph_offset = Vector2(-812.349, -156.36)
+graph_offset = Vector2(333.341, -272.116)
 nodes/ATTACK_tree/node = SubResource("AnimationNodeStateMachine_v5lqj")
 nodes/ATTACK_tree/position = Vector2(-380, -60)
 nodes/Attack/node = SubResource("AnimationNodeOneShot_gye1t")

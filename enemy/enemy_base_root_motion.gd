@@ -50,7 +50,7 @@ func _ready():
 		animation_tree.animation_measured.connect(_on_animation_measured)
 	
 	hurt_cool_down.one_shot = true
-	hurt_cool_down.wait_time = .3
+	hurt_cool_down.wait_time = .4
 	add_child(hurt_cool_down)
 	
 	add_to_group(group_name)
@@ -182,13 +182,14 @@ func apply_gravity(_delta):
 func hit(_by_who, _by_what):
 	target = _by_who
 	if hurt_cool_down.is_stopped():
-		hurt_cool_down.start(.3)
+		hurt_cool_down.start()
 		hurt_started.emit()
 		damage_taken.emit(_by_what)
 		
-	
 func parried():
-	parried_started.emit()
+	if hurt_cool_down.is_stopped():
+		hurt_cool_down.start()
+		parried_started.emit()
 	
 func death():
 	current_state = state.DEAD
