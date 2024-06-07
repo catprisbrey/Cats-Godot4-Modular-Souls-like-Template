@@ -6,6 +6,8 @@ extends AnimationTree
 func _ready():
 	enemy.attack_started.connect(_on_attack_started)
 	enemy.retreat_started.connect(_on_retreat_started)
+	enemy.hurt_started.connect(_on_hurt_started)
+	enemy.parried_started.connect(_on_parried_started)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	set_movement()
@@ -27,6 +29,8 @@ func set_movement():
 				speed.y = .5
 			else:
 				speed.y = 1.0
+		enemy.state.DEAD:
+			speed.y = 0.0
 			
 	var blend = lerp(get("parameters/Movement/Movement2D/blend_position"),speed,.1)
 	set("parameters/Movement/Movement2D/blend_position",blend)
@@ -40,3 +44,9 @@ func _on_retreat_started():
 func request_oneshot(oneshot:String):
 	last_oneshot = oneshot
 	set("parameters/" + oneshot + "/request",true)
+
+func _on_hurt_started():
+	request_oneshot("hurt")
+
+func _on_parried_started():
+	request_oneshot("parried")

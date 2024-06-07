@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-
+@export var group_name :String = "targets"
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var nav_agent_3d = $NavigationAgent3D
 @onready var animation_tree = $AnimationTree
@@ -19,6 +19,14 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var combat_timer : Timer = $CombatTimer
 @onready var chase_timer = $ChaseTimer
 
+@onready var hurt_cool_down = Timer.new() # while running, player can't be hurt
+@export var ragdoll_death :bool = true
+@onready var general_skeleton = %GeneralSkeleton
+
+signal hurt_started
+signal damage_taken
+signal parried_started
+signal death_started
 signal attack_started
 signal retreat_started
 
@@ -34,7 +42,11 @@ signal state_changed
 
 
 func _ready():
-	add_to_group("targets")
+	hurt_cool_down.one_shot = true
+	hurt_cool_down.wait_time = .3
+	add_child(hurt_cool_down)
+	
+	add_to_group(group_name)
 	collision_layer = 5
 	if target_sensor:
 		target_sensor.target_spotted.connect(_on_target_spotted)
@@ -53,6 +65,7 @@ func _process(delta):
 	navigation()
 	free_movement(delta)
 	evaluate_state()
+	apply_gravity(delta)
 	
 func free_movement(delta):
 	#set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
@@ -110,14 +123,8 @@ func evaluate_state(): ## depending on distance to target, run or walk
 func _on_combat_timer_timeout():
 	if current_state == state.COMBAT:
 		combat_randomizer()
-
-#func reset_attack_clock():
-	#if current_state == state.COMBAT:
-		#if combat_timer.is_stopped():
-			#combat_timer.start()
 			
 func combat_randomizer():
-	
 	var random_choice = randi_range(1,10)
 	if random_choice <= 3:
 		retreat()
@@ -161,3 +168,40 @@ func apply_gravity(_delta):
 	if !is_on_floor():
 		velocity.y -= gravity * _delta
 		move_and_slide()
+
+func hit(_by_who, _by_what):
+	target = _by_who
+	if hurt_cool_down.is_stopped():
+		hurt_cool_down.start(.3)
+		hurt_started.emit()
+		damage_taken.emit(_by_what)
+		
+	
+func parried():
+	parried_started.emit()
+	
+func death():
+	current_state = state.DEAD
+	hurt_cool_down.start(10)
+	remove_from_group(group_name)
+	if ragdoll_death:
+		apply_ragdoll()
+	else:
+		death_started.emit()
+	await get_tree().create_timer(4).timeout
+	queue_free()
+	
+
+func apply_ragdoll():
+	general_skeleton.physical_bones_start_simulation()
+	animation_tree.active = false
+	
+	# if you want to stop the rag doll after a few seconds, uncomment this code.
+	await get_tree().create_timer(3).timeout
+	var bone_transforms = []
+	var bone_count = general_skeleton.get_bone_count()
+	for i in bone_count:
+		bone_transforms.append(general_skeleton.get_bone_global_pose(i))
+	general_skeleton.physical_bones_stop_simulation()
+	for i in bone_count:
+		general_skeleton.set_bone_global_pose_override(i, bone_transforms[i],1,true)
