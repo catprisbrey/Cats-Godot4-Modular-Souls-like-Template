@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://uiw1spc0mevb"]
+[gd_scene load_steps=29 format=3 uid="uid://uiw1spc0mevb"]
 
 [ext_resource type="PackedScene" uid="uid://bn7vh6v8mmgja" path="res://player/player_charbody3d.tscn" id="1_70e33"]
 [ext_resource type="PackedScene" uid="uid://cnv210lnfdoan" path="res://interactable objects/doors/door_object.tscn" id="2_4fq4l"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://c3yajhej5laa7" path="res://interactable objects/chest/chest.tscn" id="5_b73po"]
 [ext_resource type="Script" path="res://enemy/patrol_point.gd" id="6_i73lt"]
 [ext_resource type="PackedScene" uid="uid://bbhrq4snasi1i" path="res://demo_level/stagingCSG.tscn" id="7_p8o0k"]
-[ext_resource type="PackedScene" uid="uid://dydcpd450p5ig" path="res://enemy/CharacterBodyEnemyBase.tscn" id="8_3w8s6"]
 [ext_resource type="PackedScene" uid="uid://daae7mgofoegu" path="res://interactable objects/spawn_site/spawn_site.tscn" id="9_cpxbt"]
 [ext_resource type="PackedScene" uid="uid://cev0hfdkmno27" path="res://interactable objects/lever/lever_object.tscn" id="10_10w6y"]
 [ext_resource type="Script" path="res://ui/contol_card.gd" id="11_4norq"]
@@ -163,18 +162,35 @@ navigation_mesh = SubResource("NavigationMesh_8axki")
 
 [node name="Staging" parent="NavigationRegion3D" instance=ExtResource("7_p8o0k")]
 
-[node name="CharacterBodyEnemyBase" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("8_3w8s6")]
+[node name="EnemyBase" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("15_yac72")]
 transform = Transform3D(-2.06632e-07, 0, 1, 0, 1, 0, -1, 0, -2.06632e-07, -10.4693, -4.76837e-07, 23.7447)
 default_target = NodePath("../PatrolPath/EnemyPatrolPoint")
 
-[node name="CharacterBodyEnemyBase4" parent="." instance=ExtResource("8_3w8s6")]
+[node name="EnemyBase2" parent="." instance=ExtResource("15_yac72")]
 transform = Transform3D(2.98023e-08, 0, 1, 0, 1, 0, -1, 0, 2.98023e-08, -1.23949, -4.76837e-07, 23.9472)
 
-[node name="CharacterBodyEnemyBase2" parent="." instance=ExtResource("8_3w8s6")]
+[node name="EnemyBase3" parent="." instance=ExtResource("15_yac72")]
 transform = Transform3D(-0.518131, 0, 0.855301, 0, 1, 0, -0.855301, 0, -0.518131, -35.9215, 3.8271, 16.6378)
 
-[node name="CharacterBodyEnemyBase3" parent="." instance=ExtResource("8_3w8s6")]
+[node name="EnemyBase4" parent="." instance=ExtResource("15_yac72")]
 transform = Transform3D(0.566751, 0, 0.823889, 0, 1, 0, -0.823889, 0, 0.566751, -36.0567, 3.8271, 14.7454)
+
+[node name="EnemyBase5" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("15_yac72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.5802, 3.8271, 13.8269)
+default_target = NodePath("../PatrolArea2/PatrolPoint2")
+
+[node name="EnemyBase6" parent="." instance=ExtResource("15_yac72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0326, 9, 10.6311)
+
+[node name="EnemyBase7" parent="." instance=ExtResource("15_yac72")]
+transform = Transform3D(-0.997653, 0, 0.068468, 0, 1, 0, -0.068468, 0, -0.997653, -27.273, 0, 21.48)
+
+[node name="EnemyBase8" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("15_yac72")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.7816, 14, 0.487746)
+default_target = NodePath("../Path3D/PatrolPoint")
+
+[node name="EnemyBase9" parent="." instance=ExtResource("15_yac72")]
+transform = Transform3D(0.0685725, 0, 0.997646, 0, 1, 0, -0.997646, 0, 0.0685725, -60.3035, 52, 29.9481)
 
 [node name="DoorObject2" parent="." instance=ExtResource("2_4fq4l")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23.5496, 0.0296541, 17.9979)
@@ -183,10 +199,6 @@ locked = true
 [node name="LeverObject" parent="." node_paths=PackedStringArray("node_to_control") instance=ExtResource("10_10w6y")]
 transform = Transform3D(-0.0871557, 0, 0.996195, 0, 1, 0, -0.996195, 0, -0.0871557, -20.3826, 2.38419e-07, 3.39331)
 node_to_control = NodePath("../DoorObject2")
-
-[node name="CharacterBodyEnemyBase5" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("8_3w8s6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.5802, 3.8271, 13.8269)
-default_target = NodePath("../PatrolArea2/PatrolPoint2")
 
 [node name="PatrolArea2" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.8878, 3.9, 15.5108)
@@ -304,16 +316,6 @@ autoplay = true
 [node name="SpawnSite" parent="." instance=ExtResource("9_cpxbt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.07785, 9.53674e-07, 5.67158)
 
-[node name="CharacterBodyEnemyBase6" parent="." instance=ExtResource("8_3w8s6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0326, 9, 10.6311)
-
-[node name="CharacterBodyEnemyBase7" parent="." instance=ExtResource("8_3w8s6")]
-transform = Transform3D(-0.997653, 0, 0.068468, 0, 1, 0, -0.068468, 0, -0.997653, -27.273, 0, 21.48)
-
-[node name="CharacterBodyEnemyBase8" parent="." node_paths=PackedStringArray("default_target") instance=ExtResource("8_3w8s6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.7816, 14, 0.487746)
-default_target = NodePath("../Path3D/PatrolPoint")
-
 [node name="Path3D" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.7816, 14, 0.487746)
 curve = SubResource("Curve3D_2r1aj")
@@ -321,9 +323,6 @@ curve = SubResource("Curve3D_2r1aj")
 [node name="PatrolPoint" type="PathFollow3D" parent="Path3D"]
 transform = Transform3D(-0.0143702, 0.00307455, 0.999892, 0, 0.999995, -0.00307487, -0.999897, -4.41865e-05, -0.0143702, 0, 0, 0)
 script = ExtResource("6_i73lt")
-
-[node name="CharacterBodyEnemyBase9" parent="." instance=ExtResource("8_3w8s6")]
-transform = Transform3D(0.0685725, 0, 0.997646, 0, 1, 0, -0.997646, 0, 0.0685725, -60.3035, 52, 29.9481)
 
 [node name="Ladder3" parent="." instance=ExtResource("4_a4kod")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.4492, 0, 19.8901)
@@ -340,10 +339,6 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -65.47
 [node name="LadderCol" parent="Ladder4" index="0"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 25.028, 0)
 shape = SubResource("BoxShape3D_hr4mr")
-
-[node name="EnemyBase" parent="." instance=ExtResource("15_yac72")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5729, 0, 5.17577)
-combat_range = 2.5
 
 [editable path="Ladder"]
 [editable path="Ladder2"]
