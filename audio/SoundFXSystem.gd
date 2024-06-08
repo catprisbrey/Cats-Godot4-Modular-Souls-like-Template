@@ -7,6 +7,7 @@ class_name SoundFXTrigger
 
 @export var triggering_node : Node
 @export var sound_trigger_signal : String = "hit_target"
+@export var play_delay : float = 0.0
 
 func _ready():
 	if triggering_node:
@@ -15,5 +16,6 @@ func _ready():
 	
 func _on_sound_trigger_signal(_1 = null):
 	if !playing:
+		await get_tree().create_timer(play_delay).timeout
 		#pitch_scale = randf_range(.8,1.1)
 		play()

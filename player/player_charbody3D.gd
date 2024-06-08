@@ -377,18 +377,18 @@ func abort_climb():
 
 func weapon_change():
 	slowed = true
-	busy = true
-	weapon_change_started.emit()
-	if animation_tree:
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
-	weapon_changed.emit()
-	if weapon_system:
-		await weapon_system.equipment_changed
+	trigger_event("weapon_change_started")
+	await event_finished
+	#if animation_tree:
+		#await animation_tree.animation_measured
+	#await get_tree().create_timer(anim_length *.5).timeout
+	#weapon_changed.emit()
+	#if weapon_system:
+		#await weapon_system.equipment_changed
 	print(weapon_type)
 	weapon_change_ended.emit(weapon_type)
-	await get_tree().create_timer(anim_length *.5).timeout
-	busy = false
+	#await get_tree().create_timer(anim_length *.5).timeout
+	#busy = false
 	slowed = false
 	
 func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
@@ -402,19 +402,12 @@ func _on_inventory_item_used(_item):
 	
 func gadget_change():
 	slowed = true
-	busy = true
-	gadget_change_started.emit()
-	if animation_tree:
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
-	gadget_changed.emit()
-	if gadget_system:
-		await gadget_system.equipment_changed
+	trigger_event("gadget_change_started")
+	await event_finished
 	print(gadget_type)
 	gadget_change_ended.emit(gadget_type)
 	await get_tree().create_timer(anim_length *.5).timeout
 	slowed = false
-	busy = false
 
 func item_change():
 	slowed = true

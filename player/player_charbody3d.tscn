@@ -1802,6 +1802,7 @@ player_node = NodePath("..")
 [node name="WeaponSystem" type="Node3D" parent="." node_paths=PackedStringArray("player_node", "held_mount_point", "stored_mount_point")]
 script = ExtResource("4_bebk6")
 player_node = NodePath("..")
+change_signal = "weapon_change_started"
 held_mount_point = NodePath("RightHand/HandPivot")
 stored_mount_point = NodePath("BackBone/BackPivot")
 
@@ -1857,7 +1858,7 @@ origin_node = NodePath("../RightHand/HandPivot")
 script = ExtResource("4_bebk6")
 player_node = NodePath("..")
 activate_signal = "gadget_started"
-change_signal = "gadget_changed"
+change_signal = "gadget_change_started"
 held_mount_point = NodePath("LeftHand/HandPivot")
 stored_mount_point = NodePath("HipBone/HipPivot")
 
@@ -2167,14 +2168,16 @@ pitch_scale = 1.17
 panning_strength = 0.0
 script = ExtResource("6_wnkxc")
 triggering_node = NodePath("../..")
-sound_trigger_signal = "attack_activated"
+sound_trigger_signal = "attack_started"
+play_delay = 0.4
 
 [node name="SwingGadget" type="AudioStreamPlayer3D" parent="TriggeredSounds" node_paths=PackedStringArray("triggering_node")]
 stream = ExtResource("24_td7p2")
 panning_strength = 0.0
 script = ExtResource("6_wnkxc")
 triggering_node = NodePath("../..")
-sound_trigger_signal = "gadget_activated"
+sound_trigger_signal = "gadget_started"
+play_delay = 0.4
 
 [node name="WeaponChange" type="AudioStreamPlayer3D" parent="TriggeredSounds" node_paths=PackedStringArray("triggering_node")]
 stream = ExtResource("19_dsm8d")

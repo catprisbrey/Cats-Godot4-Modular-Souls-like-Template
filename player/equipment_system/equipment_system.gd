@@ -75,6 +75,7 @@ func _ready():
 			current_equipment.collision_mask = collision_detect_layers
 
 func _on_equipment_changed():
+	await get_tree().create_timer(player_node.anim_length * .5).timeout
 	if stored_mount_point.get_child(0) && held_mount_point.get_child(0):
 		stored_equipment = stored_mount_point.get_child(0)
 		

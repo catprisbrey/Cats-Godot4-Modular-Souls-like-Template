@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhrc0nilld2h3"]
+
+[ext_resource type="Script" path="res://enemy/enemy_area_target_sensor.gd" id="1_l0w2x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pu3uu"]
+size = Vector3(4, 3, 4)
+
+[node name="TargetSensor" type="Area3D"]
+collision_mask = 0
+script = ExtResource("1_l0w2x")
+dectection_layer_mask = 11
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1.01166, 2.98628)
+shape = SubResource("BoxShape3D_pu3uu")
+
+[node name="Eyeline" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.595, 0)
+target_position = Vector3(0, 0, 6)
+collision_mask = 11
+
+[node name="CheckInterval" type="Timer" parent="."]
+wait_time = 0.7
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="CheckInterval" to="." method="_on_check_interval_timeout"]
