@@ -1909,7 +1909,7 @@ streak_top = Vector3(0, 0.5, 0)
 [node name="SignalSwitch" type="Node" parent="GadgetSystem/GadgetStreak" node_paths=PackedStringArray("signaling_node")]
 script = ExtResource("17_xborg")
 signaling_node = NodePath("../../..")
-start_signal = "gadget_activated"
+start_signal = "gadget_started"
 
 [node name="ItemSystem" type="Node3D" parent="." node_paths=PackedStringArray("player_node", "signaling_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.38419e-07, 0)

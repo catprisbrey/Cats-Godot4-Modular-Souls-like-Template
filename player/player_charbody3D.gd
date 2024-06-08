@@ -27,7 +27,6 @@ signal interact_started(interact_type)
 ## the animation_tree and anywhere else that may want to know what weapon type is held.
 var weapon_type :String = "SLASH"
 signal weapon_change_started ## to start the animation
-signal weapon_changed ## the moment the weapon objects change hands.
 signal weapon_change_ended(weapon_type:String) ## informing the change is complete
 signal attack_started ## to start the animation
 
@@ -44,10 +43,9 @@ var secondary_action
 ## the AnimationStateTree or anywhere else that may need to know what gadget type is held.
 var gadget_type :String = "SHIELD"
 signal gadget_change_started ## to start the animation
-signal gadget_changed ## the moment the items swap hands
 signal gadget_change_ended(gadget_type:String) ## to end the animation
 signal gadget_started ## when the gadget attack starts
-signal gadget_activated ## when the collision hitbox shapes/sounds should activate, etc
+
 
 ## When guarding this substate is true. Drives animation and hitbox logic for blocking.
 ## The first moments of guarding, the parry window is active, allowing to parry()
@@ -73,7 +71,6 @@ var is_dead :bool = false
 @export var inventory_system : InventorySystem
 var current_item : ItemResource
 signal item_change_started
-signal item_changed
 signal item_change_ended(current_item:ItemObject)
 signal use_item_started
 signal item_used
@@ -379,16 +376,8 @@ func weapon_change():
 	slowed = true
 	trigger_event("weapon_change_started")
 	await event_finished
-	#if animation_tree:
-		#await animation_tree.animation_measured
-	#await get_tree().create_timer(anim_length *.5).timeout
-	#weapon_changed.emit()
-	#if weapon_system:
-		#await weapon_system.equipment_changed
 	print(weapon_type)
 	weapon_change_ended.emit(weapon_type)
-	#await get_tree().create_timer(anim_length *.5).timeout
-	#busy = false
 	slowed = false
 	
 func _on_weapon_equipment_changed(_new_weapon:EquipmentObject):
@@ -411,17 +400,10 @@ func gadget_change():
 
 func item_change():
 	slowed = true
-	busy = true
-	item_change_started.emit()
-	if animation_tree:
-		await animation_tree.animation_measured
-	await get_tree().create_timer(anim_length *.5).timeout
-	item_changed.emit()
-	await get_tree().process_frame
+	trigger_event("item_change_started")
+	await event_finished
 	item_change_ended.emit(current_item)
-	await get_tree().create_timer(anim_length *.5).timeout
 	slowed = false
-	busy = false
 	
 func start_guard(): # Guarding, and for a short window, parring is possible
 	slowed = true
@@ -437,17 +419,6 @@ func end_guard():
 
 func use_gadget(): # emits to start the gadget, and runs some timers before stopping the gadget
 	trigger_event("gadget_started")
-	
-	#current_state = state.STATIC
-	#gadget_started.emit()
-	#if animation_tree:
-		#await animation_tree.animation_started
-	#await get_tree().create_timer(anim_length  *.3).timeout
-	#gadget_activated.emit()
-#
-	#await get_tree().create_timer(anim_length  *.7).timeout
-	#if current_state == state.STATIC:
-		#current_state = state.FREE
 
 func hit(_who, _by_what):
 	if hurt_cool_down.time_left > 0:
@@ -462,8 +433,6 @@ func hit(_who, _by_what):
 	else:
 		damage_taken.emit(_by_what)
 		hurt()
-
-
 
 func heal(_by_what):
 	health_received.emit(_by_what)
