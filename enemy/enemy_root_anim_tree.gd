@@ -5,6 +5,11 @@ extends AnimationTree
 @onready var anim_length : float = .5
 @onready var state_machine_node : AnimationNodeStateMachinePlayback = self["parameters/Movement/playback"]
 signal animation_measured(anim_length)
+@export var max_attack_count : int = 2
+@onready var attack_count
+@onready var hurt_count :int = 1
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	enemy.attack_started.connect(_on_attack_started)
@@ -42,6 +47,7 @@ func set_movement():
 	set("parameters/Movement/Movement2D/blend_position",blend)
 
 func _on_attack_started():
+	attack_count = randi_range(1,max_attack_count)
 	request_oneshot("attack")
 
 func _on_retreat_started():
@@ -55,6 +61,7 @@ func abort_oneshot(oneshot):
 	set("parameters/"+ str(oneshot) + "/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
 func _on_hurt_started():
+	hurt_count = randi_range(1,2)
 	abort_oneshot(last_oneshot)
 	request_oneshot("hurt")
 

@@ -566,7 +566,7 @@ func set_root_climb(delta):
 	velocity.z = move_toward(velocity.z, new_velocity.z, rate)
 	# dismount logic
 	if !sensor_cast.is_colliding():
-		print("cast not colliding")
+		#print("cast not colliding")
 		current_state = state.FREE
 		last_altitude = global_position
 		var dismount_pos = to_global(Vector3.BACK)

@@ -47,7 +47,7 @@ func _physics_process(_delta):
 			show_health()
 		
 func _on_damage_signal(_by_what):
-	print("hurt by " + str(_by_what))
+	#print("hurt by " + str(_by_what))
 	if health_bar_control:
 		show_timer.start()
 	var damage_power = _by_what.power
