@@ -1,6 +1,8 @@
 
 # Cat's Godot 4 Souls-Like Template & Asset Pack
-Version 1.0.2
+Version 2.0.0
+
+IF YOU NEED THE NON-ROOT VERSION, CHECK THE RELEASES FOR ANY v1.x.x bundle.
 
 ![Controller Screenshot](https://raw.githubusercontent.com/catprisbrey/Cats-Godot4-Modular-Souls-like-Template/main/screenshots/combat.png)
 
@@ -16,6 +18,7 @@ This template uses assets created entirely by myself, or from Kenney Assets. Not
 
 The accumulation of about a years worth of testing. It features a lot of the classic mechanics for soulslike games:
 
+- Root motion driven player and enemies
 - Primary weapon
 - Offhand gadgets 
 - Consumable items
@@ -35,7 +38,7 @@ The accumulation of about a years worth of testing. It features a lot of the cla
 - Rigged Low poly male and female model
 - Low resolution textures
 - Lots of sound effects and music
-- 75+ animations
+- 110+ animations
 - Gridmap/Meshlibrary
 - Flexible nested animation state trees
 
