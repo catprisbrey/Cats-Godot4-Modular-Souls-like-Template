@@ -31,7 +31,7 @@ func _on_inventory_updated(inventory):
 	# This simply adds a visual version to your hip when you change/use items.
 	var thekids = storage_mount.get_children()
 	for kid in thekids:
-		print(kid)
+		#print(kid)
 		kid.queue_free()
 	
 	if inventory[0]:

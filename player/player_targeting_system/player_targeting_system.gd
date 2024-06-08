@@ -76,7 +76,7 @@ func _input(_event:InputEvent):
 		
 	
 func _on_targeting_toggled(_toggle):
-	print("targeting toggled: " + str(_toggle))
+	#print("targeting toggled: " + str(_toggle))
 	targeting = _toggle
 	if targeting == false:
 		target_list.clear()

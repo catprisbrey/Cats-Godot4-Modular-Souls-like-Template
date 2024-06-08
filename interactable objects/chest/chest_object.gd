@@ -25,7 +25,7 @@ func activate(player: CharacterBody3D):
 		
 	else:
 		interactable_activated.emit()
-		player.current_state = player.state.STATIC
+		
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
 
 		var tween = create_tween()

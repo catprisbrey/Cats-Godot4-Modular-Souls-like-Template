@@ -32,7 +32,7 @@ func activate(player: CharacterBody3D):
 		return
 	else:
 		interactable_activated.emit()
-		player.current_state = player.state.STATIC
+		
 		# move the player in front of the lever
 		var new_translation = global_transform.translated_local(player_offset).rotated_local(Vector3.UP,PI)
 		var tween = create_tween()

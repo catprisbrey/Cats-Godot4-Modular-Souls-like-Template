@@ -33,7 +33,7 @@ _subresources={
 "materials": {
 "Cloth": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/scalemail.tres"
+"use_external/path": "res://assets/characters/cloth.tres"
 },
 "Eyes": {
 "use_external/enabled": true,
@@ -45,7 +45,7 @@ _subresources={
 },
 "Metal": {
 "use_external/enabled": true,
-"use_external/path": "res://assets/metal_blue.tres"
+"use_external/path": "res://assets/metal_black.tres"
 },
 "Skin": {
 "use_external/enabled": true,

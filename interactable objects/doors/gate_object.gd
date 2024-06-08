@@ -26,7 +26,7 @@ func activate(player: CharacterBody3D):
 		
 	if !opened:
 		opened = true
-		player.current_state = player.state.STATIC
+		
 		
 		var dist_to_front = to_global(Vector3.FORWARD).distance_to(player.global_position)
 		var dist_to_back = to_global(Vector3.BACK).distance_to(player.global_position)

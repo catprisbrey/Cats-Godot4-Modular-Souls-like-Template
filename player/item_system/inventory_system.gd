@@ -10,7 +10,7 @@ class_name InventorySystem
 ## centralized system, or some other nonsense.
 
 @export var signaling_node : Node3D 
-@export var change_item_signal : String = "item_changed"
+@export var change_item_signal : String = "item_change_started"
 @export var use_item_signal  : String = "item_used"
 
 @onready var inventory : Array = []
@@ -57,6 +57,7 @@ func change_item(_start_index,_destination_index):
 	inventory[_start_index] = dest_item
 	inventory[_destination_index] = start_item
 	current_item = inventory[0]
+	
 	inventory_updated.emit(inventory)
 
 #func remove_item(_index):
