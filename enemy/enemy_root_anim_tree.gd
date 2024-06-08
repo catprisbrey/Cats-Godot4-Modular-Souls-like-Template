@@ -20,7 +20,7 @@ func _ready():
 	
 	animation_started.connect(_on_animation_started)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	set_movement()
 
 func set_movement():
