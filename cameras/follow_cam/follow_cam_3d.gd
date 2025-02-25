@@ -71,6 +71,7 @@ func mouse_control(_event):
 
 		var clamped_rotation = clamp(new_rotation, -.8, 0.8) #rotation clamp
 		rotation.x = clamped_rotation
+		_lookat_target()
 		return
 
 func joystick_control(): # For controlling freecam rotation on gamepad
@@ -83,6 +84,7 @@ func joystick_control(): # For controlling freecam rotation on gamepad
 	
 	var clamped_rotation = clamp(temporary_rotation, -.8, .8)
 	rotation.x = clamped_rotation
+	_lookat_target()
 
 func _detect_camera_change():
 	if camera_3d != get_viewport().get_camera_3d() \
