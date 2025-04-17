@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhtxrtq8c0qlb"
-path.s3tc="res://.godot/imported/TinyTile01_normal.png-01428b9586e2d597defde713446fd598.s3tc.ctex"
+path.etc2="res://.godot/imported/TinyTile01_normal.png-01428b9586e2d597defde713446fd598.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_level/gridmap/gridmap_materials/TinyTile01_normal.png"
-dest_files=["res://.godot/imported/TinyTile01_normal.png-01428b9586e2d597defde713446fd598.s3tc.ctex"]
+dest_files=["res://.godot/imported/TinyTile01_normal.png-01428b9586e2d597defde713446fd598.etc2.ctex"]
 
 [params]
 

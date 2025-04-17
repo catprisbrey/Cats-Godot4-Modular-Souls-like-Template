@@ -1,9 +1,9 @@
 [gd_scene load_steps=20 format=3 uid="uid://vs3idmafxkcd"]
 
-[ext_resource type="Script" path="res://player/item_system/item_object.gd" id="1_jvy25"]
-[ext_resource type="Script" path="res://utility scripts/signal_switch.gd" id="2_at7g0"]
+[ext_resource type="Script" uid="uid://cvnfn6ddwqbge" path="res://player/item_system/item_object.gd" id="1_jvy25"]
+[ext_resource type="Script" uid="uid://1pho8dtghbc1" path="res://utility scripts/signal_switch.gd" id="2_at7g0"]
 [ext_resource type="AudioStream" uid="uid://bxqrf0y1eflh6" path="res://audio/SoundFX/hit/hit_blunt_03.wav" id="3_1sqhw"]
-[ext_resource type="Script" path="res://audio/SoundFXSystem.gd" id="4_dcvce"]
+[ext_resource type="Script" uid="uid://dwtmkfxbk4m2u" path="res://audio/SoundFXSystem.gd" id="4_dcvce"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6ut2s"]
 radius = 0.115

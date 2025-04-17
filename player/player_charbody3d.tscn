@@ -1,49 +1,50 @@
-[gd_scene load_steps=251 format=3 uid="uid://bn7vh6v8mmgja"]
+[gd_scene load_steps=252 format=3 uid="uid://bn7vh6v8mmgja"]
 
-[ext_resource type="Script" path="res://player/player_charbody3D.gd" id="1_4per7"]
+[ext_resource type="Script" uid="uid://cveltrtx48d81" path="res://player/player_charbody3D.gd" id="1_4per7"]
 [ext_resource type="PackedScene" uid="uid://bffefrgxjb4sc" path="res://assets/characters/minnyquinn.glb" id="2_74vsj"]
 [ext_resource type="AnimationLibrary" uid="uid://d3h8qu2uqwwdf" path="res://player/animation_libraries/MeleeLib.res" id="3_8tvpy"]
-[ext_resource type="Script" path="res://player/player_anim_tree.gd" id="3_f2g20"]
-[ext_resource type="Script" path="res://player/equipment_system/equipment_system.gd" id="4_bebk6"]
+[ext_resource type="Script" uid="uid://7r07cj0rgmqh" path="res://player/player_anim_tree.gd" id="3_f2g20"]
+[ext_resource type="Script" uid="uid://b22ydio3f4ok1" path="res://player/equipment_system/equipment_system.gd" id="4_bebk6"]
 [ext_resource type="PackedScene" uid="uid://dva7owhrl4wew" path="res://player/equipment_system/equipment/sword.tscn" id="5_d7elj"]
 [ext_resource type="PackedScene" uid="uid://cppm5fkbguoqx" path="res://player/equipment_system/equipment/Ax.tscn" id="6_iekbc"]
 [ext_resource type="AudioStream" uid="uid://c318jpy76ckxp" path="res://audio/SoundFX/hit/hit_blunt_02.wav" id="6_poyxp"]
-[ext_resource type="Script" path="res://audio/SoundFXSystem.gd" id="6_wnkxc"]
+[ext_resource type="Script" uid="uid://dwtmkfxbk4m2u" path="res://audio/SoundFXSystem.gd" id="6_wnkxc"]
 [ext_resource type="PackedScene" uid="uid://g454n8wvwlm6" path="res://player/equipment_system/equipment/shield.tscn" id="7_yp4e6"]
 [ext_resource type="AudioStream" uid="uid://bl6briwljoa1t" path="res://audio/SoundFX/clang/clang_4.wav" id="8_adk4b"]
 [ext_resource type="PackedScene" uid="uid://b65t1v7qe0rb3" path="res://cameras/follow_cam/follow_cam.tscn" id="12_i13o0"]
 [ext_resource type="AudioStream" uid="uid://dwewi6cxbh3do" path="res://audio/SoundFX/hit/hit_blunt_06.wav" id="12_mounm"]
-[ext_resource type="Script" path="res://player/footfall_system/footfall_system.gd" id="12_wnb34"]
+[ext_resource type="Script" uid="uid://b4etjoodm8j71" path="res://player/footfall_system/footfall_system.gd" id="12_wnb34"]
 [ext_resource type="AudioStream" uid="uid://djwdoeoxmfyrw" path="res://audio/SoundFX/clang/clang_1.wav" id="17_2kr13"]
 [ext_resource type="AudioStream" uid="uid://cg2f8j2n2eun7" path="res://audio/SoundFX/step/step_3.wav" id="17_ebv4v"]
-[ext_resource type="Script" path="res://utility scripts/signal_switch.gd" id="17_xborg"]
+[ext_resource type="Script" uid="uid://1pho8dtghbc1" path="res://utility scripts/signal_switch.gd" id="17_xborg"]
 [ext_resource type="AudioStream" uid="uid://cvkugbv6gb3l7" path="res://audio/SoundFX/clang/clang_3.wav" id="18_wrnle"]
 [ext_resource type="AudioStream" uid="uid://byiegy7na8aw6" path="res://audio/SoundFX/shuffle/shuffle_5.wav" id="19_dsm8d"]
-[ext_resource type="Script" path="res://player/item_system/item_system.gd" id="19_j17nd"]
+[ext_resource type="Script" uid="uid://b1cb2gn8ba75j" path="res://player/item_system/item_system.gd" id="19_j17nd"]
 [ext_resource type="PackedScene" uid="uid://dvs3icvtoe84r" path="res://player/equipment_system/equipment/torch_gadget.tscn" id="19_jgf1j"]
 [ext_resource type="AudioStream" uid="uid://tj8rf1hhm0r6" path="res://audio/SoundFX/cork/cork_04.wav" id="20_0kqb2"]
 [ext_resource type="AudioStream" uid="uid://b67qrpcr5t5ag" path="res://audio/SoundFX/swish/swish_4.wav" id="21_v0m5e"]
 [ext_resource type="AudioStream" uid="uid://c06v27rvocqw4" path="res://audio/SoundFX/swoosh/swoosh_3.wav" id="24_td7p2"]
 [ext_resource type="PackedScene" uid="uid://b40rwwk030bp5" path="res://player/footfall_system/footstep_sound_system.tscn" id="25_y8nbd"]
-[ext_resource type="Script" path="res://utility scripts/mesh_streak.gd" id="26_bvh58"]
+[ext_resource type="Script" uid="uid://8v2o74gyqhnx" path="res://utility scripts/mesh_streak.gd" id="26_bvh58"]
 [ext_resource type="AudioStream" uid="uid://c8umq402d2x4l" path="res://audio/SoundFX/shuffle/shuffle_2.wav" id="26_k8guu"]
 [ext_resource type="PackedScene" uid="uid://b5nk1tsswudcm" path="res://player/player_targeting_system/player_targeting_system.tscn" id="26_qtvan"]
 [ext_resource type="AudioStream" uid="uid://b8av6rc6jwi7n" path="res://audio/SoundFX/voice/voice_hurt_01.wav" id="27_f7c51"]
 [ext_resource type="AudioStream" uid="uid://dyefk5k0gpedy" path="res://audio/SoundFX/swish/swish_2.wav" id="28_x4vw8"]
-[ext_resource type="Script" path="res://utility scripts/signal_caller.gd" id="29_vuyco"]
+[ext_resource type="Script" uid="uid://cvbldaj51qlew" path="res://utility scripts/signal_caller.gd" id="29_vuyco"]
 [ext_resource type="AudioStream" uid="uid://fge5j7dsiwj1" path="res://audio/SoundFX/hit/hit_wet_04.wav" id="30_1eskw"]
 [ext_resource type="AudioStream" uid="uid://bjhg7ssm2k606" path="res://audio/SoundFX/voice/voice_hurt_05.wav" id="30_1ghdj"]
 [ext_resource type="AudioStream" uid="uid://bxqrf0y1eflh6" path="res://audio/SoundFX/hit/hit_blunt_03.wav" id="30_6fy5x"]
 [ext_resource type="AudioStream" uid="uid://nbwjlkyrx4ya" path="res://audio/SoundFX/shuffle/shuffle_3.wav" id="30_jqvtk"]
-[ext_resource type="Script" path="res://player/item_system/inventory_system.gd" id="30_q1hnb"]
+[ext_resource type="Script" uid="uid://ckln11g62y165" path="res://player/item_system/inventory_system.gd" id="30_q1hnb"]
 [ext_resource type="AudioStream" uid="uid://dk0v3ug6sia4l" path="res://audio/SoundFX/special/Spawn01.wav" id="31_m4tnv"]
 [ext_resource type="Texture2D" uid="uid://c46nfvbeeb3pr" path="res://ui/panel-border-027.png" id="32_sdjc6"]
 [ext_resource type="Resource" uid="uid://wtv38601835b" path="res://player/item_system/items/firebomb.tres" id="34_fv8ea"]
 [ext_resource type="Resource" uid="uid://8ujj54t15t8d" path="res://player/item_system/items/potion.tres" id="34_xeucu"]
-[ext_resource type="Script" path="res://ui/item_slot.gd" id="36_vymyb"]
-[ext_resource type="Script" path="res://ui/health_bar.gd" id="38_auti3"]
-[ext_resource type="Script" path="res://enemy/health_system.gd" id="41_x7csm"]
-[ext_resource type="PackedScene" path="res://player/player_interact_sensors/sensor_cast.tscn" id="44_gyr7x"]
+[ext_resource type="Script" uid="uid://2v3tgt026u4" path="res://ui/item_slot.gd" id="36_vymyb"]
+[ext_resource type="Script" uid="uid://m20i4xn3xxbo" path="res://ui/health_bar.gd" id="38_auti3"]
+[ext_resource type="Script" uid="uid://pp2xh0qrq3tx" path="res://enemy/health_system.gd" id="41_x7csm"]
+[ext_resource type="PackedScene" uid="uid://r31q8k2be4qk" path="res://player/player_interact_sensors/sensor_cast.tscn" id="44_gyr7x"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="45_r8usq"]
 
 [sub_resource type="Animation" id="Animation_pqgn1"]
 resource_name = "Topse"
@@ -457,7 +458,7 @@ tracks/57/keys = PackedFloat32Array(0, 1, -5.14488e-12, 1, 2.98023e-08, -2.57244
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7otn8"]
 _data = {
-"Topse": SubResource("Animation_pqgn1")
+&"Topse": SubResource("Animation_pqgn1")
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7f43o"]
@@ -1546,9 +1547,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rah6f"]
 _data = {
-"RESET": SubResource("Animation_qaelj"),
-"deadcard": SubResource("Animation_wswho"),
-"lifecard": SubResource("Animation_7cyet")
+&"RESET": SubResource("Animation_qaelj"),
+&"deadcard": SubResource("Animation_wswho"),
+&"lifecard": SubResource("Animation_7cyet")
 }
 
 [sub_resource type="Gradient" id="Gradient_g6boh"]
@@ -1739,8 +1740,8 @@ visible = false
 
 [node name="AnimationPlayer" parent="minnyquinn" index="1"]
 libraries = {
-"": SubResource("AnimationLibrary_7otn8"),
-"MeleeLib": ExtResource("3_8tvpy")
+&"": SubResource("AnimationLibrary_7otn8"),
+&"MeleeLib": ExtResource("3_8tvpy")
 }
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -1750,6 +1751,7 @@ shape = SubResource("CapsuleShape3D_7f43o")
 [node name="AnimStateTree" type="AnimationTree" parent="." node_paths=PackedStringArray("player_node")]
 root_node = NodePath("../minnyquinn")
 root_motion_track = NodePath("%GeneralSkeleton:Root")
+root_motion_local = false
 callback_mode_process = 0
 tree_root = SubResource("AnimationNodeBlendTree_pu57o")
 anim_player = NodePath("../minnyquinn/AnimationPlayer")
@@ -1875,7 +1877,7 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.0
 [node name="Shield" parent="GadgetSystem/LeftHand/HandPivot" instance=ExtResource("7_yp4e6")]
 
 [node name="HipBone" type="BoneAttachment3D" parent="GadgetSystem"]
-transform = Transform3D(1, 1.58652e-08, -1.83552e-10, -1.56653e-08, 0.985429, -0.170089, -2.51762e-09, 0.170089, 0.985429, 1.17221e-09, 1.06241, -0.00876003)
+transform = Transform3D(1, 1.58652e-08, -1.83552e-10, -1.56653e-08, 0.985429, -0.170089, -2.51762e-09, 0.170089, 0.985429, 1.17221e-09, 1.06241, -0.00876002)
 bone_name = "Chest"
 bone_idx = 3
 use_external_skeleton = true
@@ -2223,7 +2225,7 @@ sound_trigger_signal = "hurt_started"
 [node name="LifeCardAnimations" type="AnimationPlayer" parent="TriggeredSounds"]
 root_node = NodePath("LifeDeathCard")
 libraries = {
-"": SubResource("AnimationLibrary_rah6f")
+&"": SubResource("AnimationLibrary_rah6f")
 }
 
 [node name="DeathSignalCaller" type="Node" parent="TriggeredSounds/LifeCardAnimations" node_paths=PackedStringArray("signaling_node")]
@@ -2304,6 +2306,31 @@ process_material = SubResource("ParticleProcessMaterial_4pi6a")
 draw_pass_1 = SubResource("PlaneMesh_1rh5k")
 
 [node name="SensorCast" parent="." instance=ExtResource("44_gyr7x")]
+
+[node name="touch control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Virtual Joystick" parent="touch control" instance=ExtResource("45_r8usq")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.434722
+anchor_right = 0.43125
+anchor_bottom = 0.988889
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+joystick_mode = 1
+action_left = "move_left"
+action_right = "move_right"
+action_up = "move_up"
+action_down = "move_down"
+metadata/_edit_use_anchors_ = true
 
 [connection signal="animation_started" from="AnimStateTree" to="AnimStateTree" method="_on_animation_started"]
 

@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwn7k2eqtv5qt"
-path.s3tc="res://.godot/imported/TinyMetal01_normal.png-96c549ed83b0516028695d68f28d42bb.s3tc.ctex"
+path.etc2="res://.godot/imported/TinyMetal01_normal.png-96c549ed83b0516028695d68f28d42bb.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_level/gridmap/gridmap_materials/TinyMetal01_normal.png"
-dest_files=["res://.godot/imported/TinyMetal01_normal.png-96c549ed83b0516028695d68f28d42bb.s3tc.ctex"]
+dest_files=["res://.godot/imported/TinyMetal01_normal.png-96c549ed83b0516028695d68f28d42bb.etc2.ctex"]
 
 [params]
 

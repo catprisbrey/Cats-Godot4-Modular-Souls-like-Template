@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://wtv38601835b"]
 
 [ext_resource type="PackedScene" uid="uid://vs3idmafxkcd" path="res://player/item_system/items/fire_bomb.tscn" id="1_o1sko"]
-[ext_resource type="Script" path="res://player/item_system/item_resource.gd" id="1_o8w0p"]
+[ext_resource type="Script" uid="uid://lv5kqh5614fa" path="res://player/item_system/item_resource.gd" id="1_o8w0p"]
 [ext_resource type="Texture2D" uid="uid://de5jbsp1g1i7l" path="res://player/item_system/items/firebomb.png" id="2_4qym0"]
 
 [resource]

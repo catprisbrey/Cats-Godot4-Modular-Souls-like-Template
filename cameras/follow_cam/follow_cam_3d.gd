@@ -36,7 +36,7 @@ signal target_cleared
 
 var current_cam_buffer = true
 
-
+var is_in_touchzone := false ## for touchscreens
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			
@@ -64,8 +64,14 @@ func _physics_process(_delta):
 	
 ## Normal free camera control
 func mouse_control(_event):
+	#detect if touch position is on right side of the screen
+	#necessary for joystick to not control camera
+	if _event is InputEventScreenTouch:
+		is_in_touchzone = _event.get_position() >= (DisplayServer.screen_get_size() / 2.0)
+		
 
-	if _event is InputEventMouseMotion:
+
+	if _event is InputEventMouseMotion or _event is InputEventScreenDrag and is_in_touchzone:
 		var new_rotation = rotation.x - _event.relative.y / 10000 * mouse_sensitivity
 		rotation.y -= _event.relative.x /  10000 * mouse_sensitivity
 

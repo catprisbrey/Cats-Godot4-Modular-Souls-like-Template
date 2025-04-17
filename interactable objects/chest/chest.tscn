@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://c3yajhej5laa7"]
 
-[ext_resource type="Script" path="res://interactable objects/chest/chest_object.gd" id="1_mq2t8"]
+[ext_resource type="Script" uid="uid://dc7jpwvefsm42" path="res://interactable objects/chest/chest_object.gd" id="1_mq2t8"]
 [ext_resource type="Material" uid="uid://bqecby27hsm6w" path="res://assets/metal_blue.tres" id="2_5dulj"]
 [ext_resource type="AudioStream" uid="uid://ub3oh4164d6n" path="res://audio/SoundFX/clack/clack_3.wav" id="2_o46sj"]
 [ext_resource type="Material" uid="uid://b4m1mgfioqq2s" path="res://demo_level/gridmap/gridmap_materials/TinyWood01.tres" id="2_uf1fe"]
@@ -113,8 +113,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_32ftv"]
 _data = {
-"RESET": SubResource("Animation_qofnw"),
-"open": SubResource("Animation_trxo7")
+&"RESET": SubResource("Animation_qofnw"),
+&"open": SubResource("Animation_trxo7")
 }
 
 [node name="ChestObject" type="StaticBody3D"]

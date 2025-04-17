@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b0bhma25gxlxd"
-path.s3tc="res://.godot/imported/TinyRock01_albedo.png-055a55a4faea46e432f16034983cd98e.s3tc.ctex"
+path.etc2="res://.godot/imported/TinyRock01_albedo.png-055a55a4faea46e432f16034983cd98e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_level/gridmap/gridmap_materials/TinyRock01_albedo.png"
-dest_files=["res://.godot/imported/TinyRock01_albedo.png-055a55a4faea46e432f16034983cd98e.s3tc.ctex"]
+dest_files=["res://.godot/imported/TinyRock01_albedo.png-055a55a4faea46e432f16034983cd98e.etc2.ctex"]
 
 [params]
 

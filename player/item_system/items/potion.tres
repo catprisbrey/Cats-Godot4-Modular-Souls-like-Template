@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemResource" load_steps=4 format=3 uid="uid://8ujj54t15t8d"]
 
-[ext_resource type="Script" path="res://player/item_system/item_resource.gd" id="1_70la2"]
+[ext_resource type="Script" uid="uid://lv5kqh5614fa" path="res://player/item_system/item_resource.gd" id="1_70la2"]
 [ext_resource type="PackedScene" uid="uid://dhiuvwatv8m07" path="res://player/item_system/items/potion.tscn" id="1_e1hej"]
 [ext_resource type="Texture2D" uid="uid://cm1ys16eojv55" path="res://player/item_system/items/potion.png" id="2_yi74s"]
 

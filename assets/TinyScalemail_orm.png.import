@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://biyg73kqlhpg3"
-path.s3tc="res://.godot/imported/TinyScalemail_orm.png-9f91c52341f72305969c35dbf1471087.s3tc.ctex"
+path.etc2="res://.godot/imported/TinyScalemail_orm.png-9f91c52341f72305969c35dbf1471087.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/TinyScalemail_orm.png"
-dest_files=["res://.godot/imported/TinyScalemail_orm.png-9f91c52341f72305969c35dbf1471087.s3tc.ctex"]
+dest_files=["res://.godot/imported/TinyScalemail_orm.png-9f91c52341f72305969c35dbf1471087.etc2.ctex"]
 
 [params]
 

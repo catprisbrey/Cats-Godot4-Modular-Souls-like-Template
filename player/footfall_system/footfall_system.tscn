@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b3w5gegc1yqut"]
 
-[ext_resource type="Script" path="res://player/footfall_system/footfall_system.gd" id="1_b8ejw"]
+[ext_resource type="Script" uid="uid://b4etjoodm8j71" path="res://player/footfall_system/footfall_system.gd" id="1_b8ejw"]
 
 [node name="FootfallSystem" type="BoneAttachment3D"]
 use_external_skeleton = true

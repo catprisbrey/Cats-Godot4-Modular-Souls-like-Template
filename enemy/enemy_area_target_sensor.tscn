@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bhrc0nilld2h3"]
 
-[ext_resource type="Script" path="res://enemy/enemy_area_target_sensor.gd" id="1_l0w2x"]
+[ext_resource type="Script" uid="uid://drw1b1cxur4ex" path="res://enemy/enemy_area_target_sensor.gd" id="1_l0w2x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pu3uu"]
 size = Vector3(4, 3, 4)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://bp5aql2ip2qwi"]
 
-[ext_resource type="Script" path="res://interactable objects/doors/gate_object.gd" id="1_jkoxb"]
+[ext_resource type="Script" uid="uid://0gkme7tlcnii" path="res://interactable objects/doors/gate_object.gd" id="1_jkoxb"]
 [ext_resource type="Material" uid="uid://pw0qjru3ju6a" path="res://demo_level/gridmap/gridmap_materials/TinyMetal01.tres" id="2_1tfmp"]
 [ext_resource type="AudioStream" uid="uid://bf1mydqcmopue" path="res://audio/SoundFX/ratchet/ratchet_1.wav" id="2_4mohy"]
 [ext_resource type="AudioStream" uid="uid://b7mejiv87ktbl" path="res://audio/SoundFX/clack/clack_1.wav" id="3_0j2dh"]
@@ -201,9 +201,9 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b5b81"]
 _data = {
-"RESET": SubResource("Animation_4xpfs"),
-"locked": SubResource("Animation_atpco"),
-"open": SubResource("Animation_4eqcm")
+&"RESET": SubResource("Animation_4xpfs"),
+&"locked": SubResource("Animation_atpco"),
+&"open": SubResource("Animation_4eqcm")
 }
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_xidkn"]

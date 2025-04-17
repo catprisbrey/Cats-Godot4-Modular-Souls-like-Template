@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b65t1v7qe0rb3"]
 
-[ext_resource type="Script" path="res://cameras/follow_cam/follow_cam_3d.gd" id="1_y42mi"]
+[ext_resource type="Script" uid="uid://bm3kh2b6i8h7h" path="res://cameras/follow_cam/follow_cam_3d.gd" id="1_y42mi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6qse"]
 margin = 1.0

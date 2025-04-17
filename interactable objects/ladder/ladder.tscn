@@ -1,7 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b5y7f5xgkpa1d"]
 
-[ext_resource type="Script" path="res://interactable objects/ladder/ladder.gd" id="1_6x4e1"]
-
+[ext_resource type="Script" uid="uid://cjaomoisf1dt2" path="res://interactable objects/ladder/ladder.gd" id="1_6x4e1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2em6e"]
 size = Vector3(0.7, 5, 0.35)

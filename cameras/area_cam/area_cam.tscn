@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwxpu4en7wpi6"]
 
-[ext_resource type="Script" path="res://cameras/area_cam/area_cam.gd" id="1_5xaaf"]
+[ext_resource type="Script" uid="uid://bw6dcg5eoiu6r" path="res://cameras/area_cam/area_cam.gd" id="1_5xaaf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m6vf8"]
 size = Vector3(15, 3, 15)

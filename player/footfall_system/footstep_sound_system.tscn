@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b40rwwk030bp5"]
 
-[ext_resource type="Script" path="res://player/footfall_system/foostep_sound_system.gd" id="1_agdne"]
+[ext_resource type="Script" uid="uid://bh7q4sguanxhy" path="res://player/footfall_system/foostep_sound_system.gd" id="1_agdne"]
 [ext_resource type="AudioStream" uid="uid://bnqorddnmpojj" path="res://audio/SoundFX/step/step_2.wav" id="2_tfol7"]
 [ext_resource type="AudioStream" uid="uid://nbwjlkyrx4ya" path="res://audio/SoundFX/shuffle/shuffle_3.wav" id="3_4wlbn"]
 

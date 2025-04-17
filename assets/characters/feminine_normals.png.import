@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by0f51206ho3s"
-path.s3tc="res://.godot/imported/feminine_normals.png-493fbef7a4fbcff5fd8e0365c17b7302.s3tc.ctex"
+path.etc2="res://.godot/imported/feminine_normals.png-493fbef7a4fbcff5fd8e0365c17b7302.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/characters/feminine_normals.png"
-dest_files=["res://.godot/imported/feminine_normals.png-493fbef7a4fbcff5fd8e0365c17b7302.s3tc.ctex"]
+dest_files=["res://.godot/imported/feminine_normals.png-493fbef7a4fbcff5fd8e0365c17b7302.etc2.ctex"]
 
 [params]
 

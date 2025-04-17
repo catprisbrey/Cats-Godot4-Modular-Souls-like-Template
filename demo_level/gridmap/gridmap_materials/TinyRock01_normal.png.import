@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://8iyu0vxjyggf"
-path.s3tc="res://.godot/imported/TinyRock01_normal.png-4c0a5e74ccb421d8ce2c6b268e8ce7fe.s3tc.ctex"
+path.etc2="res://.godot/imported/TinyRock01_normal.png-4c0a5e74ccb421d8ce2c6b268e8ce7fe.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_level/gridmap/gridmap_materials/TinyRock01_normal.png"
-dest_files=["res://.godot/imported/TinyRock01_normal.png-4c0a5e74ccb421d8ce2c6b268e8ce7fe.s3tc.ctex"]
+dest_files=["res://.godot/imported/TinyRock01_normal.png-4c0a5e74ccb421d8ce2c6b268e8ce7fe.etc2.ctex"]
 
 [params]
 

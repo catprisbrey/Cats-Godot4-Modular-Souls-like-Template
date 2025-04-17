@@ -37,6 +37,8 @@ signal target_found
 ## The layers the eyes will scan when detecting targets
 @export_flags_3d_physics var target_detection_layer_mask = 3
 
+var is_in_touchzone := false
+
 func _ready():
 	center_eye.collision_mask = target_detection_layer_mask
 	left_eye.collision_mask = target_detection_layer_mask
@@ -57,10 +59,13 @@ func _update_lists():
 	target_list += left_eye.target_list
 
 func _input(_event:InputEvent): 
+	if _event is InputEventScreenTouch:
+		is_in_touchzone = _event.get_position() >= (DisplayServer.screen_get_size() / 2.0)
+
 	# Senses input left or right on mouse or joypad
 	# and calls to change target to the left or right.
 	if targeting:
-		if _event is InputEventMouseMotion:
+		if _event is InputEventMouseMotion or _event is InputEventScreenDrag and is_in_touchzone:
 			if abs(_event.relative.x) > mouse_retarget_sensitivity * 100: 
 				var target_dir = sign(_event.relative.x)
 				select_new_target(target_dir, .6)
