@@ -11,6 +11,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @export var target_sensor : Area3D 
 @export var target : Node3D
+var astar = AStar3D.new()
 ## Use for pathfinding, it will return to following this default target after
 ## giving up a chase. Most commonly this is a pathfollow node, following a Path.
 ## if left blank, then the default target is simply the same locationw here this
@@ -68,7 +69,7 @@ func _ready():
 	set_default_target()
 	
 	
-func _process(delta):
+func _process(delta: float) -> void:
 	apply_gravity(delta)
 	if current_state == state.DEAD:
 		return

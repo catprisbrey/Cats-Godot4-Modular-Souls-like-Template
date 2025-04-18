@@ -44,7 +44,7 @@
 [ext_resource type="Script" uid="uid://m20i4xn3xxbo" path="res://ui/health_bar.gd" id="38_auti3"]
 [ext_resource type="Script" uid="uid://pp2xh0qrq3tx" path="res://enemy/health_system.gd" id="41_x7csm"]
 [ext_resource type="PackedScene" uid="uid://r31q8k2be4qk" path="res://player/player_interact_sensors/sensor_cast.tscn" id="44_gyr7x"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="45_r8usq"]
+[ext_resource type="PackedScene" uid="uid://bykhyhn3ut5c1" path="res://ui/touchscreen/touch_control.tscn" id="45_r8usq"]
 
 [sub_resource type="Animation" id="Animation_pqgn1"]
 resource_name = "Topse"
@@ -2307,30 +2307,7 @@ draw_pass_1 = SubResource("PlaneMesh_1rh5k")
 
 [node name="SensorCast" parent="." instance=ExtResource("44_gyr7x")]
 
-[node name="touch control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Virtual Joystick" parent="touch control" instance=ExtResource("45_r8usq")]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.434722
-anchor_right = 0.43125
-anchor_bottom = 0.988889
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-joystick_mode = 1
-action_left = "move_left"
-action_right = "move_right"
-action_up = "move_up"
-action_down = "move_down"
-metadata/_edit_use_anchors_ = true
+[node name="touch control" parent="." instance=ExtResource("45_r8usq")]
 
 [connection signal="animation_started" from="AnimStateTree" to="AnimStateTree" method="_on_animation_started"]
 

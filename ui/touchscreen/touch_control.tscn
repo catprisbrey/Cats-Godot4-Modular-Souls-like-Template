@@ -1,0 +1,232 @@
+[gd_scene load_steps=13 format=3 uid="uid://bykhyhn3ut5c1"]
+
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="1_py1op"]
+[ext_resource type="Texture2D" uid="uid://c7y8kev1a788i" path="res://assets/touchscreen ui icons/sword - attack.svg" id="2_j0efo"]
+[ext_resource type="Texture2D" uid="uid://deh7k14xgs7po" path="res://assets/touchscreen ui icons/jump.svg" id="2_nm18p"]
+[ext_resource type="Script" uid="uid://c7twhe3e37yba" path="res://addons/Godot-Interactive-Touchscreen-Button/interactive_touchscreen_button.gd" id="3_2jmmw"]
+[ext_resource type="Texture2D" uid="uid://150h1vj4rx6j" path="res://assets/touchscreen ui icons/target.svg" id="4_2jmmw"]
+[ext_resource type="Texture2D" uid="uid://c166ff31vyan0" path="res://assets/touchscreen ui icons/shield - block.svg" id="4_dw2v6"]
+[ext_resource type="Texture2D" uid="uid://5ctrww37uxgg" path="res://assets/touchscreen ui icons/roll.svg" id="4_j0efo"]
+[ext_resource type="Texture2D" uid="uid://c34he5n846ews" path="res://assets/touchscreen ui icons/switch left hand.svg" id="4_yxpdm"]
+[ext_resource type="Texture2D" uid="uid://c2u3y3nvbp1pq" path="res://assets/touchscreen ui icons/interact.svg" id="5_dw2v6"]
+[ext_resource type="Texture2D" uid="uid://dmh0aebxpvup2" path="res://assets/touchscreen ui icons/switch right hand.svg" id="5_yxpdm"]
+[ext_resource type="Texture2D" uid="uid://31k5g4ctq4m5" path="res://assets/touchscreen ui icons/switch items.svg" id="9_aysob"]
+[ext_resource type="Texture2D" uid="uid://x542adds73n2" path="res://assets/touchscreen ui icons/use item.svg" id="10_nm18p"]
+
+[node name="touch control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("1_py1op")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.434722
+anchor_right = 0.43125
+anchor_bottom = 0.988889
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+joystick_mode = 1
+visibility_mode = 1
+action_left = "move_left"
+action_right = "move_right"
+action_up = "move_up"
+action_down = "move_down"
+metadata/_edit_use_anchors_ = true
+
+[node name="strafe target button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.811523
+anchor_top = 0.545139
+anchor_right = 0.888555
+anchor_bottom = 0.676417
+offset_right = 37.1202
+offset_bottom = 35.5839
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("2_nm18p")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"jump"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="strafe target button3" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.699219
+anchor_top = 0.496528
+anchor_right = 0.776251
+anchor_bottom = 0.627806
+offset_right = 37.1202
+offset_bottom = 35.5839
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("4_yxpdm")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"change_secondary"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="strafe target button4" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.77832
+anchor_top = 0.381944
+anchor_right = 0.855352
+anchor_bottom = 0.513222
+offset_right = 37.1203
+offset_bottom = 35.584
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("5_yxpdm")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"change_primary"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="strafe target button2" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.871094
+anchor_top = 0.359375
+anchor_right = 0.948126
+anchor_bottom = 0.490653
+offset_right = 37.1203
+offset_bottom = 35.584
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("4_2jmmw")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"strafe_target"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="interact button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.90918
+anchor_top = 0.529514
+anchor_right = 0.986211
+anchor_bottom = 0.660791
+offset_right = 37.1199
+offset_bottom = 35.5839
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("5_dw2v6")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"interact"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="roll button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.741211
+anchor_top = 0.673611
+anchor_right = 0.818243
+anchor_bottom = 0.804889
+offset_right = 37.1199
+offset_bottom = 35.5839
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("4_j0efo")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"dodge_dash"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="attack button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.837891
+anchor_top = 0.689236
+anchor_right = 0.953438
+anchor_bottom = 0.919445
+offset_right = 55.68
+offset_bottom = 62.4
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("2_j0efo")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"use_weapon_light"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="shield button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.745117
+anchor_top = 0.835069
+anchor_right = 0.822148
+anchor_bottom = 0.966347
+offset_right = 37.1199
+offset_bottom = 35.5841
+scale = Vector2(0.68, 0.68)
+toggle_mode = true
+action_mode = 0
+icon = ExtResource("4_dw2v6")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"use_gadget_light"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="switch item button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.65332
+anchor_top = 0.828125
+anchor_right = 0.730351
+anchor_bottom = 0.959401
+offset_right = 37.1199
+offset_bottom = 35.5841
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("9_aysob")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"change_item"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true
+
+[node name="use item button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.643555
+anchor_top = 0.661458
+anchor_right = 0.720586
+anchor_bottom = 0.792736
+offset_right = 37.1199
+offset_bottom = 35.5841
+scale = Vector2(0.68, 0.68)
+icon = ExtResource("10_nm18p")
+flat = true
+expand_icon = true
+script = ExtResource("3_2jmmw")
+input_action = &"use_item"
+use_default_values = false
+touchscreen_only = true
+metadata/_edit_use_anchors_ = true

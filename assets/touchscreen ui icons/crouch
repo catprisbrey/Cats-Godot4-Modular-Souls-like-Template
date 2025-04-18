@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="crouch"
+   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showguides="true"
+     inkscape:zoom="9.671875"
+     inkscape:cx="32"
+     inkscape:cy="32"
+     inkscape:window-width="1600"
+     inkscape:window-height="828"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1">
+    <sodipodi:guide
+       position="-2.1147011,32.275848"
+       orientation="0,-1"
+       id="guide6"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="31.968498,55.432149"
+       orientation="1,0"
+       id="guide7"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+  <g
+     class="layer"
+     display="inline"
+     id="g1">
+    <title
+       id="title1">Layer 1</title>
+    <circle
+       cx="32.04"
+       cy="32.03"
+       fill="#000000"
+       fill-opacity="0"
+       id="svg_6"
+       r="31.71"
+       stroke="#000000" />
+  </g>
+  <ellipse
+     style="fill:#000000;stroke:none;stroke-width:0.861624"
+     id="path1"
+     cx="32.155087"
+     cy="19.851372"
+     rx="3.9981058"
+     ry="4.1014981" />
+  <rect
+     style="fill:#000000;stroke:none;stroke-width:0.783795"
+     id="rect2"
+     width="5.9498162"
+     height="17.563238"
+     x="33.834953"
+     y="19.494768"
+     ry="0.07947167"
+     transform="matrix(0.98921385,0.14647854,-0.24930111,0.96842602,0,0)" />
+  <g
+     id="g4"
+     transform="translate(-2.1712439,1.8610662)"
+     style="stroke:none">
+    <rect
+       style="fill:#000000;stroke:none;stroke-width:0.908273"
+       id="rect3"
+       width="15.935442"
+       height="4.3033252"
+       x="13.575953"
+       y="44.816071"
+       ry="0.079691209"
+       transform="matrix(0.95553717,-0.29487067,0.34758684,0.93764779,0,0)" />
+    <rect
+       style="fill:#000000;stroke:none;stroke-width:1.29263"
+       id="rect4"
+       width="4.549273"
+       height="12.717286"
+       x="40.426495"
+       y="36.497578"
+       ry="0.1150469" />
+  </g>
+  <use
+     x="0"
+     y="0"
+     xlink:href="#g4"
+     id="use4"
+     transform="matrix(0.10591369,0.80975375,-0.94944972,0.17085581,62.791473,9.7671169)" />
+  <rect
+     style="fill:#000000;stroke:none"
+     id="rect5"
+     width="19.33441"
+     height="2.7915993"
+     x="40.912563"
+     y="3.4279969"
+     ry="0.10339257"
+     transform="rotate(32.69303)" />
+  <use
+     x="0"
+     y="0"
+     xlink:href="#rect5"
+     id="use5"
+     transform="rotate(-96.232115,33.583203,39.244252)" />
+</svg>

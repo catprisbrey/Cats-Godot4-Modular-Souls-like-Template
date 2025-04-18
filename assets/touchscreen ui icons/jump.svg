@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="jump.svg"
+   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="9.671875"
+     inkscape:cx="32"
+     inkscape:cy="32"
+     inkscape:window-width="1600"
+     inkscape:window-height="828"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1">
+    <sodipodi:guide
+       position="22.022617,26.98546"
+       orientation="0,-1"
+       id="guide1"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="32.031099,54.526656"
+       orientation="1,0"
+       id="guide2"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+  <g
+     class="layer"
+     display="inline"
+     id="g1">
+    <title
+       id="title1">Layer 1</title>
+    <circle
+       cx="32.04"
+       cy="32.03"
+       fill="#000000"
+       fill-opacity="0"
+       id="svg_6"
+       r="31.71"
+       stroke="#000000" />
+  </g>
+  <ellipse
+     style="fill:#000000;stroke:none;stroke-width:0.922069"
+     id="path1"
+     ry="3.2051697"
+     rx="3.3602583"
+     cy="18.197092"
+     cx="32" />
+  <rect
+     style="fill:#000000;stroke:none;stroke-width:1.12268"
+     id="rect2"
+     width="7.3408723"
+     height="16.232634"
+     x="28.432957"
+     y="23.056543"
+     ry="0.19708021" />
+  <g
+     id="g4"
+     transform="matrix(0.90428079,0,0,1,3.7910646,0.82714055)"
+     inkscape:label="right arm">
+    <rect
+       style="fill:#000000;stroke:none"
+       id="rect3"
+       width="2.9983845"
+       height="14.474959"
+       x="40.800854"
+       y="-5.7519321"
+       ry="0.19708021"
+       transform="rotate(30.164634)" />
+    <rect
+       style="fill:#000000;stroke:none;stroke-width:1.06066"
+       id="rect4"
+       width="2.7915995"
+       height="9.4087238"
+       x="30.938635"
+       y="19.501335"
+       ry="0.19708021"
+       transform="rotate(-16.992212)" />
+  </g>
+  <g
+     id="g6"
+     inkscape:label="rightleg"
+     transform="translate(0.10339257,-1.9644588)">
+    <rect
+       style="fill:#000000;stroke:none;stroke-width:0.737285"
+       id="rect5"
+       width="3.3085623"
+       height="10.959612"
+       x="38.803421"
+       y="30.478796"
+       ry="0.10713078"
+       transform="rotate(10.273709)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5"
+       id="use6"
+       transform="matrix(-0.30955877,0.61289554,-0.82168524,-0.23090008,73.617762,34.446844)" />
+  </g>
+  <g
+     id="g7"
+     inkscape:label="left leg">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5"
+       id="use5"
+       transform="translate(-4.3424879,0.31017771)" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use6"
+       id="use7"
+       transform="matrix(0.84992273,0,0,0.79209113,0.73105042,10.253765)" />
+  </g>
+  <use
+     x="0"
+     y="0"
+     xlink:href="#g4"
+     id="use8"
+     transform="rotate(-70.635502,31.34437,29.993006)" />
+  <rect
+     style="fill:#000000;stroke:none"
+     id="rect9"
+     width="0.41357028"
+     height="4.6526656"
+     x="27.915993"
+     y="49.731827"
+     ry="0.10339257" />
+  <rect
+     style="fill:#000000;stroke:none;stroke-width:0.756322"
+     id="rect10"
+     width="0.414"
+     height="8.4781904"
+     x="29.466883"
+     y="51.696285"
+     ry="0.10339257" />
+  <use
+     x="0"
+     y="0"
+     xlink:href="#rect9"
+     id="use10"
+     transform="translate(3.1017771,-0.51696284)" />
+</svg>

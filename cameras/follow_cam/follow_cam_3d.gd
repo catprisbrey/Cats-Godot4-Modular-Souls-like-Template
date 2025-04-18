@@ -19,6 +19,7 @@ class_name FollowCam
 
 @export_range(1,50,1) var mouse_sensitivity = 15.0
 @export_range(1,50,1) var joystick_sensitivity = 15.0
+@export_range(1,80,1) var touchscreen_sensitivity = 50
 
 var targeting = false
 signal targeting_changed
@@ -37,7 +38,9 @@ signal target_cleared
 var current_cam_buffer = true
 
 var is_in_touchzone := false ## for touchscreens
+
 func _ready():
+	#multiply sensitivity for touchscreens
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			
 	if follow_target.has_signal("strafe_toggled"): ## to avoid hard coding using a SignalSwitch
@@ -69,7 +72,9 @@ func mouse_control(_event):
 	if _event is InputEventScreenTouch:
 		is_in_touchzone = _event.get_position() >= (DisplayServer.screen_get_size() / 2.0)
 		
-
+		#only apply touchscreen multiplier if touchscreen is used
+		mouse_sensitivity = touchscreen_sensitivity
+		
 
 	if _event is InputEventMouseMotion or _event is InputEventScreenDrag and is_in_touchzone:
 		var new_rotation = rotation.x - _event.relative.y / 10000 * mouse_sensitivity

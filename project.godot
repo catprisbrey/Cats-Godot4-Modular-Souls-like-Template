@@ -22,8 +22,8 @@ buses/default_bus_layout="res://audio/default_bus_layout.tres"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1024
+window/size/viewport_height=576
 
 [input]
 
@@ -191,7 +191,13 @@ pointing/emulate_mouse_from_touch=false
 3d_physics/layer_4="Interactable"
 3d_physics/layer_5="Ladder"
 
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
 [rendering]
 
 renderer/rendering_method="mobile"
-renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+scaling_3d/scale=0.4
+environment/screen_space_reflection/roughness_quality=0

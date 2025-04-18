@@ -120,4 +120,3 @@ func _on_body_entered(_hit_body):
 
 func _on_stop_signal():
 	current_equipment.monitoring = false
-
